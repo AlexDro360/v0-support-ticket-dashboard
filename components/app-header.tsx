@@ -1,6 +1,6 @@
 "use client"
 
-import { Settings, Bell, User } from "lucide-react"
+import { Settings, Bell, User, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -10,13 +10,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useSidebar } from "@/components/sidebar-context"
 
 export function AppHeader() {
+  const { toggle } = useSidebar()
+
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b bg-card px-6">
-      {/* Left side - Page title */}
-      <div>
-        <h1 className="text-lg font-semibold text-foreground">
+    <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b bg-card px-4 sm:px-6">
+      {/* Left side - Toggle and title */}
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggle}
+          className="lg:hidden"
+          aria-label="Alternar barra lateral"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+        <h1 className="text-base font-semibold text-foreground sm:text-lg">
           Soporte Tecnico
         </h1>
       </div>
@@ -45,8 +57,8 @@ export function AppHeader() {
                   JR
                 </AvatarFallback>
               </Avatar>
-              <div className="hidden text-left md:block">
-                <p className="text-sm font-medium text-foreground">
+              <div className="hidden text-left sm:block">
+                <p className="text-xs font-medium text-foreground sm:text-sm">
                   Juan Rodriguez
                 </p>
                 <p className="text-xs text-muted-foreground">Administrador</p>
