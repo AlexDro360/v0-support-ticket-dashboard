@@ -152,14 +152,19 @@ export function SupportTicketForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Sección A: Información del Solicitante */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Información del Solicitante</CardTitle>
-          <CardDescription>
-            Proporciona tus datos de contacto para la gestión de la solicitud
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+      <div>
+        <div className="mb-4 flex items-start gap-3">
+          <div className="rounded-full bg-muted p-2">
+            <User className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <div>
+            <h3 className="text-base font-semibold text-foreground sm:text-lg">Información del Solicitante</h3>
+            <p className="text-xs text-muted-foreground sm:text-sm">
+              Proporciona tus datos de contacto para la gestión de la solicitud
+            </p>
+          </div>
+        </div>
+        <div className="space-y-4 border-t pt-6">
           <div className="grid gap-6 md:grid-cols-2">
             {/* Nombre Afectado */}
             <div className="space-y-2">
@@ -234,19 +239,24 @@ export function SupportTicketForm() {
               </Select>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Sección B: Detalle del Problema */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Detalle del Problema</CardTitle>
-          <CardDescription>
-            Describe el tipo de problema
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-6">
+      <div>
+        <div className="mb-4 flex items-start gap-3">
+          <div className="rounded-full bg-muted p-2">
+            <AlertCircle className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <div>
+            <h3 className="text-base font-semibold text-foreground sm:text-lg">Detalle del Problema</h3>
+            <p className="text-xs text-muted-foreground sm:text-sm">
+              Describe el tipo de problema
+            </p>
+          </div>
+        </div>
+        <div className="space-y-4 border-t pt-6">
+          <div className="grid gap-6 md:grid-cols-2">
             {/* Tipo de Problema */}
             <div className="space-y-2">
               <Label htmlFor="tipoProblema" className="flex items-center gap-2">
@@ -339,9 +349,8 @@ export function SupportTicketForm() {
               )}
             </div>
           </div>
-        </CardContent>
-      </Card>
-
+        </div>
+      </div>
 
       {/* Botones de Acción */}
       <div className="flex gap-3 md:justify-end">
