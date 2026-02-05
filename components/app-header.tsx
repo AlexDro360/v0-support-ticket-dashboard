@@ -1,6 +1,6 @@
 "use client"
 
-import { Settings, Bell, User, Menu } from "lucide-react"
+import { Settings, User, Menu, Bell } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -23,7 +23,6 @@ export function AppHeader() {
           variant="ghost"
           size="icon"
           onClick={toggle}
-          className="lg:hidden"
           aria-label="Alternar barra lateral"
         >
           <Menu className="h-5 w-5" />
@@ -35,13 +34,6 @@ export function AppHeader() {
 
       {/* Right side - Actions */}
       <div className="flex items-center gap-2">
-        {/* Notifications */}
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5 text-muted-foreground" />
-          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />
-          <span className="sr-only">Notificaciones</span>
-        </Button>
-
         {/* Settings */}
         <Button variant="ghost" size="icon">
           <Settings className="h-5 w-5 text-muted-foreground" />

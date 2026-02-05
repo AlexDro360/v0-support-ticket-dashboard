@@ -137,7 +137,6 @@ export default function SoporteDashboard() {
   const [prioridad, setPrioridad] = useState("todas")
   const [departamento, setDepartamento] = useState("todos")
   const [estado, setEstado] = useState("todos")
-  const [filtersOpen, setFiltersOpen] = useState(false)
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1)
