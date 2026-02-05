@@ -1,14 +1,13 @@
 "use client"
 
 import React from "react"
-import CreateUserModal from "@/components/create-user-modal" // Import CreateUserModal component
 
 import { useState, useMemo } from "react"
 import { TicketsTable, type Ticket } from "@/components/tickets-table"
 import { TicketsToolbar } from "@/components/tickets-toolbar"
 import { TicketsPagination } from "@/components/tickets-pagination"
 import Link from "next/link"
-import { Headset, TicketCheck, Clock, AlertCircle, UserPlus } from "lucide-react"
+import { Headset, UserPlus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 // Mock data for the support tickets
@@ -141,6 +140,7 @@ export default function SoporteDashboard() {
   const [prioridad, setPrioridad] = useState("todas")
   const [departamento, setDepartamento] = useState("todos")
   const [estado, setEstado] = useState("todos")
+  const [filtersOpen, setFiltersOpen] = useState(false)
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1)
@@ -149,21 +149,17 @@ export default function SoporteDashboard() {
   // Filter the tickets
   const filteredTickets = useMemo(() => {
     return mockTickets.filter((ticket) => {
-      // Search filter
       const searchMatch =
         searchQuery === "" ||
         ticket.folio.toLowerCase().includes(searchQuery.toLowerCase()) ||
         ticket.nombreAfectado.toLowerCase().includes(searchQuery.toLowerCase())
 
-      // Priority filter
       const prioridadMatch =
         prioridad === "todas" || ticket.prioridad === prioridad
 
-      // Department filter
       const departamentoMatch =
         departamento === "todos" || ticket.departamento === departamento
 
-      // Status filter
       const estadoMatch = estado === "todos" || ticket.estado === estado
 
       return searchMatch && prioridadMatch && departamentoMatch && estadoMatch
@@ -190,15 +186,6 @@ export default function SoporteDashboard() {
     setRowsPerPage(rows)
     setCurrentPage(1)
   }
-
-  // Stats calculations
-  const stats = useMemo(() => {
-    const total = mockTickets.length
-    const pendientes = mockTickets.filter((t) => t.estado === "Pendiente").length
-    const enProceso = mockTickets.filter((t) => t.estado === "En Proceso").length
-    const altaPrioridad = mockTickets.filter((t) => t.prioridad === "Alta").length
-    return { total, pendientes, enProceso, altaPrioridad }
-  }, [])
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -230,54 +217,6 @@ export default function SoporteDashboard() {
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Stats Cards */}
-        <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-lg border bg-card p-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-                <TicketCheck className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Total Solicitudes</p>
-                <p className="text-2xl font-bold text-foreground">{stats.total}</p>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-lg border bg-card p-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
-                <Clock className="h-5 w-5 text-amber-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Pendientes</p>
-                <p className="text-2xl font-bold text-foreground">{stats.pendientes}</p>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-lg border bg-card p-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-                <Headset className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">En Proceso</p>
-                <p className="text-2xl font-bold text-foreground">{stats.enProceso}</p>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-lg border bg-card p-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
-                <AlertCircle className="h-5 w-5 text-red-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Alta Prioridad</p>
-                <p className="text-2xl font-bold text-foreground">{stats.altaPrioridad}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Main Content Card */}
         <div className="rounded-xl border bg-card shadow-sm">
           <div className="border-b px-6 py-5">
@@ -303,6 +242,8 @@ export default function SoporteDashboard() {
                 }
                 estado={estado}
                 onEstadoChange={(value) => handleFilterChange(setEstado, value)}
+                filtersOpen={filtersOpen}
+                onToggleFilters={() => setFiltersOpen((prev) => !prev)}
               />
             </div>
 

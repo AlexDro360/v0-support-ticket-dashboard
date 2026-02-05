@@ -56,7 +56,7 @@ export function TicketsTable({ tickets }: TicketsTableProps) {
             <TableHead className="font-semibold text-foreground">Fecha</TableHead>
             <TableHead className="font-semibold text-foreground">Nombre Afectado</TableHead>
             <TableHead className="font-semibold text-foreground">Departamento</TableHead>
-            <TableHead className="font-semibold text-foreground">Equipo (No. Inventario)</TableHead>
+
             <TableHead className="font-semibold text-foreground">Prioridad</TableHead>
             <TableHead className="font-semibold text-foreground">Estado</TableHead>
             <TableHead className="font-semibold text-foreground text-right">Acciones</TableHead>
@@ -65,7 +65,7 @@ export function TicketsTable({ tickets }: TicketsTableProps) {
         <TableBody>
           {tickets.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
+              <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                 No se encontraron solicitudes.
               </TableCell>
             </TableRow>
@@ -79,9 +79,7 @@ export function TicketsTable({ tickets }: TicketsTableProps) {
                 <TableCell className="text-muted-foreground">{ticket.fecha}</TableCell>
                 <TableCell>{ticket.nombreAfectado}</TableCell>
                 <TableCell className="text-muted-foreground">{ticket.departamento}</TableCell>
-                <TableCell className="font-mono text-sm text-muted-foreground">
-                  {ticket.equipo}
-                </TableCell>
+
                 <TableCell>
                   <Badge variant="secondary" className={prioridadStyles[ticket.prioridad]}>
                     {ticket.prioridad}
