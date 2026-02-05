@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import ImageIcon from "lucide-react"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -16,6 +15,7 @@ import {
   Monitor,
   ArrowLeft,
   Loader2,
+  ImageIcon,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -263,7 +263,7 @@ export default function NuevaSolicitudPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="fotografia" className="flex items-center gap-2">
-                  <ImageIcon className="h-4 w-4" />
+                  <Image className="h-4 w-4" />
                   Fotografía o Evidencia
                 </Label>
                 <FileUpload
