@@ -6,7 +6,9 @@ import { useState, useMemo } from "react"
 import { TicketsTable, type Ticket } from "@/components/tickets-table"
 import { TicketsToolbar } from "@/components/tickets-toolbar"
 import { TicketsPagination } from "@/components/tickets-pagination"
-import { Headset, TicketCheck, Clock, AlertCircle } from "lucide-react"
+import { CreateUserModal } from "@/components/create-user-modal"
+import { Headset, TicketCheck, Clock, AlertCircle, UserPlus } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 // Mock data for the support tickets
 const mockTickets: Ticket[] = [
@@ -202,18 +204,28 @@ export default function SoporteDashboard() {
       {/* Header */}
       <header className="border-b bg-card">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <Headset className="h-5 w-5 text-primary-foreground" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                <Headset className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                  Sistema de Soporte Técnico
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Centro de Cómputo - Gestión de Solicitudes
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                Sistema de Soporte Técnico
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Centro de Cómputo - Gestión de Solicitudes
-              </p>
-            </div>
+            <CreateUserModal
+              trigger={
+                <Button>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Nuevo Usuario
+                </Button>
+              }
+            />
           </div>
         </div>
       </header>
