@@ -243,7 +243,7 @@ export function SupportTicketForm() {
       </div>
 
       {/* Sección B: Detalle del Problema */}
-      <div>
+      <div className="pt-8 sm:pt-12">
         <div className="mb-4 flex items-start gap-3">
           <div className="rounded-full bg-muted p-2">
             <AlertCircle className="h-5 w-5 text-muted-foreground" />
@@ -256,7 +256,7 @@ export function SupportTicketForm() {
           </div>
         </div>
         <div className="space-y-4 border-t pt-6">
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="space-y-6">
             {/* Tipo de Problema */}
             <div className="space-y-2">
               <Label htmlFor="tipoProblema" className="flex items-center gap-2">
@@ -351,8 +351,6 @@ export function SupportTicketForm() {
           </div>
         </div>
       </div>
-
-      {/* Botones de Acción */}
       <div className="flex gap-3 md:justify-end">
         <Link href="/">
           <Button variant="outline">
