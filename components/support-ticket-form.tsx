@@ -237,6 +237,9 @@ export function SupportTicketForm() {
         </CardContent>
       </Card>
 
+      {/* Espacio entre secciones */}
+      <div className="h-8" />
+
       {/* Sección B: Detalle del Problema */}
       <Card>
         <CardHeader>
@@ -246,102 +249,137 @@ export function SupportTicketForm() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-6">
-            {/* Tipo de Problema */}
-            <div className="space-y-2">
-              <Label htmlFor="tipoProblema" className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                Tipo de Problema
-              </Label>
-              <Select value={formData.tipoProblema} onValueChange={(value) => handleSelectChange('tipoProblema', value)}>
-                <SelectTrigger id="tipoProblema">
-                  <SelectValue placeholder="Selecciona el tipo" />
-                </SelectTrigger>
-                <SelectContent>
-                  {TIPOS_PROBLEMA.map(tipo => (
-                    <SelectItem key={tipo} value={tipo}>
-                      {tipo}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          {/* Tipo de Problema */}
+          <div className="space-y-2">
+            <Label htmlFor="tipoProblema" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Tipo de Problema
+            </Label>
+            <Select value={formData.tipoProblema} onValueChange={(value) => handleSelectChange('tipoProblema', value)}>
+              <SelectTrigger id="tipoProblema">
+                <SelectValue placeholder="Selecciona el tipo" />
+              </SelectTrigger>
+              <SelectContent>
+                {TIPOS_PROBLEMA.map(tipo => (
+                  <SelectItem key={tipo} value={tipo}>
+                    {tipo}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-            {/* Descripción */}
-            <div className="space-y-2">
-              <Label htmlFor="descripcion" className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                Descripción del Problema
-              </Label>
-              <Textarea
-                id="descripcion"
-                name="descripcion"
-                placeholder="Describe en detalle el problema que estás experimentando..."
-                value={formData.descripcion}
-                onChange={handleInputChange}
-                required
-                rows={5}
-                className="resize-none"
+          {/* Descripción */}
+          <div className="space-y-2">
+            <Label htmlFor="descripcion" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Descripción del Problema
+            </Label>
+            <Textarea
+              id="descripcion"
+              name="descripcion"
+              placeholder="Describe en detalle el problema que estás experimentando..."
+              value={formData.descripcion}
+              onChange={handleInputChange}
+              required
+              rows={5}
+              className="resize-none"
+            />
+          </div>
+
+          {/* Upload Fotografía */}
+          <div className="space-y-2">
+            <Label className="flex items-center gap-2">
+              <Upload className="h-4 w-4" />
+              Fotografía o Evidencia
+            </Label>
+            <Select value={formData.tipoProblema} onValueChange={(value) => handleSelectChange('tipoProblema', value)}>
+              <SelectTrigger id="tipoProblema">
+                <SelectValue placeholder="Selecciona el tipo" />
+              </SelectTrigger>
+              <SelectContent>
+                {TIPOS_PROBLEMA.map(tipo => (
+                  <SelectItem key={tipo} value={tipo}>
+                    {tipo}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Descripción */}
+          <div className="space-y-2">
+            <Label htmlFor="descripcion" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Descripción del Problema
+            </Label>
+            <Textarea
+              id="descripcion"
+              name="descripcion"
+              placeholder="Describe en detalle el problema que estás experimentando..."
+              value={formData.descripcion}
+              onChange={handleInputChange}
+              required
+              rows={5}
+              className="resize-none"
+            />
+          </div>
+
+          {/* Upload Fotografía */}
+          <div className="space-y-2">
+            <Label className="flex items-center gap-2">
+              <Upload className="h-4 w-4" />
+              Fotografía o Evidencia
+            </Label>
+            <div
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              className="rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50 p-8 text-center transition-colors hover:border-muted-foreground/50"
+            >
+              <input
+                type="file"
+                id="fotografia"
+                multiple
+                accept="image/*"
+                onChange={handleFileUpload}
+                className="hidden"
               />
+              <label htmlFor="fotografia" className="cursor-pointer">
+                <div className="flex flex-col items-center gap-2">
+                  <Upload className="h-8 w-8 text-muted-foreground" />
+                  <p className="text-sm font-medium text-foreground">
+                    Arrastra archivos aquí o haz clic para seleccionar
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    PNG, JPG, GIF up to 10MB
+                  </p>
+                </div>
+              </label>
             </div>
 
-            {/* Upload Fotografía */}
-            <div className="space-y-2">
-              <Label className="flex items-center gap-2">
-                <Upload className="h-4 w-4" />
-                Fotografía o Evidencia
-              </Label>
-              <div
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                className="rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50 p-8 text-center transition-colors hover:border-muted-foreground/50"
-              >
-                <input
-                  type="file"
-                  id="fotografia"
-                  multiple
-                  accept="image/*"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-                <label htmlFor="fotografia" className="cursor-pointer">
-                  <div className="flex flex-col items-center gap-2">
-                    <Upload className="h-8 w-8 text-muted-foreground" />
-                    <p className="text-sm font-medium text-foreground">
-                      Arrastra archivos aquí o haz clic para seleccionar
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      PNG, JPG, GIF up to 10MB
-                    </p>
-                  </div>
-                </label>
-              </div>
-
-              {/* Archivos subidos */}
-              {uploadedFiles.length > 0 && (
-                <div className="mt-4 space-y-2">
-                  <p className="text-sm font-medium text-foreground">Archivos seleccionados:</p>
-                  <div className="space-y-2">
-                    {uploadedFiles.map((file, index) => (
-                      <div key={index} className="flex items-center justify-between rounded-lg border bg-card p-3">
-                        <span className="text-sm text-foreground">{file.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => removeFile(index)}
-                          className="text-muted-foreground hover:text-foreground"
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
+            {/* Archivos subidos */}
+            {uploadedFiles.length > 0 && (
+              <div className="mt-4 space-y-2">
+                <p className="text-sm font-medium text-foreground">Archivos seleccionados:</p>
+                <div className="space-y-2">
+                  {uploadedFiles.map((file, index) => (
+                    <div key={index} className="flex items-center justify-between rounded-lg border bg-card p-3">
+                      <span className="text-sm text-foreground">{file.name}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(index)}
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
                 </div>
+              </div>
               )}
             </div>
-          </div>
         </CardContent>
       </Card>
-
 
       {/* Botones de Acción */}
       <div className="flex gap-3 md:justify-end">
