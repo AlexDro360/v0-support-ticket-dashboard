@@ -1,9 +1,10 @@
 "use client"
 
 import React from "react"
+import { TicketsTable } from "@/components/tickets-table" // Import TicketsTable component
 
 import { useState, useMemo } from "react"
-import { TicketsTable, type Ticket } from "@/components/tickets-table"
+import { TicketsResponsiveView, type Ticket } from "@/components/tickets-responsive-view"
 import { TicketsToolbar } from "@/components/tickets-toolbar"
 import { TicketsPagination } from "@/components/tickets-pagination"
 
@@ -212,10 +213,8 @@ export default function SoporteDashboard() {
               onEstadoChange={(value) => handleFilterChange(setEstado, value)}
             />
 
-            {/* Table */}
-            <div className="overflow-x-auto -mx-4 sm:-mx-6 sm:px-6 md:overflow-auto md:mx-0 md:px-0">
-              <TicketsTable tickets={paginatedTickets} />
-            </div>
+            {/* Responsive View - Desktop Table / Mobile Cards */}
+            <TicketsResponsiveView tickets={paginatedTickets} />
 
             {/* Pagination */}
             {filteredTickets.length > 0 && (
