@@ -5,7 +5,7 @@ import Link from "next/link"
 import React from "react"
 
 import { useState } from 'react'
-import { Loader2, User, Mail, Briefcase, Clock, AlertCircle, FileText, Calendar, Monitor, Upload, X } from 'lucide-react'
+import { Loader2, User, Mail, Briefcase, Clock, FileText, Upload, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -13,7 +13,6 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-
 const AREAS = [
   'Dirección',
   'Administración',
@@ -80,13 +79,7 @@ export function SupportTicketForm() {
     areaSolicitante: '',
     horarioDisponible: '',
     tipoProblema: '',
-    prioridad: 'Media',
     descripcion: '',
-    periodo: '',
-    equipo: '',
-    jefeDpto: '',
-    coordinador: '',
-    fecha: new Date().toISOString().split('T')[0]
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -136,28 +129,13 @@ export function SupportTicketForm() {
     alert('Solicitud enviada correctamente')
   }
 
-  const getPrioridadColor = (prioridad: string) => {
-    switch (prioridad) {
-      case 'Alta':
-        return 'bg-red-100 text-red-800 border border-red-300'
-      case 'Media':
-        return 'bg-amber-100 text-amber-800 border border-amber-300'
-      case 'Baja':
-        return 'bg-blue-100 text-blue-800 border border-blue-300'
-      default:
-        return 'bg-gray-100 text-gray-800'
-    }
-  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Sección A: Información del Solicitante */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
-            Información del Solicitante
-          </CardTitle>
+          <CardTitle>Información del Solicitante</CardTitle>
           <CardDescription>
             Proporciona tus datos de contacto para la gestión de la solicitud
           </CardDescription>
@@ -166,75 +144,77 @@ export function SupportTicketForm() {
           <div className="grid gap-6 md:grid-cols-2">
             {/* Nombre Afectado */}
             <div className="space-y-2">
-              <Label htmlFor="nombreAfectado" className="flex items-center gap-2">
-                <User className="h-4 w-4" />
-                Nombre Afectado
-              </Label>
-              <Input
-                id="nombreAfectado"
-                name="nombreAfectado"
-                placeholder="Tu nombre completo"
-                value={formData.nombreAfectado}
-                onChange={handleInputChange}
-                required
-              />
+              <Label htmlFor="nombreAfectado">Nombre Afectado</Label>
+              <div className="flex items-center gap-2 rounded-lg border border-input bg-background px-3 py-2">
+                <User className="h-4 w-4 text-muted-foreground shrink-0" />
+                <Input
+                  id="nombreAfectado"
+                  name="nombreAfectado"
+                  placeholder="Tu nombre completo"
+                  value={formData.nombreAfectado}
+                  onChange={handleInputChange}
+                  required
+                  className="border-0 p-0 focus-visible:ring-0"
+                />
+              </div>
             </div>
 
             {/* Correo Contacto */}
             <div className="space-y-2">
-              <Label htmlFor="correoContacto" className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                Correo de Contacto
-              </Label>
-              <Input
-                id="correoContacto"
-                name="correoContacto"
-                type="email"
-                placeholder="tu.correo@ito.edu.mx"
-                value={formData.correoContacto}
-                onChange={handleInputChange}
-                required
-              />
+              <Label htmlFor="correoContacto">Correo de Contacto</Label>
+              <div className="flex items-center gap-2 rounded-lg border border-input bg-background px-3 py-2">
+                <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
+                <Input
+                  id="correoContacto"
+                  name="correoContacto"
+                  type="email"
+                  placeholder="tu.correo@ito.edu.mx"
+                  value={formData.correoContacto}
+                  onChange={handleInputChange}
+                  required
+                  className="border-0 p-0 focus-visible:ring-0"
+                />
+              </div>
             </div>
 
             {/* Área Solicitante */}
             <div className="space-y-2">
-              <Label htmlFor="areaSolicitante" className="flex items-center gap-2">
-                <Briefcase className="h-4 w-4" />
-                Área Solicitante
-              </Label>
-              <Select value={formData.areaSolicitante} onValueChange={(value) => handleSelectChange('areaSolicitante', value)}>
-                <SelectTrigger id="areaSolicitante">
-                  <SelectValue placeholder="Selecciona tu área" />
-                </SelectTrigger>
-                <SelectContent>
-                  {AREAS.map(area => (
-                    <SelectItem key={area} value={area}>
-                      {area}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label htmlFor="areaSolicitante">Área Solicitante</Label>
+              <div className="flex items-center gap-2 rounded-lg border border-input bg-background">
+                <Briefcase className="h-4 w-4 text-muted-foreground shrink-0 ml-3" />
+                <Select value={formData.areaSolicitante} onValueChange={(value) => handleSelectChange('areaSolicitante', value)}>
+                  <SelectTrigger id="areaSolicitante" className="border-0 focus:ring-0">
+                    <SelectValue placeholder="Selecciona tu área" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {AREAS.map(area => (
+                      <SelectItem key={area} value={area}>
+                        {area}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Horario Disponible */}
             <div className="space-y-2">
-              <Label htmlFor="horarioDisponible" className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                Horario Disponible
-              </Label>
-              <Select value={formData.horarioDisponible} onValueChange={(value) => handleSelectChange('horarioDisponible', value)}>
-                <SelectTrigger id="horarioDisponible">
-                  <SelectValue placeholder="Selecciona un horario" />
-                </SelectTrigger>
-                <SelectContent>
-                  {HORARIOS.map(horario => (
-                    <SelectItem key={horario} value={horario}>
-                      {horario}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label htmlFor="horarioDisponible">Horario Disponible</Label>
+              <div className="flex items-center gap-2 rounded-lg border border-input bg-background">
+                <Clock className="h-4 w-4 text-muted-foreground shrink-0 ml-3" />
+                <Select value={formData.horarioDisponible} onValueChange={(value) => handleSelectChange('horarioDisponible', value)}>
+                  <SelectTrigger id="horarioDisponible" className="border-0 focus:ring-0">
+                    <SelectValue placeholder="Selecciona un horario" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {HORARIOS.map(horario => (
+                      <SelectItem key={horario} value={horario}>
+                        {horario}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -243,24 +223,19 @@ export function SupportTicketForm() {
       {/* Sección B: Detalle del Problema */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <AlertCircle className="h-5 w-5" />
-            Detalle del Problema
-          </CardTitle>
+          <CardTitle>Detalle del Problema</CardTitle>
           <CardDescription>
-            Describe el tipo de problema y su prioridad
+            Describe el tipo de problema
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Tipo de Problema */}
-            <div className="space-y-2">
-              <Label htmlFor="tipoProblema" className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                Tipo de Problema
-              </Label>
+          {/* Tipo de Problema */}
+          <div className="space-y-2">
+            <Label htmlFor="tipoProblema">Tipo de Problema</Label>
+            <div className="flex items-center gap-2 rounded-lg border border-input bg-background">
+              <FileText className="h-4 w-4 text-muted-foreground shrink-0 ml-3" />
               <Select value={formData.tipoProblema} onValueChange={(value) => handleSelectChange('tipoProblema', value)}>
-                <SelectTrigger id="tipoProblema">
+                <SelectTrigger id="tipoProblema" className="border-0 focus:ring-0">
                   <SelectValue placeholder="Selecciona el tipo" />
                 </SelectTrigger>
                 <SelectContent>
@@ -272,70 +247,29 @@ export function SupportTicketForm() {
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Prioridad */}
-            <div className="space-y-2">
-              <Label htmlFor="prioridad" className="flex items-center gap-2">
-                <AlertCircle className="h-4 w-4" />
-                Prioridad
-              </Label>
-              <Select value={formData.prioridad} onValueChange={(value) => handleSelectChange('prioridad', value)}>
-                <SelectTrigger id="prioridad">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Alta">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-red-600" />
-                      Alta
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="Media">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-amber-600" />
-                      Media
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="Baja">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-blue-600" />
-                      Baja
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <div className="mt-2">
-                <Badge className={getPrioridadColor(formData.prioridad)}>
-                  Prioridad: {formData.prioridad}
-                </Badge>
-              </div>
-            </div>
           </div>
 
           {/* Descripción */}
           <div className="space-y-2">
-            <Label htmlFor="descripcion" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Descripción del Problema
-            </Label>
-            <Textarea
-              id="descripcion"
-              name="descripcion"
-              placeholder="Describe en detalle el problema que estás experimentando..."
-              value={formData.descripcion}
-              onChange={handleInputChange}
-              required
-              rows={5}
-              className="resize-none"
-            />
+            <Label htmlFor="descripcion">Descripción del Problema</Label>
+            <div className="flex gap-2 rounded-lg border border-input bg-background p-3">
+              <FileText className="h-4 w-4 text-muted-foreground shrink-0 mt-1" />
+              <Textarea
+                id="descripcion"
+                name="descripcion"
+                placeholder="Describe en detalle el problema que estás experimentando..."
+                value={formData.descripcion}
+                onChange={handleInputChange}
+                required
+                rows={5}
+                className="border-0 p-0 resize-none focus-visible:ring-0"
+              />
+            </div>
           </div>
 
           {/* Upload Fotografía */}
           <div className="space-y-2">
-            <Label className="flex items-center gap-2">
-              <Upload className="h-4 w-4" />
-              Fotografía o Evidencia
-            </Label>
+            <Label>Fotografía o Evidencia</Label>
             <div
               onDragOver={handleDragOver}
               onDrop={handleDrop}
@@ -386,118 +320,6 @@ export function SupportTicketForm() {
         </CardContent>
       </Card>
 
-      {/* Sección C: Contexto Institucional y Equipo */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Monitor className="h-5 w-5" />
-            Contexto Institucional y Equipo
-          </CardTitle>
-          <CardDescription>
-            Información del período y equipo afectado
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Período */}
-            <div className="space-y-2">
-              <Label htmlFor="periodo" className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                Período
-              </Label>
-              <Select value={formData.periodo} onValueChange={(value) => handleSelectChange('periodo', value)}>
-                <SelectTrigger id="periodo">
-                  <SelectValue placeholder="Selecciona el período" />
-                </SelectTrigger>
-                <SelectContent>
-                  {PERIODOS.map(periodo => (
-                    <SelectItem key={periodo} value={periodo}>
-                      {periodo}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Equipo */}
-            <div className="space-y-2">
-              <Label htmlFor="equipo" className="flex items-center gap-2">
-                <Monitor className="h-4 w-4" />
-                Equipo Afectado
-              </Label>
-              <Select value={formData.equipo} onValueChange={(value) => handleSelectChange('equipo', value)}>
-                <SelectTrigger id="equipo">
-                  <SelectValue placeholder="Selecciona el equipo" />
-                </SelectTrigger>
-                <SelectContent>
-                  {EQUIPOS.map(equipo => (
-                    <SelectItem key={equipo.id} value={equipo.id}>
-                      {equipo.id} - {equipo.nombre}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Jefe de Departamento */}
-            <div className="space-y-2">
-              <Label htmlFor="jefeDpto" className="flex items-center gap-2">
-                <Briefcase className="h-4 w-4" />
-                Jefe de Departamento
-              </Label>
-              <Select value={formData.jefeDpto} onValueChange={(value) => handleSelectChange('jefeDpto', value)}>
-                <SelectTrigger id="jefeDpto">
-                  <SelectValue placeholder="Selecciona al jefe" />
-                </SelectTrigger>
-                <SelectContent>
-                  {JEFES_DPTO.map(jefe => (
-                    <SelectItem key={jefe} value={jefe}>
-                      {jefe}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Coordinador */}
-            <div className="space-y-2">
-              <Label htmlFor="coordinador" className="flex items-center gap-2">
-                <User className="h-4 w-4" />
-                Coordinador
-              </Label>
-              <Select value={formData.coordinador} onValueChange={(value) => handleSelectChange('coordinador', value)}>
-                <SelectTrigger id="coordinador">
-                  <SelectValue placeholder="Selecciona el coordinador" />
-                </SelectTrigger>
-                <SelectContent>
-                  {COORDINADORES.map(coord => (
-                    <SelectItem key={coord} value={coord}>
-                      {coord}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Fecha */}
-            <div className="space-y-2">
-              <Label htmlFor="fecha" className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                Fecha de Solicitud
-              </Label>
-              <Input
-                id="fecha"
-                type="date"
-                name="fecha"
-                value={formData.fecha}
-                onChange={handleInputChange}
-                disabled
-                className="bg-muted"
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Botones de Acción */}
       <div className="flex gap-3 md:justify-end">
