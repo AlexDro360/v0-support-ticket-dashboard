@@ -48,78 +48,80 @@ const estadoStyles: Record<string, string> = {
 
 export function TicketsTable({ tickets }: TicketsTableProps) {
   return (
-    <div className="rounded-lg border bg-card">
-      <Table>
-        <TableHeader>
-          <TableRow className="bg-muted/50 hover:bg-muted/50">
-            <TableHead className="font-semibold text-foreground">Folio</TableHead>
-            <TableHead className="font-semibold text-foreground">Fecha</TableHead>
-            <TableHead className="font-semibold text-foreground">Nombre Afectado</TableHead>
-            <TableHead className="font-semibold text-foreground">Departamento</TableHead>
+    <div className="rounded-lg border bg-card overflow-hidden">
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/50 hover:bg-muted/50">
+              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Folio</TableHead>
+              <TableHead className="hidden text-xs font-semibold text-foreground sm:table-cell sm:text-sm">Fecha</TableHead>
+              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Nombre Afectado</TableHead>
+              <TableHead className="hidden text-xs font-semibold text-foreground md:table-cell md:text-sm">Departamento</TableHead>
 
-            <TableHead className="font-semibold text-foreground">Prioridad</TableHead>
-            <TableHead className="font-semibold text-foreground">Estado</TableHead>
-            <TableHead className="font-semibold text-foreground text-right">Acciones</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tickets.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
-                No se encontraron solicitudes.
-              </TableCell>
+              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Prioridad</TableHead>
+              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Estado</TableHead>
+              <TableHead className="text-xs font-semibold text-foreground text-right sm:text-sm">Acciones</TableHead>
             </TableRow>
-          ) : (
-            tickets.map((ticket) => (
-              <TableRow
-                key={ticket.id}
-                className="transition-colors hover:bg-muted/50"
-              >
-                <TableCell className="font-medium text-primary">{ticket.folio}</TableCell>
-                <TableCell className="text-muted-foreground">{ticket.fecha}</TableCell>
-                <TableCell>{ticket.nombreAfectado}</TableCell>
-                <TableCell className="text-muted-foreground">{ticket.departamento}</TableCell>
-
-                <TableCell>
-                  <Badge variant="secondary" className={prioridadStyles[ticket.prioridad]}>
-                    {ticket.prioridad}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <Badge variant="secondary" className={estadoStyles[ticket.estado]}>
-                    {ticket.estado}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <MoreHorizontal className="h-4 w-4" />
-                        <span className="sr-only">Abrir menú</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem className="cursor-pointer">
-                        <Eye className="mr-2 h-4 w-4" />
-                        Ver Detalles
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">
-                        <UserPlus className="mr-2 h-4 w-4" />
-                        Asignar Técnico
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="cursor-pointer text-green-600 focus:text-green-600">
-                        <CheckCircle className="mr-2 h-4 w-4" />
-                        Cerrar Solicitud
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+          </TableHeader>
+          <TableBody>
+            {tickets.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="h-24 text-center text-xs text-muted-foreground sm:text-sm">
+                  No se encontraron solicitudes.
                 </TableCell>
               </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+            ) : (
+              tickets.map((ticket) => (
+                <TableRow
+                  key={ticket.id}
+                  className="transition-colors hover:bg-muted/50"
+                >
+                  <TableCell className="text-xs font-medium text-primary sm:text-sm">{ticket.folio}</TableCell>
+                  <TableCell className="hidden text-xs text-muted-foreground sm:table-cell sm:text-sm">{ticket.fecha}</TableCell>
+                  <TableCell className="text-xs sm:text-sm">{ticket.nombreAfectado}</TableCell>
+                  <TableCell className="hidden text-xs text-muted-foreground md:table-cell md:text-sm">{ticket.departamento}</TableCell>
+
+                  <TableCell>
+                    <Badge variant="secondary" className={`${prioridadStyles[ticket.prioridad]} text-xs sm:text-sm`}>
+                      {ticket.prioridad}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="secondary" className={`${estadoStyles[ticket.estado]} text-xs sm:text-sm`}>
+                      {ticket.estado}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Abrir menú</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem className="cursor-pointer">
+                          <Eye className="mr-2 h-4 w-4" />
+                          Ver Detalles
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer">
+                          <UserPlus className="mr-2 h-4 w-4" />
+                          Asignar Técnico
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="cursor-pointer text-green-600 focus:text-green-600">
+                          <CheckCircle className="mr-2 h-4 w-4" />
+                          Cerrar Solicitud
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   )
 }

@@ -60,9 +60,9 @@ export function TicketsPagination({
   }
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
       {/* Info */}
-      <p className="text-sm text-muted-foreground">
+      <p className="text-xs text-muted-foreground sm:text-sm">
         Mostrando {startItem} a {endItem} de {totalItems} solicitudes
       </p>
 
@@ -70,7 +70,7 @@ export function TicketsPagination({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         {/* Rows per page */}
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Filas por página:</span>
+          <span className="text-xs text-muted-foreground sm:text-sm">Filas por página:</span>
           <Select
             value={rowsPerPage.toString()}
             onValueChange={(value) => onRowsPerPageChange(parseInt(value))}
@@ -88,12 +88,13 @@ export function TicketsPagination({
         </div>
 
         {/* Page navigation */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 overflow-x-auto">
           <Button
             variant="outline"
             size="sm"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
+            className="h-8 w-8 sm:h-9 sm:w-auto sm:px-3"
           >
             <ChevronLeft className="h-4 w-4" />
             <span className="hidden sm:inline ml-1">Anterior</span>
@@ -102,7 +103,7 @@ export function TicketsPagination({
           <div className="flex items-center gap-1 mx-1">
             {getPageNumbers().map((page, index) =>
               page === "..." ? (
-                <span key={`ellipsis-${index}`} className="px-2 text-muted-foreground">
+                <span key={`ellipsis-${index}`} className="px-1 text-xs text-muted-foreground sm:px-2">
                   ...
                 </span>
               ) : (
@@ -110,7 +111,7 @@ export function TicketsPagination({
                   key={page}
                   variant={currentPage === page ? "default" : "outline"}
                   size="sm"
-                  className="w-9"
+                  className="h-8 w-8 text-xs p-0"
                   onClick={() => onPageChange(page as number)}
                 >
                   {page}
@@ -124,6 +125,7 @@ export function TicketsPagination({
             size="sm"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
+            className="h-8 w-8 sm:h-9 sm:w-auto sm:px-3"
           >
             <span className="hidden sm:inline mr-1">Siguiente</span>
             <ChevronRight className="h-4 w-4" />

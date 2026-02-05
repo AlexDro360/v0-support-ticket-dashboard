@@ -186,39 +186,35 @@ export default function SoporteDashboard() {
 
   return (
     <div className="min-h-screen bg-muted/30">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
         {/* Main Content Card */}
-        <div className="rounded-xl border bg-card shadow-sm">
-          <div className="border-b px-6 py-5">
-            <h2 className="text-lg font-semibold text-foreground">
+        <div className="rounded-lg border bg-card shadow-sm md:rounded-xl">
+          <div className="border-b px-4 py-4 sm:px-6 sm:py-5">
+            <h2 className="text-base font-semibold text-foreground sm:text-lg">
               Listado de Solicitudes
             </h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground sm:text-sm">
               Gestiona todas las solicitudes de soporte técnico
             </p>
           </div>
 
-          <div className="p-6">
+          <div className="space-y-4 p-4 sm:space-y-6 sm:p-6">
             {/* Toolbar */}
-            <div className="mb-6">
-              <TicketsToolbar
-                searchQuery={searchQuery}
-                onSearchChange={(value) => handleFilterChange(setSearchQuery, value)}
-                prioridad={prioridad}
-                onPrioridadChange={(value) => handleFilterChange(setPrioridad, value)}
-                departamento={departamento}
-                onDepartamentoChange={(value) =>
-                  handleFilterChange(setDepartamento, value)
-                }
-                estado={estado}
-                onEstadoChange={(value) => handleFilterChange(setEstado, value)}
-                filtersOpen={filtersOpen}
-                onToggleFilters={() => setFiltersOpen((prev) => !prev)}
-              />
-            </div>
+            <TicketsToolbar
+              searchQuery={searchQuery}
+              onSearchChange={(value) => handleFilterChange(setSearchQuery, value)}
+              prioridad={prioridad}
+              onPrioridadChange={(value) => handleFilterChange(setPrioridad, value)}
+              departamento={departamento}
+              onDepartamentoChange={(value) =>
+                handleFilterChange(setDepartamento, value)
+              }
+              estado={estado}
+              onEstadoChange={(value) => handleFilterChange(setEstado, value)}
+            />
 
             {/* Table */}
-            <div className="mb-6">
+            <div className="overflow-x-auto -mx-4 sm:-mx-6 sm:px-6 md:overflow-auto md:mx-0 md:px-0">
               <TicketsTable tickets={paginatedTickets} />
             </div>
 
