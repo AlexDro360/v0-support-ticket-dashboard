@@ -1,11 +1,11 @@
 'use client'
 
+import { Calendar } from "@/components/ui/calendar"
+import { AlertCircle, Monitor } from 'lucide-react'
 import Link from "next/link"
-
 import React from "react"
-
 import { useState } from 'react'
-import { Loader2, User, Mail, Briefcase, Clock, AlertCircle, FileText, Calendar, Monitor, Upload, X } from 'lucide-react'
+import { Loader2, User, Mail, Briefcase, Clock, FileText, Upload, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -80,13 +80,13 @@ export function SupportTicketForm() {
     areaSolicitante: '',
     horarioDisponible: '',
     tipoProblema: '',
-    prioridad: 'Media',
     descripcion: '',
+    prioridad: '',
     periodo: '',
     equipo: '',
     jefeDpto: '',
     coordinador: '',
-    fecha: new Date().toISOString().split('T')[0]
+    fecha: ''
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -154,10 +154,7 @@ export function SupportTicketForm() {
       {/* Sección A: Información del Solicitante */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
-            Información del Solicitante
-          </CardTitle>
+          <CardTitle>Información del Solicitante</CardTitle>
           <CardDescription>
             Proporciona tus datos de contacto para la gestión de la solicitud
           </CardDescription>
@@ -243,16 +240,13 @@ export function SupportTicketForm() {
       {/* Sección B: Detalle del Problema */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <AlertCircle className="h-5 w-5" />
-            Detalle del Problema
-          </CardTitle>
+          <CardTitle>Detalle del Problema</CardTitle>
           <CardDescription>
-            Describe el tipo de problema y su prioridad
+            Describe el tipo de problema
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="space-y-6">
             {/* Tipo de Problema */}
             <div className="space-y-2">
               <Label htmlFor="tipoProblema" className="flex items-center gap-2">
@@ -273,231 +267,81 @@ export function SupportTicketForm() {
               </Select>
             </div>
 
-            {/* Prioridad */}
+            {/* Descripción */}
             <div className="space-y-2">
-              <Label htmlFor="prioridad" className="flex items-center gap-2">
-                <AlertCircle className="h-4 w-4" />
-                Prioridad
+              <Label htmlFor="descripcion" className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Descripción del Problema
               </Label>
-              <Select value={formData.prioridad} onValueChange={(value) => handleSelectChange('prioridad', value)}>
-                <SelectTrigger id="prioridad">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Alta">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-red-600" />
-                      Alta
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="Media">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-amber-600" />
-                      Media
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="Baja">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-blue-600" />
-                      Baja
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <div className="mt-2">
-                <Badge className={getPrioridadColor(formData.prioridad)}>
-                  Prioridad: {formData.prioridad}
-                </Badge>
-              </div>
-            </div>
-          </div>
-
-          {/* Descripción */}
-          <div className="space-y-2">
-            <Label htmlFor="descripcion" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Descripción del Problema
-            </Label>
-            <Textarea
-              id="descripcion"
-              name="descripcion"
-              placeholder="Describe en detalle el problema que estás experimentando..."
-              value={formData.descripcion}
-              onChange={handleInputChange}
-              required
-              rows={5}
-              className="resize-none"
-            />
-          </div>
-
-          {/* Upload Fotografía */}
-          <div className="space-y-2">
-            <Label className="flex items-center gap-2">
-              <Upload className="h-4 w-4" />
-              Fotografía o Evidencia
-            </Label>
-            <div
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              className="rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50 p-8 text-center transition-colors hover:border-muted-foreground/50"
-            >
-              <input
-                type="file"
-                id="fotografia"
-                multiple
-                accept="image/*"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
-              <label htmlFor="fotografia" className="cursor-pointer">
-                <div className="flex flex-col items-center gap-2">
-                  <Upload className="h-8 w-8 text-muted-foreground" />
-                  <p className="text-sm font-medium text-foreground">
-                    Arrastra archivos aquí o haz clic para seleccionar
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    PNG, JPG, GIF up to 10MB
-                  </p>
-                </div>
-              </label>
-            </div>
-
-            {/* Archivos subidos */}
-            {uploadedFiles.length > 0 && (
-              <div className="mt-4 space-y-2">
-                <p className="text-sm font-medium text-foreground">Archivos seleccionados:</p>
-                <div className="space-y-2">
-                  {uploadedFiles.map((file, index) => (
-                    <div key={index} className="flex items-center justify-between rounded-lg border bg-card p-3">
-                      <span className="text-sm text-foreground">{file.name}</span>
-                      <button
-                        type="button"
-                        onClick={() => removeFile(index)}
-                        className="text-muted-foreground hover:text-foreground"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Sección C: Contexto Institucional y Equipo */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Monitor className="h-5 w-5" />
-            Contexto Institucional y Equipo
-          </CardTitle>
-          <CardDescription>
-            Información del período y equipo afectado
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Período */}
-            <div className="space-y-2">
-              <Label htmlFor="periodo" className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                Período
-              </Label>
-              <Select value={formData.periodo} onValueChange={(value) => handleSelectChange('periodo', value)}>
-                <SelectTrigger id="periodo">
-                  <SelectValue placeholder="Selecciona el período" />
-                </SelectTrigger>
-                <SelectContent>
-                  {PERIODOS.map(periodo => (
-                    <SelectItem key={periodo} value={periodo}>
-                      {periodo}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Equipo */}
-            <div className="space-y-2">
-              <Label htmlFor="equipo" className="flex items-center gap-2">
-                <Monitor className="h-4 w-4" />
-                Equipo Afectado
-              </Label>
-              <Select value={formData.equipo} onValueChange={(value) => handleSelectChange('equipo', value)}>
-                <SelectTrigger id="equipo">
-                  <SelectValue placeholder="Selecciona el equipo" />
-                </SelectTrigger>
-                <SelectContent>
-                  {EQUIPOS.map(equipo => (
-                    <SelectItem key={equipo.id} value={equipo.id}>
-                      {equipo.id} - {equipo.nombre}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Jefe de Departamento */}
-            <div className="space-y-2">
-              <Label htmlFor="jefeDpto" className="flex items-center gap-2">
-                <Briefcase className="h-4 w-4" />
-                Jefe de Departamento
-              </Label>
-              <Select value={formData.jefeDpto} onValueChange={(value) => handleSelectChange('jefeDpto', value)}>
-                <SelectTrigger id="jefeDpto">
-                  <SelectValue placeholder="Selecciona al jefe" />
-                </SelectTrigger>
-                <SelectContent>
-                  {JEFES_DPTO.map(jefe => (
-                    <SelectItem key={jefe} value={jefe}>
-                      {jefe}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Coordinador */}
-            <div className="space-y-2">
-              <Label htmlFor="coordinador" className="flex items-center gap-2">
-                <User className="h-4 w-4" />
-                Coordinador
-              </Label>
-              <Select value={formData.coordinador} onValueChange={(value) => handleSelectChange('coordinador', value)}>
-                <SelectTrigger id="coordinador">
-                  <SelectValue placeholder="Selecciona el coordinador" />
-                </SelectTrigger>
-                <SelectContent>
-                  {COORDINADORES.map(coord => (
-                    <SelectItem key={coord} value={coord}>
-                      {coord}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Fecha */}
-            <div className="space-y-2">
-              <Label htmlFor="fecha" className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                Fecha de Solicitud
-              </Label>
-              <Input
-                id="fecha"
-                type="date"
-                name="fecha"
-                value={formData.fecha}
+              <Textarea
+                id="descripcion"
+                name="descripcion"
+                placeholder="Describe en detalle el problema que estás experimentando..."
+                value={formData.descripcion}
                 onChange={handleInputChange}
-                disabled
-                className="bg-muted"
+                required
+                rows={5}
+                className="resize-none"
               />
+            </div>
+
+            {/* Upload Fotografía */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2">
+                <Upload className="h-4 w-4" />
+                Fotografía o Evidencia
+              </Label>
+              <div
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                className="rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50 p-8 text-center transition-colors hover:border-muted-foreground/50"
+              >
+                <input
+                  type="file"
+                  id="fotografia"
+                  multiple
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                <label htmlFor="fotografia" className="cursor-pointer">
+                  <div className="flex flex-col items-center gap-2">
+                    <Upload className="h-8 w-8 text-muted-foreground" />
+                    <p className="text-sm font-medium text-foreground">
+                      Arrastra archivos aquí o haz clic para seleccionar
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      PNG, JPG, GIF up to 10MB
+                    </p>
+                  </div>
+                </label>
+              </div>
+
+              {/* Archivos subidos */}
+              {uploadedFiles.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  <p className="text-sm font-medium text-foreground">Archivos seleccionados:</p>
+                  <div className="space-y-2">
+                    {uploadedFiles.map((file, index) => (
+                      <div key={index} className="flex items-center justify-between rounded-lg border bg-card p-3">
+                        <span className="text-sm text-foreground">{file.name}</span>
+                        <button
+                          type="button"
+                          onClick={() => removeFile(index)}
+                          className="text-muted-foreground hover:text-foreground"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </CardContent>
       </Card>
+
 
       {/* Botones de Acción */}
       <div className="flex gap-3 md:justify-end">
@@ -507,7 +351,7 @@ export function SupportTicketForm() {
           </Button>
         </Link>
         <Button type="submit" disabled={isLoading}>
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
           {isLoading ? 'Enviando...' : 'Enviar Solicitud'}
         </Button>
       </div>
