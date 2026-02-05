@@ -1,12 +1,13 @@
 "use client"
 
 import React from "react"
+import CreateUserModal from "@/components/create-user-modal" // Import CreateUserModal component
 
 import { useState, useMemo } from "react"
 import { TicketsTable, type Ticket } from "@/components/tickets-table"
 import { TicketsToolbar } from "@/components/tickets-toolbar"
 import { TicketsPagination } from "@/components/tickets-pagination"
-import { CreateUserModal } from "@/components/create-user-modal"
+import Link from "next/link"
 import { Headset, TicketCheck, Clock, AlertCircle, UserPlus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -218,14 +219,12 @@ export default function SoporteDashboard() {
                 </p>
               </div>
             </div>
-            <CreateUserModal
-              trigger={
-                <Button>
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  Nuevo Usuario
-                </Button>
-              }
-            />
+            <Link href="/usuarios/nuevo">
+              <Button>
+                <UserPlus className="mr-2 h-4 w-4" />
+                Nuevo Usuario
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
