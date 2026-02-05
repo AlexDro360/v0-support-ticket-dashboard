@@ -1,40 +1,47 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Loader2 } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
 import { SupportTicketForm } from '@/components/support-ticket-form'
 
 export default function NuevaSolicitud() {
   return (
     <div className="min-h-screen bg-muted/30">
-      <div className="mx-auto w-full max-w-4xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
-        {/* Header */}
-        <div className="mb-6 flex items-center gap-4">
+      <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
+        {/* Back Button */}
+        <div className="mb-6 flex items-center gap-3">
           <Link href="/">
             <Button variant="ghost" size="icon" className="shrink-0">
               <ArrowLeft className="h-5 w-5" />
-              <span className="sr-only">Volver al panel</span>
+              <span className="sr-only">Volver al listado</span>
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
               Nueva Solicitud de Soporte Técnico
             </h1>
-            <p className="text-sm text-muted-foreground">
-              Reporte una falla técnica y describe el problema que necesita resolver
+            <p className="text-xs text-muted-foreground sm:text-sm">
+              Completa el formulario para reportar un problema técnico
             </p>
           </div>
         </div>
 
-        {/* Form */}
-        <SupportTicketForm />
+        {/* Main Content Card */}
+        <div className="rounded-lg border bg-card shadow-sm md:rounded-xl">
+          <div className="border-b px-4 py-4 sm:px-6 sm:py-5">
+            <h2 className="text-base font-semibold text-foreground sm:text-lg">
+              Formulario de Solicitud
+            </h2>
+            <p className="text-xs text-muted-foreground sm:text-sm">
+              Por favor completa todos los campos requeridos para procesar tu solicitud
+            </p>
+          </div>
+
+          <div className="space-y-6 p-4 sm:p-6">
+            <SupportTicketForm />
+          </div>
+        </div>
       </div>
     </div>
   )
