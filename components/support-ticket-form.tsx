@@ -153,15 +153,11 @@ export function SupportTicketForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Sección A: Información del Solicitante */}
       <div>
-        <div className="mb-4 flex items-start gap-3">
-          <div className="rounded-full bg-muted p-2">
-          </div>
-          <div>
-            <h3 className="text-base font-semibold text-foreground sm:text-lg">Información del Solicitante</h3>
-            <p className="text-xs text-muted-foreground sm:text-sm">
-              Proporciona tus datos de contacto para la gestión de la solicitud
-            </p>
-          </div>
+        <div className="mb-4">
+          <h3 className="text-base font-semibold text-foreground sm:text-lg">Información del Solicitante</h3>
+          <p className="text-xs text-muted-foreground sm:text-sm">
+            Proporciona tus datos de contacto para la gestión de la solicitud
+          </p>
         </div>
         <div className="space-y-4 border-t pt-6">
           <div className="grid gap-6 md:grid-cols-2">
@@ -235,15 +231,11 @@ export function SupportTicketForm() {
 
       {/* Sección B: Detalle del Problema */}
       <div className="pt-8 sm:pt-12">
-        <div className="mb-4 flex items-start gap-3">
-          <div className="rounded-full bg-muted p-2">
-          </div>
-          <div>
-            <h3 className="text-base font-semibold text-foreground sm:text-lg">Detalle del Problema</h3>
-            <p className="text-xs text-muted-foreground sm:text-sm">
-              Describe el tipo de problema
-            </p>
-          </div>
+        <div className="mb-4">
+          <h3 className="text-base font-semibold text-foreground sm:text-lg">Detalle del Problema</h3>
+          <p className="text-xs text-muted-foreground sm:text-sm">
+            Describe el tipo de problema
+          </p>
         </div>
         <div className="space-y-4 border-t pt-6">
           <div className="space-y-6">
