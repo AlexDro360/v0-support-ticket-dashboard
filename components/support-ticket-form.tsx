@@ -155,7 +155,6 @@ export function SupportTicketForm() {
       <div>
         <div className="mb-4 flex items-start gap-3">
           <div className="rounded-full bg-muted p-2">
-            <User className="h-5 w-5 text-muted-foreground" />
           </div>
           <div>
             <h3 className="text-base font-semibold text-foreground sm:text-lg">Información del Solicitante</h3>
@@ -205,18 +204,14 @@ export function SupportTicketForm() {
                 <Briefcase className="h-4 w-4" />
                 Área Solicitante
               </Label>
-              <Select value={formData.areaSolicitante} onValueChange={(value) => handleSelectChange('areaSolicitante', value)}>
-                <SelectTrigger id="areaSolicitante">
-                  <SelectValue placeholder="Selecciona tu área" />
-                </SelectTrigger>
-                <SelectContent>
-                  {AREAS.map(area => (
-                    <SelectItem key={area} value={area}>
-                      {area}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                id="areaSolicitante"
+                name="areaSolicitante"
+                placeholder="Ingresa tu área"
+                value={formData.areaSolicitante}
+                onChange={handleInputChange}
+                required
+              />
             </div>
 
             {/* Horario Disponible */}
@@ -225,18 +220,14 @@ export function SupportTicketForm() {
                 <Clock className="h-4 w-4" />
                 Horario Disponible
               </Label>
-              <Select value={formData.horarioDisponible} onValueChange={(value) => handleSelectChange('horarioDisponible', value)}>
-                <SelectTrigger id="horarioDisponible">
-                  <SelectValue placeholder="Selecciona un horario" />
-                </SelectTrigger>
-                <SelectContent>
-                  {HORARIOS.map(horario => (
-                    <SelectItem key={horario} value={horario}>
-                      {horario}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                id="horarioDisponible"
+                name="horarioDisponible"
+                placeholder="Ej: 08:00 - 10:00"
+                value={formData.horarioDisponible}
+                onChange={handleInputChange}
+                required
+              />
             </div>
           </div>
         </div>
@@ -246,7 +237,6 @@ export function SupportTicketForm() {
       <div className="pt-8 sm:pt-12">
         <div className="mb-4 flex items-start gap-3">
           <div className="rounded-full bg-muted p-2">
-            <AlertCircle className="h-5 w-5 text-muted-foreground" />
           </div>
           <div>
             <h3 className="text-base font-semibold text-foreground sm:text-lg">Detalle del Problema</h3>
