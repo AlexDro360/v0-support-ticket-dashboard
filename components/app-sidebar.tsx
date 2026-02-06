@@ -1,8 +1,7 @@
 "use client"
 
-import React from "react"
+import React, { useState, useCallback } from "react"
 
-import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -142,18 +141,29 @@ const navigation: NavSection[] = [
 function CollapsibleNavItem({
   item,
   pathname,
+  openSection,
+  setOpenSection,
+  onClose,
 }: {
   item: NavItem
   pathname: string
+  openSection: string | null
+  setOpenSection: (label: string | null) => void
+  onClose: () => void
 }) {
   const isChildActive = item.children?.some((c) => pathname === c.href)
-  const [open, setOpen] = useState(isChildActive ?? false)
+  const isOpen = openSection === item.label
+
+  const handleToggle = useCallback(() => {
+    // Acordeón exclusivo: cerrar otras secciones
+    setOpenSection(isOpen ? null : item.label)
+  }, [isOpen, item.label, setOpenSection])
 
   return (
     <div>
       <button
         type="button"
-        onClick={() => setOpen(!open)}
+        onClick={handleToggle}
         className={cn(
           "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors",
           "text-[hsl(var(--sidebar-muted-foreground))] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]",
@@ -168,16 +178,19 @@ function CollapsibleNavItem({
         <ChevronDown
           className={cn(
             "h-4 w-4 transition-transform duration-200",
-            open && "rotate-180"
+            isOpen && "rotate-180"
           )}
         />
       </button>
-      {open && (
-        <div className="ml-4 mt-1 space-y-1 border-l border-[hsl(var(--sidebar-border))] pl-3">
+
+      {/* Animación suave de entrada/salida */}
+      {isOpen && (
+        <div className="ml-4 mt-1 space-y-1 border-l border-[hsl(var(--sidebar-border))] pl-3 animate-in fade-in-50 slide-in-from-top-2 duration-200">
           {item.children?.map((child) => (
             <Link
               key={child.href}
               href={child.href}
+              onClick={onClose}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                 pathname === child.href
@@ -197,14 +210,22 @@ function CollapsibleNavItem({
 
 export function AppSidebar() {
   const pathname = usePathname()
-  const { open, close } = useSidebar()
+  const { open, isDesktop, close } = useSidebar()
+  const [openSection, setOpenSection] = useState<string | null>(null)
+
+  // Cerrar sheet en móvil después de hacer clic en enlace
+  const handleLinkClick = useCallback(() => {
+    if (!isDesktop) {
+      close()
+    }
+  }, [isDesktop, close])
 
   return (
     <>
-      {/* Mobile overlay */}
-      {open && (
+      {/* Mobile overlay - solo visible en móvil */}
+      {open && !isDesktop && (
         <div
-          className="fixed inset-0 z-20 bg-background/80 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-20 bg-black/30 backdrop-blur-sm animate-in fade-in duration-200"
           onClick={close}
           aria-hidden="true"
         />
@@ -213,12 +234,12 @@ export function AppSidebar() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-30 flex w-64 flex-col bg-[hsl(var(--sidebar-background))] border-r border-[hsl(var(--sidebar-border))] transition-all duration-300 ease-in-out",
+          "fixed inset-y-0 left-0 z-30 flex w-64 flex-col bg-[hsl(var(--sidebar-background))] border-r border-[hsl(var(--sidebar-border))] transition-transform duration-300 ease-in-out",
           "lg:relative lg:translate-x-0",
-          open ? "translate-x-0" : "-translate-x-full lg:w-64"
+          open ? "translate-x-0" : "-translate-x-full lg:w-64 lg:translate-x-0"
         )}
       >
-        {/* Logo / Brand */}
+        {/* Header con logo y botón cerrar */}
         <div className="flex h-16 items-center justify-between border-b border-[hsl(var(--sidebar-border))] px-5">
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[hsl(var(--sidebar-accent))]">
@@ -233,14 +254,17 @@ export function AppSidebar() {
               </p>
             </div>
           </div>
-          {/* Close button for mobile */}
-          <button
-            onClick={close}
-            className="lg:hidden rounded-md p-1 text-[hsl(var(--sidebar-muted-foreground))] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))] transition-colors"
-            aria-label="Cerrar sidebar"
-          >
-            <X className="h-4 w-4" />
-          </button>
+
+          {/* Botón cerrar - visible en móvil */}
+          {!isDesktop && (
+            <button
+              onClick={close}
+              className="rounded-md p-1 text-[hsl(var(--sidebar-muted-foreground))] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))] transition-colors"
+              aria-label="Cerrar sidebar"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
         </div>
 
         {/* Navigation */}
@@ -258,11 +282,15 @@ export function AppSidebar() {
                         key={item.label}
                         item={item}
                         pathname={pathname}
+                        openSection={openSection}
+                        setOpenSection={setOpenSection}
+                        onClose={handleLinkClick}
                       />
                     ) : (
                       <Link
                         key={item.href}
                         href={item.href}
+                        onClick={handleLinkClick}
                         className={cn(
                           "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                           pathname === item.href
