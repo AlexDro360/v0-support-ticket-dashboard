@@ -110,8 +110,8 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
 
       {/* Main Content */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        {/* Stepper - Full Width at Top */}
-        <div className="mb-6">
+        {/* Stepper - Full Width at Top (Hidden on Mobile) */}
+        <div className="mb-6 hidden md:block">
           <TicketStepper currentState={ticket.estado as any} />
         </div>
 
@@ -157,13 +157,6 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                     <p className="text-xs font-semibold text-muted-foreground uppercase">Correo</p>
                     <p className="text-sm font-medium text-blue-600 mt-1">{ticket.correoContacto}</p>
                   </div>
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Teléfono</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Phone className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-sm font-medium text-foreground">{ticket.telefonoContacto}</p>
-                    </div>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -188,6 +181,27 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                 <div>
                   <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Descripción</p>
                   <p className="text-sm text-foreground leading-relaxed">{ticket.descripcion}</p>
+                </div>
+                <Separator />
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-3">Fotografía o Evidencia</p>
+                  {ticket.fotografias && ticket.fotografias.length > 0 ? (
+                    <div className="grid gap-3 grid-cols-2 md:grid-cols-3">
+                      {ticket.fotografias.map((foto, idx) => (
+                        <div key={idx} className="rounded-lg border overflow-hidden bg-slate-50">
+                          <img 
+                            src={foto || "/placeholder.svg"} 
+                            alt={`Evidencia ${idx + 1}`}
+                            className="w-full h-32 object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
+                      <p className="text-sm text-muted-foreground">No hay fotografías adjuntas</p>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
