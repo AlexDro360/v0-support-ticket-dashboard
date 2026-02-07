@@ -1,7 +1,6 @@
 'use client'
 
-import { Calendar } from "@/components/ui/calendar"
-import { AlertCircle, Monitor } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import Link from "next/link"
 import React from "react"
 import { useState } from 'react'
@@ -12,18 +11,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
-
-const AREAS = [
-  'Dirección',
-  'Administración',
-  'Docencia',
-  'Investigación',
-  'Coordinación Académica',
-  'Coordinación de Posgrado',
-  'Extensión',
-  'Otro'
-]
 
 const TIPOS_PROBLEMA = [
   'Software',
@@ -35,67 +22,79 @@ const TIPOS_PROBLEMA = [
   'Otro'
 ]
 
-const HORARIOS = [
-  '08:00 - 10:00',
-  '10:00 - 12:00',
-  '12:00 - 14:00',
-  '14:00 - 16:00',
-  '16:00 - 18:00'
-]
+interface FormData {
+  nombreAfectado: string
+  correoContacto: string
+  areaSolicitante: string
+  horarioDisponible: string
+  tipoProblema: string
+  descripcion: string
+}
 
-const PERIODOS = [
-  'Enero - Junio 2026',
-  'Julio - Diciembre 2025',
-  'Enero - Junio 2025'
-]
-
-const JEFES_DPTO = [
-  'Ing. Carlos Mendoza',
-  'Ing. María García',
-  'Ing. Jorge López',
-  'Ing. Patricia Rodríguez'
-]
-
-const COORDINADORES = [
-  'Lic. Ana Martínez',
-  'Lic. Roberto Sánchez',
-  'Lic. Sofía Jiménez',
-  'Lic. Fernando Díaz'
-]
-
-const EQUIPOS = [
-  { id: 'INV-ITO-001', nombre: 'Computadora Dell - Oficina 101' },
-  { id: 'INV-ITO-002', nombre: 'Computadora HP - Oficina 102' },
-  { id: 'INV-ITO-003', nombre: 'Laptop Lenovo - Sala de Maestros' },
-  { id: 'INV-ITO-004', nombre: 'Impresora Canon - Rectoría' },
-  { id: 'INV-ITO-005', nombre: 'Scanner Xerox - Biblioteca' }
-]
+interface FormErrors {
+  nombreAfectado?: string
+  correoContacto?: string
+  areaSolicitante?: string
+  horarioDisponible?: string
+  tipoProblema?: string
+  descripcion?: string
+}
 
 export function SupportTicketForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
-  const [formData, setFormData] = useState({
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [formData, setFormData] = useState<FormData>({
     nombreAfectado: '',
     correoContacto: '',
     areaSolicitante: '',
     horarioDisponible: '',
     tipoProblema: '',
     descripcion: '',
-    prioridad: '',
-    periodo: '',
-    equipo: '',
-    jefeDpto: '',
-    coordinador: '',
-    fecha: ''
   })
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {}
+    
+    if (!formData.nombreAfectado.trim()) {
+      newErrors.nombreAfectado = 'El nombre es requerido'
+    }
+    if (!formData.correoContacto.trim()) {
+      newErrors.correoContacto = 'El correo es requerido'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.correoContacto)) {
+      newErrors.correoContacto = 'Correo inválido'
+    }
+    if (!formData.areaSolicitante.trim()) {
+      newErrors.areaSolicitante = 'El área es requerida'
+    }
+    if (!formData.horarioDisponible.trim()) {
+      newErrors.horarioDisponible = 'El horario es requerido'
+    }
+    if (!formData.tipoProblema.trim()) {
+      newErrors.tipoProblema = 'Selecciona un tipo de problema'
+    }
+    if (!formData.descripcion.trim()) {
+      newErrors.descripcion = 'La descripción es requerida'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    // Limpiar error cuando el usuario empieza a escribir
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }))
+    }
   }
 
   const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }))
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }))
+    }
   }
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,47 +124,58 @@ export function SupportTicketForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!validateForm()) {
+      return
+    }
+
     setIsLoading(true)
     
-    // Simular envío del formulario
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    console.log('Datos del formulario:', { ...formData, archivos: uploadedFiles })
-    
-    setIsLoading(false)
-    alert('Solicitud enviada correctamente')
+    try {
+      // Simular envío del formulario
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      console.log('[v0] Formulario enviado:', { ...formData, archivos: uploadedFiles })
+      
+      // Reset form
+      setFormData({
+        nombreAfectado: '',
+        correoContacto: '',
+        areaSolicitante: '',
+        horarioDisponible: '',
+        tipoProblema: '',
+        descripcion: '',
+      })
+      setUploadedFiles([])
+      
+      alert('Solicitud enviada correctamente')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const getPrioridadColor = (prioridad: string) => {
-    switch (prioridad) {
-      case 'Alta':
-        return 'bg-red-100 text-red-800 border border-red-300'
-      case 'Media':
-        return 'bg-amber-100 text-amber-800 border border-amber-300'
-      case 'Baja':
-        return 'bg-blue-100 text-blue-800 border border-blue-300'
-      default:
-        return 'bg-gray-100 text-gray-800'
-    }
+  const inputClassName = (fieldName: keyof FormErrors) => {
+    return errors[fieldName] ? 'border-red-500 focus:ring-red-500' : ''
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Card 1: Información del Solicitante */}
-      <Card>
+      <Card className="border-0 shadow-sm">
         <CardHeader>
-          <CardTitle>Información del Solicitante</CardTitle>
+          <CardTitle className="text-lg">Información del Solicitante</CardTitle>
           <CardDescription>
             Proporciona tus datos de contacto para la gestión de la solicitud
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
             {/* Nombre Afectado */}
             <div className="space-y-2">
-              <Label htmlFor="nombreAfectado" className="flex items-center gap-2">
-                <User className="h-4 w-4" />
+              <Label htmlFor="nombreAfectado" className="flex items-center gap-2 text-sm font-medium">
+                <User className="h-4 w-4 text-muted-foreground" />
                 Nombre Afectado
+                {errors.nombreAfectado && <span className="text-red-500">*</span>}
               </Label>
               <Input
                 id="nombreAfectado"
@@ -173,15 +183,22 @@ export function SupportTicketForm() {
                 placeholder="Tu nombre completo"
                 value={formData.nombreAfectado}
                 onChange={handleInputChange}
-                required
+                className={`${inputClassName('nombreAfectado')} transition-colors`}
               />
+              {errors.nombreAfectado && (
+                <p className="text-xs text-red-500 flex items-center gap-1">
+                  <AlertCircle className="h-3 w-3" />
+                  {errors.nombreAfectado}
+                </p>
+              )}
             </div>
 
             {/* Correo Contacto */}
             <div className="space-y-2">
-              <Label htmlFor="correoContacto" className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
+              <Label htmlFor="correoContacto" className="flex items-center gap-2 text-sm font-medium">
+                <Mail className="h-4 w-4 text-muted-foreground" />
                 Correo de Contacto
+                {errors.correoContacto && <span className="text-red-500">*</span>}
               </Label>
               <Input
                 id="correoContacto"
@@ -190,31 +207,45 @@ export function SupportTicketForm() {
                 placeholder="tu.correo@ito.edu.mx"
                 value={formData.correoContacto}
                 onChange={handleInputChange}
-                required
+                className={`${inputClassName('correoContacto')} transition-colors`}
               />
+              {errors.correoContacto && (
+                <p className="text-xs text-red-500 flex items-center gap-1">
+                  <AlertCircle className="h-3 w-3" />
+                  {errors.correoContacto}
+                </p>
+              )}
             </div>
 
             {/* Área Solicitante */}
             <div className="space-y-2">
-              <Label htmlFor="areaSolicitante" className="flex items-center gap-2">
-                <Briefcase className="h-4 w-4" />
+              <Label htmlFor="areaSolicitante" className="flex items-center gap-2 text-sm font-medium">
+                <Briefcase className="h-4 w-4 text-muted-foreground" />
                 Área Solicitante
+                {errors.areaSolicitante && <span className="text-red-500">*</span>}
               </Label>
               <Input
                 id="areaSolicitante"
                 name="areaSolicitante"
-                placeholder="Ingresa tu área"
+                placeholder="Ej: Dirección, Docencia"
                 value={formData.areaSolicitante}
                 onChange={handleInputChange}
-                required
+                className={`${inputClassName('areaSolicitante')} transition-colors`}
               />
+              {errors.areaSolicitante && (
+                <p className="text-xs text-red-500 flex items-center gap-1">
+                  <AlertCircle className="h-3 w-3" />
+                  {errors.areaSolicitante}
+                </p>
+              )}
             </div>
 
             {/* Horario Disponible */}
             <div className="space-y-2">
-              <Label htmlFor="horarioDisponible" className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
+              <Label htmlFor="horarioDisponible" className="flex items-center gap-2 text-sm font-medium">
+                <Clock className="h-4 w-4 text-muted-foreground" />
                 Horario Disponible
+                {errors.horarioDisponible && <span className="text-red-500">*</span>}
               </Label>
               <Input
                 id="horarioDisponible"
@@ -222,31 +253,38 @@ export function SupportTicketForm() {
                 placeholder="Ej: 08:00 - 10:00"
                 value={formData.horarioDisponible}
                 onChange={handleInputChange}
-                required
+                className={`${inputClassName('horarioDisponible')} transition-colors`}
               />
+              {errors.horarioDisponible && (
+                <p className="text-xs text-red-500 flex items-center gap-1">
+                  <AlertCircle className="h-3 w-3" />
+                  {errors.horarioDisponible}
+                </p>
+              )}
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Card 2: Detalle del Problema */}
-      <Card>
+      <Card className="border-0 shadow-sm">
         <CardHeader>
-          <CardTitle>Detalle del Problema</CardTitle>
+          <CardTitle className="text-lg">Detalle del Problema</CardTitle>
           <CardDescription>
-            Describe el tipo de problema y proporciona evidencia
+            Describe el tipo de problema y proporciona evidencia visual
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Tipo de Problema */}
           <div className="space-y-2">
-            <Label htmlFor="tipoProblema" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
+            <Label htmlFor="tipoProblema" className="flex items-center gap-2 text-sm font-medium">
+              <FileText className="h-4 w-4 text-muted-foreground" />
               Tipo de Problema
+              {errors.tipoProblema && <span className="text-red-500">*</span>}
             </Label>
             <Select value={formData.tipoProblema} onValueChange={(value) => handleSelectChange('tipoProblema', value)}>
-              <SelectTrigger id="tipoProblema">
-                <SelectValue placeholder="Selecciona el tipo" />
+              <SelectTrigger id="tipoProblema" className={`${inputClassName('tipoProblema')} transition-colors`}>
+                <SelectValue placeholder="Selecciona el tipo de problema" />
               </SelectTrigger>
               <SelectContent>
                 {TIPOS_PROBLEMA.map(tipo => (
@@ -256,36 +294,48 @@ export function SupportTicketForm() {
                 ))}
               </SelectContent>
             </Select>
+            {errors.tipoProblema && (
+              <p className="text-xs text-red-500 flex items-center gap-1">
+                <AlertCircle className="h-3 w-3" />
+                {errors.tipoProblema}
+              </p>
+            )}
           </div>
 
           {/* Descripción */}
           <div className="space-y-2">
-            <Label htmlFor="descripcion" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
+            <Label htmlFor="descripcion" className="flex items-center gap-2 text-sm font-medium">
+              <FileText className="h-4 w-4 text-muted-foreground" />
               Descripción del Problema
+              {errors.descripcion && <span className="text-red-500">*</span>}
             </Label>
             <Textarea
               id="descripcion"
               name="descripcion"
-              placeholder="Describe en detalle el problema que estás experimentando..."
+              placeholder="Describe en detalle qué está sucediendo, cuándo comenzó el problema, y qué has intentado..."
               value={formData.descripcion}
               onChange={handleInputChange}
-              required
               rows={5}
-              className="resize-none"
+              className={`${inputClassName('descripcion')} resize-none transition-colors`}
             />
+            {errors.descripcion && (
+              <p className="text-xs text-red-500 flex items-center gap-1">
+                <AlertCircle className="h-3 w-3" />
+                {errors.descripcion}
+              </p>
+            )}
           </div>
 
           {/* Upload Fotografía */}
           <div className="space-y-2">
-            <Label className="flex items-center gap-2">
-              <Upload className="h-4 w-4" />
+            <Label className="flex items-center gap-2 text-sm font-medium">
+              <Upload className="h-4 w-4 text-muted-foreground" />
               Fotografía o Evidencia
             </Label>
             <div
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              className="rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50 p-8 text-center transition-colors hover:border-muted-foreground/50"
+              className="rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/30 p-8 text-center transition-all hover:border-muted-foreground/50 hover:bg-muted/50 cursor-pointer"
             >
               <input
                 type="file"
@@ -295,14 +345,16 @@ export function SupportTicketForm() {
                 onChange={handleFileUpload}
                 className="hidden"
               />
-              <label htmlFor="fotografia" className="cursor-pointer">
-                <div className="flex flex-col items-center gap-2">
-                  <Upload className="h-8 w-8 text-muted-foreground" />
+              <label htmlFor="fotografia" className="cursor-pointer block">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="rounded-full bg-muted p-3">
+                    <Upload className="h-5 w-5 text-muted-foreground" />
+                  </div>
                   <p className="text-sm font-medium text-foreground">
                     Arrastra archivos aquí o haz clic para seleccionar
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    PNG, JPG, GIF up to 10MB
+                    PNG, JPG, GIF hasta 10MB
                   </p>
                 </div>
               </label>
@@ -311,15 +363,21 @@ export function SupportTicketForm() {
             {/* Archivos subidos */}
             {uploadedFiles.length > 0 && (
               <div className="mt-4 space-y-2">
-                <p className="text-sm font-medium text-foreground">Archivos seleccionados:</p>
+                <p className="text-sm font-medium text-foreground">
+                  {uploadedFiles.length} archivo{uploadedFiles.length > 1 ? 's' : ''} seleccionado{uploadedFiles.length > 1 ? 's' : ''}:
+                </p>
                 <div className="space-y-2">
                   {uploadedFiles.map((file, index) => (
-                    <div key={index} className="flex items-center justify-between rounded-lg border bg-card p-3">
-                      <span className="text-sm text-foreground">{file.name}</span>
+                    <div key={index} className="flex items-center justify-between rounded-lg border bg-card p-3 hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm text-foreground truncate">{file.name}</span>
+                      </div>
                       <button
                         type="button"
                         onClick={() => removeFile(index)}
-                        className="text-muted-foreground hover:text-foreground"
+                        className="text-muted-foreground hover:text-red-500 transition-colors"
+                        aria-label="Eliminar archivo"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -333,15 +391,25 @@ export function SupportTicketForm() {
       </Card>
 
       {/* Action Buttons */}
-      <div className="flex gap-3 md:justify-end">
+      <div className="flex flex-col-reverse gap-3 md:flex-row md:justify-end pt-4">
         <Link href="/">
-          <Button variant="outline">
+          <Button variant="outline" className="w-full md:w-auto bg-transparent">
             Cancelar
           </Button>
         </Link>
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-          {isLoading ? 'Enviando...' : 'Enviar Solicitud'}
+        <Button 
+          type="submit" 
+          disabled={isLoading}
+          className="w-full md:w-auto"
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Enviando...
+            </>
+          ) : (
+            'Enviar Solicitud'
+          )}
         </Button>
       </div>
     </form>
