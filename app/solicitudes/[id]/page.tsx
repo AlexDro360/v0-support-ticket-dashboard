@@ -81,26 +81,26 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      {/* Header with Title */}
+      {/* Header with Title - Same pattern as Nueva Solicitud */}
       <div className="bg-white">
         <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
           {/* Back Button and Title Section */}
-          <div className="mb-6 flex items-start gap-3">
+          <div className="mb-6 flex items-center gap-3">
             <Button 
               variant="ghost" 
               size="icon" 
               onClick={handleGoBack}
-              className="shrink-0 mt-1"
+              className="shrink-0"
             >
               <ArrowLeft className="h-5 w-5" />
               <span className="sr-only">Volver al listado</span>
             </Button>
-            <div className="flex-1">
+            <div>
               <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
                 Detalles de la Solicitud
               </h1>
               <p className="text-xs text-muted-foreground sm:text-sm">
-                Visualiza y gestiona los detalles de tu solicitud de soporte técnico
+                Visualiza el estado y detalles de tu solicitud de soporte técnico
               </p>
             </div>
           </div>
