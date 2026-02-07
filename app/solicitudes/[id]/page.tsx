@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ChevronRight, ArrowLeft, AlertCircle } from 'lucide-react'
+import { ChevronRight, ArrowLeft, AlertCircle, FileText, User, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -176,16 +176,20 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                               <p className="text-xs font-semibold text-slate-600">{evento.fecha}</p>
                               
                               <div className="mt-1 space-y-1">
-                                <p className="text-sm font-medium text-foreground">
-                                  {evento.estadoAnterior && `${evento.estadoAnterior} → `}
-                                  <Badge variant="secondary" className={`inline-block ml-1 ${
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  {evento.estadoAnterior && (
+                                    <span className="text-sm font-medium text-foreground">
+                                      {evento.estadoAnterior} →
+                                    </span>
+                                  )}
+                                  <Badge variant="secondary" className={`${
                                     evento.estadoNuevo === 'Pausa' && 'bg-orange-100 text-orange-800'
                                   } ${
                                     evento.estadoNuevo === 'Rechazada' && 'bg-red-100 text-red-800'
                                   }`}>
                                     {evento.estadoNuevo}
                                   </Badge>
-                                </p>
+                                </div>
                                 <p className="text-xs text-muted-foreground">Por: {evento.quien}</p>
                               </div>
 
