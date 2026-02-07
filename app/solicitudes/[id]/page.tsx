@@ -110,15 +110,28 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
 
       {/* Main Content */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        {/* Stepper - Full Width at Top */}
+        <div className="mb-6">
+          <TicketStepper currentState={ticket.estado as any} />
+        </div>
+
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Left Column - Stepper and Progress */}
+          {/* Left Column - Sidebar */}
           <div className="lg:col-span-1">
             <Card className="sticky top-4">
               <CardHeader>
-                <CardTitle className="text-base">Progreso</CardTitle>
+                <CardTitle className="text-base">Información Rápida</CardTitle>
               </CardHeader>
-              <CardContent>
-                <TicketStepper currentState={ticket.estado as any} />
+              <CardContent className="space-y-4">
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase">Técnico Asignado</p>
+                  <p className="text-sm font-medium text-foreground mt-1">{ticket.asignadoA}</p>
+                </div>
+                <Separator />
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase">Tiempo Transcurrido</p>
+                  <p className="text-sm font-medium text-foreground mt-1">{ticket.tiempoTranscurrido}</p>
+                </div>
               </CardContent>
             </Card>
           </div>

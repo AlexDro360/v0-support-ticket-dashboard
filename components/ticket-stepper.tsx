@@ -151,19 +151,6 @@ export function TicketStepper({ currentState, className }: TicketStepperProps) {
           <div className="absolute top-5 left-0 right-0 h-1 bg-gradient-to-r from-slate-200 via-slate-200 to-slate-200 rounded-full" />
         )}
       </div>
-
-      {/* Current state info */}
-      <div className="mt-6 p-4 rounded-lg bg-slate-50 border border-slate-200">
-        <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Estado Actual</p>
-        <p className={cn(
-          'text-base font-semibold mt-1',
-          currentState === 'Pausa' && 'text-orange-600',
-          currentState === 'Rechazada' && 'text-red-600',
-          !isExceptionalState && 'text-blue-600'
-        )}>
-          {currentState}
-        </p>
-      </div>
     </div>
   )
 }
