@@ -157,7 +157,7 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
               <CardContent>
                 <div className="grid gap-0 grid-cols-[auto_1fr] sm:gap-6">
                   {/* Timeline and Icons Column */}
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-start">
                     {ticket.expediente.map((evento, idx) => {
                       const isLastItem = idx === ticket.expediente.length - 1
 
