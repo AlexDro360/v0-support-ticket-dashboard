@@ -623,109 +623,6 @@ function TimelineIcon({ icono }: { icono: ExpedienteEntry['icono'] }) {
   )
 }
 
-// --- ActionBar ---
-
-function ActionBar({
-  estado,
-  canalizado,
-  tecnicosAsignados,
-  onCanalizar,
-  onRechazar,
-  onAsignar,
-  onIniciarAtencion,
-  onPausar,
-  onFinalizar,
-  onCerrar,
-  onReanudar,
-}: {
-  estado: TicketState
-  canalizado: boolean
-  tecnicosAsignados: Tecnico[]
-  onCanalizar: () => void
-  onRechazar: () => void
-  onAsignar: () => void
-  onIniciarAtencion: () => void
-  onPausar: () => void
-  onFinalizar: () => void
-  onCerrar: () => void
-  onReanudar: () => void
-}) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      {estado === 'Pendiente' && (
-        <>
-          <Button size="sm" onClick={onCanalizar} className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Route className="h-4 w-4 mr-1.5" />
-            Canalizar
-          </Button>
-          <Button size="sm" variant="destructive" onClick={onRechazar}>
-            <Ban className="h-4 w-4 mr-1.5" />
-            Rechazar
-          </Button>
-        </>
-      )}
-      {estado === 'Asignado' && (
-        <>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={onAsignar}
-          >
-            <UserPlus className="h-4 w-4 mr-1.5" />
-            Asignar
-          </Button>
-          <Button
-            size="sm"
-            className="bg-green-600 hover:bg-green-700 text-white"
-            onClick={onIniciarAtencion}
-          >
-            <Play className="h-4 w-4 mr-1.5" />
-            Iniciar Atencion
-          </Button>
-        </>
-      )}
-      {canalizado && estado === 'Pendiente' && (
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={onAsignar}
-        >
-          <UserPlus className="h-4 w-4 mr-1.5" />
-          Asignar
-        </Button>
-      )}
-      {estado === 'En Proceso' && (
-        <>
-          <Button size="sm" variant="outline" onClick={onPausar} className="border-orange-500 text-orange-600 hover:bg-orange-50">
-            <Pause className="h-4 w-4 mr-1.5" />
-            Pausar
-          </Button>
-          <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white" onClick={onFinalizar}>
-            <CheckCircle2 className="h-4 w-4 mr-1.5" />
-            Finalizar
-          </Button>
-        </>
-      )}
-      {estado === 'Pausa' && (
-        <Button
-          size="sm"
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-          onClick={onReanudar}
-        >
-          <Play className="h-4 w-4 mr-1.5" />
-          Reanudar
-        </Button>
-      )}
-      {estado === 'Resuelta' && (
-        <Button size="sm" className="bg-slate-600 hover:bg-slate-700 text-white" onClick={onCerrar}>
-          <Lock className="h-4 w-4 mr-1.5" />
-          Cerrar Ticket
-        </Button>
-      )}
-    </div>
-  )
-}
-
 // --- Main Page ---
 
 const TicketDetailPage = () => {
@@ -873,20 +770,18 @@ const TicketDetailPage = () => {
   }
 
   const handleReanudar = () => {
-    setEstado('Asignado')
-    setTecnicosAsignados([])
-    setShowAsignar(true)
+    setEstado('En Proceso')
     addExpedienteEntry({
       fecha: getNow(),
       quien: 'Coordinador TI',
       rol: 'Administrador',
-      accion: 'Reanudo la solicitud - Esperando nueva asignacion de tecnicos',
-      estado: 'Asignado',
+      accion: 'Reanudo la solicitud',
+      estado: 'En Proceso',
       icono: 'reloj',
-      detalles: 'La solicitud fue reanudada. Requiere nueva asignacion de tecnicos.',
+      detalles: 'La solicitud fue reanudada y continua en proceso',
     })
     toast.info('Solicitud reanudada', {
-      description: 'Selecciona nuevos tecnicos para continuar con la atencion.',
+      description: 'La solicitud ha vuelto a estado En Proceso.',
     })
   }
 
