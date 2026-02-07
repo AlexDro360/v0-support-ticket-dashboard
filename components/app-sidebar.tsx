@@ -235,8 +235,8 @@ export function AppSidebar() {
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-30 flex w-64 flex-col bg-[hsl(var(--sidebar-background))] border-r border-[hsl(var(--sidebar-border))] transition-transform duration-300 ease-in-out",
-          "lg:relative lg:translate-x-0",
-          open ? "translate-x-0" : "-translate-x-full lg:w-64 lg:translate-x-0"
+          "lg:static lg:translate-x-0",
+          open ? "translate-x-0" : "-translate-x-full"
         )}
       >
         {/* Header con logo y botón cerrar */}
