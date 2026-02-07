@@ -81,11 +81,6 @@ const navigation: NavSection[] = [
         icon: <Headset className="h-4 w-4" />,
         children: [
           {
-            label: "Gestión de Solicitudes",
-            href: "/gestion-solicitudes",
-            icon: <LayoutDashboard className="h-4 w-4" />,
-          },
-          {
             label: "Mis Solicitudes",
             href: "/mesa-ayuda/mis-solicitudes",
             icon: <FileText className="h-4 w-4" />,
