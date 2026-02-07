@@ -67,48 +67,28 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Breadcrumb */}
-      <div className="border-b bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 text-sm">
-            <Link href="/solicitudes" className="text-blue-600 hover:text-blue-700">
-              Solicitudes
-            </Link>
-            <ChevronRight className="h-4 w-4 text-slate-400" />
-            <span className="font-medium text-foreground">{ticket.folio}</span>
+    <div className="min-h-screen bg-muted/30">
+      <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
+        {/* Back Button and Title Section */}
+        <div className="mb-6 flex items-center gap-3">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={handleGoBack}
+            className="shrink-0"
+          >
+            <ArrowLeft className="h-5 w-5" />
+            <span className="sr-only">Volver al listado</span>
+          </Button>
+          <div>
+            <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
+              Detalles de la Solicitud
+            </h1>
+            <p className="text-xs text-muted-foreground sm:text-sm">
+              Visualiza el estado y detalles de tu solicitud de soporte técnico
+            </p>
           </div>
         </div>
-      </div>
-
-      {/* Header with Title - Same pattern as Nueva Solicitud */}
-      <div className="bg-white">
-        <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
-          {/* Back Button and Title Section */}
-          <div className="mb-6 flex items-center gap-3">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={handleGoBack}
-              className="shrink-0"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span className="sr-only">Volver al listado</span>
-            </Button>
-            <div>
-              <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
-                Detalles de la Solicitud
-              </h1>
-              <p className="text-xs text-muted-foreground sm:text-sm">
-                Visualiza el estado y detalles de tu solicitud de soporte técnico
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Stepper - Full Width at Top (Hidden on Mobile) */}
         <div className="mb-6 hidden md:block">
           <TicketStepper currentState={ticket.estado as any} />
