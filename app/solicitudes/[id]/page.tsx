@@ -543,14 +543,24 @@ function ActionBar({
         </>
       )}
       {estado === 'Asignado' && (
-        <Button
-          size="sm"
-          className="bg-green-600 hover:bg-green-700 text-white"
-          onClick={onIniciarAtencion}
-        >
-          <Play className="h-4 w-4 mr-1.5" />
-          Iniciar Atencion
-        </Button>
+        <>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={onAsignar}
+          >
+            <UserPlus className="h-4 w-4 mr-1.5" />
+            Asignar
+          </Button>
+          <Button
+            size="sm"
+            className="bg-green-600 hover:bg-green-700 text-white"
+            onClick={onIniciarAtencion}
+          >
+            <Play className="h-4 w-4 mr-1.5" />
+            Iniciar Atencion
+          </Button>
+        </>
       )}
       {estado === 'En Proceso' && (
         <>
