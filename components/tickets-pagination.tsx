@@ -60,16 +60,18 @@ export function TicketsPagination({
   }
 
   return (
-    <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
-      {/* Info */}
-      <p className="text-xs text-muted-foreground sm:text-sm">
-        Mostrando {startItem} a {endItem} de {totalItems} solicitudes
-      </p>
+    <div className="flex flex-col gap-4">
+      {/* Info Row */}
+      <div className="flex justify-center">
+        <p className="text-xs text-muted-foreground sm:text-sm whitespace-nowrap">
+          Mostrando {startItem} a {endItem} de {totalItems} solicitudes
+        </p>
+      </div>
 
-      {/* Pagination Controls */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+      {/* Controls Row - Centered */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
         {/* Rows per page */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-center">
           <span className="text-xs text-muted-foreground sm:text-sm">Filas por página:</span>
           <Select
             value={rowsPerPage.toString()}
@@ -88,7 +90,7 @@ export function TicketsPagination({
         </div>
 
         {/* Page navigation */}
-        <div className="flex items-center gap-1 overflow-x-auto">
+        <div className="flex items-center gap-1 overflow-x-auto justify-center">
           <Button
             variant="outline"
             size="sm"
