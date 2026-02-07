@@ -62,7 +62,7 @@ export function TicketsPagination({
   return (
     <div className="flex flex-col gap-4">
       {/* Info Row */}
-      <div className="flex justify-center">
+      <div className="flex justify-start">
         <p className="text-xs text-muted-foreground sm:text-sm whitespace-nowrap">
           Mostrando {startItem} a {endItem} de {totalItems} solicitudes
         </p>
