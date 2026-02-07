@@ -84,7 +84,8 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
       {/* Header */}
       <div className="border-b bg-white">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            {/* Left Side - ID, Department, Back Button */}
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-3">
                 <Button 
@@ -99,17 +100,16 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
               </div>
               <h1 className="text-2xl font-bold text-foreground">{ticket.folio}</h1>
               <p className="mt-1 text-sm text-muted-foreground">{ticket.departamento}</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <Badge className={stateColors[ticket.estado as keyof typeof stateColors]}>
-                  {ticket.estado}
-                </Badge>
-                <Badge className={priorityColors[ticket.prioridad as keyof typeof priorityColors]}>
-                  Prioridad {ticket.prioridad}
-                </Badge>
-                <span className="text-xs text-muted-foreground">
-                  Creado: {ticket.fecha}
-                </span>
-              </div>
+            </div>
+
+            {/* Right Side - Status and Priority Badges */}
+            <div className="flex flex-wrap gap-2 items-start sm:justify-end">
+              <Badge className={stateColors[ticket.estado as keyof typeof stateColors]}>
+                {ticket.estado}
+              </Badge>
+              <Badge className={priorityColors[ticket.prioridad as keyof typeof priorityColors]}>
+                Prioridad {ticket.prioridad}
+              </Badge>
             </div>
           </div>
         </div>
