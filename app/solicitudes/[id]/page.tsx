@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { ChevronRight, Download, MessageSquare, Phone } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { ChevronRight, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -59,6 +60,11 @@ const stateColors = {
 
 const TicketDetailPage = ({ params }: { params: { id: string } }) => {
   const [ticket] = useState(mockTicket)
+  const router = useRouter()
+
+  const handleGoBack = () => {
+    router.push('/solicitudes')
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -80,6 +86,17 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div className="flex-1">
+              <div className="flex items-center gap-2 mb-3">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleGoBack}
+                  className="gap-2"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Volver
+                </Button>
+              </div>
               <h1 className="text-2xl font-bold text-foreground">{ticket.folio}</h1>
               <p className="mt-1 text-sm text-muted-foreground">{ticket.departamento}</p>
               <div className="mt-3 flex flex-wrap gap-2">
