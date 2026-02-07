@@ -155,74 +155,70 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                 <CardTitle className="text-base sm:text-lg">Histórico de Cambios</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-0">
-                  {ticket.expediente.map((evento, idx) => {
-                    const isLastItem = idx === ticket.expediente.length - 1
+                <div className="flex gap-4 sm:gap-6">
+                  {/* Left Column - Icons and Timeline */}
+                  <div className="flex flex-col items-center">
+                    {ticket.expediente.map((evento, idx) => {
+                      const isLastItem = idx === ticket.expediente.length - 1
 
-                    // Get icon based on type
-                    const getIcon = () => {
-                      if (evento.icono === 'documento') {
-                        return <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600" />
-                      } else if (evento.icono === 'usuario') {
-                        return <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600" />
-                      } else if (evento.icono === 'reloj') {
-                        return <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-amber-600" />
+                      // Get icon based on type
+                      const getIcon = () => {
+                        if (evento.icono === 'documento') {
+                          return <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600" />
+                        } else if (evento.icono === 'usuario') {
+                          return <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600" />
+                        } else if (evento.icono === 'reloj') {
+                          return <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-amber-600" />
+                        }
                       }
-                    }
 
-                    // Get icon background color
-                    const getIconBgColor = () => {
-                      if (evento.icono === 'documento') {
-                        return 'bg-blue-100'
-                      } else if (evento.icono === 'usuario') {
-                        return 'bg-blue-100'
-                      } else if (evento.icono === 'reloj') {
-                        return 'bg-amber-100'
+                      // Get icon background color
+                      const getIconBgColor = () => {
+                        if (evento.icono === 'documento') {
+                          return 'bg-blue-100'
+                        } else if (evento.icono === 'usuario') {
+                          return 'bg-blue-100'
+                        } else if (evento.icono === 'reloj') {
+                          return 'bg-amber-100'
+                        }
                       }
-                    }
 
-                    // Get state badge color
-                    const getStateBadgeColor = () => {
-                      const colorMap: { [key: string]: string } = {
-                        'Pendiente': 'bg-blue-100 text-blue-800',
-                        'Asignada': 'bg-blue-100 text-blue-800',
-                        'En Proceso': 'bg-amber-100 text-amber-800',
-                        'Resuelto': 'bg-green-100 text-green-800',
-                      }
-                      return colorMap[evento.estado] || 'bg-slate-100 text-slate-800'
-                    }
+                      return (
+                        <div key={idx} className="flex flex-col items-center">
+                          {/* Icon circle */}
+                          <div className={`h-9 w-9 sm:h-10 sm:w-10 rounded-full ${getIconBgColor()} flex items-center justify-center flex-shrink-0`}>
+                            {getIcon()}
+                          </div>
 
-                    return (
-                      <div key={idx} className={`flex gap-3 sm:gap-4 pb-4 sm:pb-6 ${!isLastItem ? 'relative' : ''}`}>
-                        {/* Timeline line */}
-                        {!isLastItem && (
-                          <div className="absolute left-1/2 -translate-x-1/2 sm:left-5 sm:translate-x-0 top-10 sm:top-12 h-12 w-px bg-slate-200" />
-                        )}
-
-                        {/* Icon circle */}
-                        <div className={`flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full ${getIconBgColor()} flex items-center justify-center`}>
-                          {getIcon()}
+                          {/* Timeline line - connects to next icon */}
+                          {!isLastItem && (
+                            <div className="w-px bg-slate-200 flex-1 min-h-12 sm:min-h-16" />
+                          )}
                         </div>
+                      )
+                    })}
+                  </div>
 
-                        {/* Content */}
-                        <div className="flex-1 pt-0.5 sm:pt-1 min-w-0">
-                          <h3 className="text-xs font-semibold text-foreground uppercase leading-tight break-words mb-2">
-                            {evento.estado}
-                          </h3>
+                  {/* Right Column - Information */}
+                  <div className="flex-1 pt-0.5 sm:pt-1">
+                    {ticket.expediente.map((evento, idx) => (
+                      <div key={idx} className="pb-4 sm:pb-6 last:pb-0">
+                        <h3 className="text-xs font-semibold text-foreground uppercase leading-tight break-words mb-2">
+                          {evento.estado}
+                        </h3>
 
-                          <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3 break-words">
-                            <span className="font-medium text-foreground">{evento.quien}</span>
-                            <span className="mx-1">•</span>
-                            <span>{evento.rol}</span>
-                          </p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3 break-words">
+                          <span className="font-medium text-foreground">{evento.quien}</span>
+                          <span className="mx-1">•</span>
+                          <span>{evento.rol}</span>
+                        </p>
 
-                          <p className="text-xs sm:text-sm text-muted-foreground break-words">
-                            {evento.fecha}
-                          </p>
-                        </div>
+                        <p className="text-xs sm:text-sm text-muted-foreground break-words">
+                          {evento.fecha}
+                        </p>
                       </div>
-                    )
-                  })}
+                    ))}
+                  </div>
                 </div>
               </CardContent>
             </Card>
