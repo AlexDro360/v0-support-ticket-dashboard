@@ -16,6 +16,9 @@ import {
   ClipboardCheck,
   Lock,
   Route,
+  Wrench,
+  Cpu,
+  Network,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -68,9 +71,9 @@ const mockTecnicos: Tecnico[] = [
 ]
 
 const coordinaciones = [
-  { id: 'redes', nombre: 'Coordinacion de Redes', icono: '🌐' },
-  { id: 'mantenimiento', nombre: 'Coordinacion de Mantenimiento', icono: '🔧' },
-  { id: 'software', nombre: 'Coordinacion de Software', icono: '💻' },
+  { id: 'redes', nombre: 'Coordinacion de Redes', icono: Network },
+  { id: 'mantenimiento', nombre: 'Coordinacion de Mantenimiento', icono: Wrench },
+  { id: 'software', nombre: 'Coordinacion de Software', icono: Cpu },
 ]
 
 const initialExpediente: ExpedienteEntry[] = [
@@ -142,23 +145,26 @@ function CanalizarModal({
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-2">
-          {coordinaciones.map((coord) => (
-            <button
-              key={coord.id}
-              type="button"
-              onClick={() => setSelectedId(coord.id)}
-              className={`w-full flex items-center gap-3 rounded-lg border p-4 text-left transition-colors ${
-                selectedId === coord.id
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-border hover:bg-muted/50 cursor-pointer'
-              }`}
-            >
-              <span className="text-lg">{coord.icono}</span>
-              <div className="flex-1">
-                <p className="text-sm font-medium text-foreground">{coord.nombre}</p>
-              </div>
-            </button>
-          ))}
+          {coordinaciones.map((coord) => {
+            const IconComponent = coord.icono
+            return (
+              <button
+                key={coord.id}
+                type="button"
+                onClick={() => setSelectedId(coord.id)}
+                className={`w-full flex items-center gap-3 rounded-lg border p-4 text-left transition-colors ${
+                  selectedId === coord.id
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-border hover:bg-muted/50 cursor-pointer'
+                }`}
+              >
+                <IconComponent className="h-6 w-6 text-slate-600 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-foreground">{coord.nombre}</p>
+                </div>
+              </button>
+            )
+          })}
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={handleClose}>
