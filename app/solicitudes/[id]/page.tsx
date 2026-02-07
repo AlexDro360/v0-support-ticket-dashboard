@@ -100,9 +100,9 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
       <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
         {/* Back Button and Title Section */}
         <div className="mb-6 flex items-center gap-3">
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={handleGoBack}
             className="shrink-0"
           >
@@ -120,192 +120,191 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
 
         {/* Main Content */}
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          {/* Ticket Info and Badges Card - First */}
-          <Card className="w-full border mb-6">
-            <CardContent className="p-6">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <h2 className="text-lg font-bold text-foreground">{ticket.folio}</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">{ticket.departamento}</p>
-                </div>
-                
-                {/* Status and Priority Badges - Vertical Column */}
-                <div className="flex flex-col gap-2">
-                  <Badge className={stateColors[ticket.estado as keyof typeof stateColors]}>
-                    {ticket.estado}
-                  </Badge>
-                  <Badge className={priorityColors[ticket.prioridad as keyof typeof priorityColors]}>
-                    Prioridad {ticket.prioridad}
-                  </Badge>
-                </div>
+        {/* Ticket Info and Badges Card - First */}
+        <Card className="w-full border mb-6">
+          <CardContent className="p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h2 className="text-lg font-bold text-foreground">{ticket.folio}</h2>
+                <p className="mt-1 text-sm text-muted-foreground">{ticket.departamento}</p>
               </div>
-            </CardContent>
-          </Card>
 
-          {/* Stepper - Full Width at Top (Hidden on Mobile) - Second */}
-          <div className="mb-6 hidden md:block">
-            <TicketStepper currentState={ticket.estado as any} />
-          </div>
+              {/* Status and Priority Badges - Vertical Column */}
+              <div className="flex flex-col gap-2">
+                <Badge className={stateColors[ticket.estado as keyof typeof stateColors]}>
+                  {ticket.estado}
+                </Badge>
+                <Badge className={priorityColors[ticket.prioridad as keyof typeof priorityColors]}>
+                  Prioridad {ticket.prioridad}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            {/* Left Column - Sidebar */}
-            <div className="lg:col-span-1">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Histórico de Cambios</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-0">
-                    {ticket.expediente.map((evento, idx) => {
-                      const isLastItem = idx === ticket.expediente.length - 1
-                      
-                      // Get icon based on type
-                      const getIcon = () => {
-                        if (evento.icono === 'documento') {
-                          return <FileText className="h-4 w-4 text-white" />
-                        } else if (evento.icono === 'usuario') {
-                          return <User className="h-4 w-4 text-white" />
-                        } else if (evento.icono === 'reloj') {
-                          return <Clock className="h-4 w-4 text-white" />
-                        }
+        {/* Stepper - Full Width at Top (Hidden on Mobile) - Second */}
+        <div className="mb-6 hidden md:block">
+          <TicketStepper currentState={ticket.estado as any} />
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Left Column - Sidebar */}
+          <div className="lg:col-span-1">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Histórico de Cambios</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-0">
+                  {ticket.expediente.map((evento, idx) => {
+                    const isLastItem = idx === ticket.expediente.length - 1
+
+                    // Get icon based on type
+                    const getIcon = () => {
+                      if (evento.icono === 'documento') {
+                        return <FileText className="h-4 w-4 text-blue-600" />
+                      } else if (evento.icono === 'usuario') {
+                        return <User className="h-4 w-4 text-blue-600" />
+                      } else if (evento.icono === 'reloj') {
+                        return <Clock className="h-4 w-4 text-amber-600" />
                       }
+                    }
 
-                      // Get icon background color
-                      const getIconBgColor = () => {
-                        if (evento.icono === 'documento') {
-                          return 'bg-blue-300'
-                        } else if (evento.icono === 'usuario') {
-                          return 'bg-blue-300'
-                        } else if (evento.icono === 'reloj') {
-                          return 'bg-amber-300'
-                        }
+                    // Get icon background color
+                    const getIconBgColor = () => {
+                      if (evento.icono === 'documento') {
+                        return 'bg-blue-100'
+                      } else if (evento.icono === 'usuario') {
+                        return 'bg-blue-100'
+                      } else if (evento.icono === 'reloj') {
+                        return 'bg-amber-100'
                       }
+                    }
 
-                      // Get state badge color
-                      const getStateBadgeColor = () => {
-                        const colorMap: { [key: string]: string } = {
-                          'Pendiente': 'bg-blue-100 text-blue-800',
-                          'Asignada': 'bg-blue-100 text-blue-800',
-                          'En Proceso': 'bg-amber-100 text-amber-800',
-                          'Resuelto': 'bg-green-100 text-green-800',
-                        }
-                        return colorMap[evento.estado] || 'bg-slate-100 text-slate-800'
+                    // Get state badge color
+                    const getStateBadgeColor = () => {
+                      const colorMap: { [key: string]: string } = {
+                        'Pendiente': 'bg-blue-100 text-blue-800',
+                        'Asignada': 'bg-blue-100 text-blue-800',
+                        'En Proceso': 'bg-amber-100 text-amber-800',
+                        'Resuelto': 'bg-green-100 text-green-800',
                       }
+                      return colorMap[evento.estado] || 'bg-slate-100 text-slate-800'
+                    }
 
-                      return (
-                        <div key={idx} className={`flex gap-4 pb-6 ${!isLastItem ? 'relative' : ''}`}>
-                          {/* Timeline line */}
-                          {!isLastItem && (
-                            <div className="absolute left-5 top-16 h-8 w-px bg-slate-200" />
-                          )}
+                    return (
+                      <div key={idx} className={`flex gap-4 pb-6 ${!isLastItem ? 'relative' : ''}`}>
+                        {/* Timeline line */}
+                        {!isLastItem && (
+                          <div className="absolute left-5 top-16 h-8 w-px bg-slate-200" />
+                        )}
 
-                          {/* Icon circle */}
-                          <div className={`flex-shrink-0 h-10 w-10 rounded-full ${getIconBgColor()} flex items-center justify-center`}>
-                            {getIcon()}
+                        {/* Icon circle */}
+                        <div className={`flex-shrink-0 h-10 w-10 rounded-full ${getIconBgColor()} flex items-center justify-center`}>
+                          {getIcon()}
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 pt-1">
+                          <div className="flex items-start justify-between gap-4 mb-1">
+                            <h3 className="text-xs font-semibold text-foreground uppercase leading-tight">
+                              {evento.accion}
+                            </h3>
+                            <Badge className={getStateBadgeColor()}>
+                              {evento.estado}
+                            </Badge>
                           </div>
 
-                          {/* Content */}
-                          <div className="flex-1 pt-1">
-                            <div className="flex items-start justify-between gap-4 mb-1">
-                              <h3 className="text-xs font-semibold text-foreground uppercase leading-tight">
-                                {evento.accion}
-                              </h3>
-                              <Badge className={getStateBadgeColor()}>
-                                {evento.estado}
-                              </Badge>
-                            </div>
-                            
-                            <p className="text-sm text-muted-foreground mb-3">
-                              <span className="font-medium text-foreground">{evento.quien}</span>
-                              <span className="mx-1">•</span>
-                              <span>{evento.rol}</span>
-                            </p>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            <span className="font-medium text-foreground">{evento.quien}</span>
+                            <span className="mx-1">•</span>
+                            <span>{evento.rol}</span>
+                          </p>
 
-                            <p className="text-sm text-muted-foreground mb-2">
-                              {evento.fecha}
-                            </p>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {evento.fecha}
+                          </p>
 
-                            <div className="bg-slate-50 rounded-md p-3 border border-slate-200 mt-3">
-                              <p className="text-sm text-muted-foreground">
-                                {evento.detalles}
-                              </p>
-                            </div>
+                          <div className="bg-slate-50 rounded-md p-3 border border-slate-200 mt-3">
+                            <p className="text-sm text-muted-foreground">
+                              {evento.detalles}
+                            </p>
                           </div>
                         </div>
-                      )
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Right Column - Main Content */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Información del Solicitante */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Información del Solicitante</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <p className="text-xs font-semibold text-muted-foreground uppercase">Nombre</p>
-                      <p className="text-sm font-medium text-foreground mt-1">{ticket.nombreAfectado}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-muted-foreground uppercase">Departamento</p>
-                      <p className="text-sm font-medium text-foreground mt-1">{ticket.departamento}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-muted-foreground uppercase">Correo</p>
-                      <p className="text-sm font-medium text-blue-600 mt-1">{ticket.correoContacto}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Detalles del Problema */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Detalles del Problema</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Tipo de Problema</p>
-                    <p className="text-sm font-medium text-foreground mt-1">{ticket.tipoProblema}</p>
-                  </div>
-                  <Separator />
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Descripción</p>
-                    <p className="text-sm text-foreground leading-relaxed">{ticket.descripcion}</p>
-                  </div>
-                  <Separator />
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase mb-3">Fotografía o Evidencia</p>
-                    {ticket.fotografias && ticket.fotografias.length > 0 ? (
-                      <div className="grid gap-3 grid-cols-2 md:grid-cols-3">
-                        {ticket.fotografias.map((foto, idx) => (
-                          <div key={idx} className="rounded-lg border overflow-hidden bg-slate-50">
-                            <img 
-                              src={foto || "/placeholder.svg"} 
-                              alt={`Evidencia ${idx + 1}`}
-                              className="w-full h-32 object-cover"
-                            />
-                          </div>
-                        ))}
                       </div>
-                    ) : (
-                      <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
-                        <p className="text-sm text-muted-foreground">No hay fotografías adjuntas</p>
-                      </div>
-                    )}
+                    )
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Column - Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Información del Solicitante */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Información del Solicitante</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase">Nombre</p>
+                    <p className="text-sm font-medium text-foreground mt-1">{ticket.nombreAfectado}</p>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase">Departamento</p>
+                    <p className="text-sm font-medium text-foreground mt-1">{ticket.departamento}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase">Correo</p>
+                    <p className="text-sm font-medium text-blue-600 mt-1">{ticket.correoContacto}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Detalles del Problema */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Detalles del Problema</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase">Tipo de Problema</p>
+                  <p className="text-sm font-medium text-foreground mt-1">{ticket.tipoProblema}</p>
+                </div>
+                <Separator />
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Descripción</p>
+                  <p className="text-sm text-foreground leading-relaxed">{ticket.descripcion}</p>
+                </div>
+                <Separator />
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-3">Fotografía o Evidencia</p>
+                  {ticket.fotografias && ticket.fotografias.length > 0 ? (
+                    <div className="grid gap-3 grid-cols-2 md:grid-cols-3">
+                      {ticket.fotografias.map((foto, idx) => (
+                        <div key={idx} className="rounded-lg border overflow-hidden bg-slate-50">
+                          <img
+                            src={foto || "/placeholder.svg"}
+                            alt={`Evidencia ${idx + 1}`}
+                            className="w-full h-32 object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
+                      <p className="text-sm text-muted-foreground">No hay fotografías adjuntas</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
+
       </div>
     </div>
   )
