@@ -155,8 +155,8 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                 <CardTitle className="text-base sm:text-lg">Histórico de Cambios</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex gap-4 sm:gap-6">
-                  {/* Left Column - Icons and Timeline */}
+                <div className="grid gap-0 grid-cols-[auto_1fr] sm:gap-6">
+                  {/* Timeline and Icons Column */}
                   <div className="flex flex-col items-center">
                     {ticket.expediente.map((evento, idx) => {
                       const isLastItem = idx === ticket.expediente.length - 1
@@ -184,9 +184,9 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                       }
 
                       return (
-                        <div key={idx} className="flex flex-col items-center">
+                        <React.Fragment key={idx}>
                           {/* Icon circle */}
-                          <div className={`h-9 w-9 sm:h-10 sm:w-10 rounded-full ${getIconBgColor()} flex items-center justify-center flex-shrink-0`}>
+                          <div className={`h-9 w-9 sm:h-10 sm:w-10 rounded-full ${getIconBgColor()} flex items-center justify-center flex-shrink-0 mt-0.5`}>
                             {getIcon()}
                           </div>
 
@@ -194,20 +194,20 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                           {!isLastItem && (
                             <div className="w-px bg-slate-200 flex-1 min-h-12 sm:min-h-16" />
                           )}
-                        </div>
+                        </React.Fragment>
                       )
                     })}
                   </div>
 
-                  {/* Right Column - Information */}
-                  <div className="flex-1 pt-0.5 sm:pt-1">
+                  {/* Information Column */}
+                  <div className="space-y-4 sm:space-y-6 sm:pl-4">
                     {ticket.expediente.map((evento, idx) => (
-                      <div key={idx} className="pb-4 sm:pb-6 last:pb-0">
+                      <div key={idx} className="pt-0.5">
                         <h3 className="text-xs font-semibold text-foreground uppercase leading-tight break-words mb-2">
                           {evento.estado}
                         </h3>
 
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3 break-words">
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2 break-words">
                           <span className="font-medium text-foreground">{evento.quien}</span>
                           <span className="mx-1">•</span>
                           <span>{evento.rol}</span>
