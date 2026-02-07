@@ -547,8 +547,6 @@ function ActionBar({
               Asignar
             </Button>
           )}
-            </>
-          )}
         </>
       )}
       {estado === 'En Proceso' && (
