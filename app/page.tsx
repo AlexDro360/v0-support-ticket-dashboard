@@ -3,47 +3,12 @@
 import Link from "next/link"
 import {
   Headset,
-  FileText,
-  HardDrive,
-  BookOpen,
-  AlertCircle,
-  MessageSquare,
   ArrowRight,
   CheckCircle2,
   Zap,
+  MessageSquare,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-const quickAccessCards = [
-  {
-    title: "Estado de Solicitudes",
-    description: "Revisa el estado actual de tus solicitudes de soporte",
-    icon: Headset,
-    href: "/solicitudes",
-    color: "from-blue-500 to-blue-600",
-  },
-  {
-    title: "Inventario de Equipos",
-    description: "Gestiona y consulta el control de activos tecnológicos",
-    icon: HardDrive,
-    href: "/inventarios/equipos",
-    color: "from-slate-500 to-slate-600",
-  },
-  {
-    title: "Base de Conocimientos",
-    description: "Accede a documentación técnica y tutoriales",
-    icon: BookOpen,
-    href: "/base-conocimientos",
-    color: "from-indigo-500 to-indigo-600",
-  },
-  {
-    title: "Avisos del Centro",
-    description: "Mantente informado sobre noticias y alertas",
-    icon: AlertCircle,
-    href: "/avisos",
-    color: "from-orange-500 to-orange-600",
-  },
-]
 
 const features = [
   {
@@ -60,6 +25,37 @@ const features = [
     icon: MessageSquare,
     title: "Asistente Inteligente",
     description: "Consulta nuestro chatbot con IA para respuestas inmediatas",
+  },
+]
+
+const quickAccessCards = [
+  {
+    icon: Zap,
+    title: "Solicitudes",
+    description: "Accede a tus solicitudes de soporte",
+    href: "/solicitudes",
+    color: "from-blue-500 to-indigo-600",
+  },
+  {
+    icon: CheckCircle2,
+    title: "Inventario",
+    description: "Gestiona el inventario de equipos",
+    href: "/inventario",
+    color: "from-green-500 to-teal-600",
+  },
+  {
+    icon: MessageSquare,
+    title: "Documentación",
+    description: "Consulta la documentación técnica",
+    href: "/documentacion",
+    color: "from-orange-500 to-yellow-600",
+  },
+  {
+    icon: Headset,
+    title: "Chatbot",
+    description: "Habla con nuestro asistente inteligente",
+    href: "/chatbot",
+    color: "from-pink-500 to-purple-600",
   },
 ]
 
@@ -114,49 +110,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Quick Access Cards Section */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Acceso Rápido a Módulos
-          </h2>
-          <p className="mt-4 text-lg text-slate-600">
-            Accede a las herramientas principales del sistema
-          </p>
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {quickAccessCards.map((card) => {
-            const Icon = card.icon
-            return (
-              <Link
-                key={card.title}
-                href={card.href}
-                className="group"
-              >
-                <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg hover:border-blue-300">
-                  <div
-                    className={`mb-4 inline-block rounded-lg bg-gradient-to-br ${card.color} p-3 text-white`}
-                  >
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="mb-2 text-lg font-semibold text-slate-900">
-                    {card.title}
-                  </h3>
-                  <p className="mb-4 text-sm text-slate-600">
-                    {card.description}
-                  </p>
-                  <div className="flex items-center text-sm font-medium text-blue-600 group-hover:text-blue-700">
-                    Acceder
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
-      </section>
-
       {/* Features Section */}
       <section className="border-t border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -186,30 +139,6 @@ export default function HomePage() {
                 </div>
               )
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* Chatbot Widget Section */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 shadow-xl">
-          <div className="flex flex-col items-center gap-8 px-6 py-12 sm:px-12 lg:flex-row lg:justify-between">
-            <div className="space-y-4 text-white lg:max-w-lg">
-              <h3 className="text-2xl font-bold">
-                ¿Tienes dudas sobre procesos académicos?
-              </h3>
-              <p className="text-blue-50">
-                Pregúntale a nuestro asistente inteligente. Disponible 24/7 para resolver tus preguntas y proporcionar orientación inmediata.
-              </p>
-              <Button
-                size="lg"
-                className="bg-white text-blue-600 hover:bg-blue-50"
-              >
-                Iniciar Chat
-                <MessageSquare className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-            <div className="hidden h-48 w-48 rounded-full bg-white/10 backdrop-blur lg:block" />
           </div>
         </div>
       </section>
