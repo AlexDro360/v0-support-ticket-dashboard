@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal, Eye, UserPlus, CheckCircle } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export interface Ticket {
   id: string
@@ -48,6 +49,8 @@ const estadoStyles: Record<string, string> = {
 }
 
 export function TicketsTable({ tickets }: TicketsTableProps) {
+  const router = useRouter()
+
   return (
     <div className="rounded-lg border bg-card overflow-hidden">
       <div className="overflow-x-auto">
@@ -72,51 +75,53 @@ export function TicketsTable({ tickets }: TicketsTableProps) {
               </TableRow>
             ) : (
               tickets.map((ticket) => (
-                <Link key={ticket.id} href={`/solicitudes/${ticket.id}`} className="contents">
-                  <TableRow className="transition-colors hover:bg-muted/50 cursor-pointer">
-                    <TableCell className="text-xs font-medium text-primary sm:text-sm">{ticket.folio}</TableCell>
-                    <TableCell className="hidden text-xs text-muted-foreground sm:table-cell sm:text-sm">{ticket.fecha}</TableCell>
-                    <TableCell className="text-xs sm:text-sm">{ticket.nombreAfectado}</TableCell>
-                    <TableCell className="hidden text-xs text-muted-foreground md:table-cell md:text-sm">{ticket.departamento}</TableCell>
-                    <TableCell>
-                      <Badge variant="secondary" className={`${prioridadStyles[ticket.prioridad]} text-xs sm:text-sm`}>
-                        {ticket.prioridad}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="secondary" className={`${estadoStyles[ticket.estado]} text-xs sm:text-sm`}>
-                        {ticket.estado}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Abrir menú</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                          <Link href={`/solicitudes/${ticket.id}`}>
-                            <DropdownMenuItem className="cursor-pointer">
-                              <Eye className="mr-2 h-4 w-4" />
-                              Ver Detalles
-                            </DropdownMenuItem>
-                          </Link>
+                <TableRow
+                  key={ticket.id}
+                  className="transition-colors hover:bg-muted/50 cursor-pointer"
+                  onClick={() => router.push(`/solicitudes/${ticket.id}`)}
+                >
+                  <TableCell className="text-xs font-medium text-primary sm:text-sm">{ticket.folio}</TableCell>
+                  <TableCell className="hidden text-xs text-muted-foreground sm:table-cell sm:text-sm">{ticket.fecha}</TableCell>
+                  <TableCell className="text-xs sm:text-sm">{ticket.nombreAfectado}</TableCell>
+                  <TableCell className="hidden text-xs text-muted-foreground md:table-cell md:text-sm">{ticket.departamento}</TableCell>
+                  <TableCell>
+                    <Badge variant="secondary" className={`${prioridadStyles[ticket.prioridad]} text-xs sm:text-sm`}>
+                      {ticket.prioridad}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="secondary" className={`${estadoStyles[ticket.estado]} text-xs sm:text-sm`}>
+                      {ticket.estado}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Abrir menú</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48">
+                        <Link href={`/solicitudes/${ticket.id}`}>
                           <DropdownMenuItem className="cursor-pointer">
-                            <UserPlus className="mr-2 h-4 w-4" />
-                            Asignar Técnico
+                            <Eye className="mr-2 h-4 w-4" />
+                            Ver Detalles
                           </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="cursor-pointer text-green-600 focus:text-green-600">
-                            <CheckCircle className="mr-2 h-4 w-4" />
-                            Cerrar Solicitud
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                </Link>
+                        </Link>
+                        <DropdownMenuItem className="cursor-pointer">
+                          <UserPlus className="mr-2 h-4 w-4" />
+                          Asignar Técnico
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="cursor-pointer text-green-600 focus:text-green-600">
+                          <CheckCircle className="mr-2 h-4 w-4" />
+                          Cerrar Solicitud
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
               ))
             )}
           </TableBody>
