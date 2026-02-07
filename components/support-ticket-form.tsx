@@ -331,6 +331,7 @@ export function SupportTicketForm() {
             <Label className="flex items-center gap-2 text-sm font-medium">
               <Upload className="h-4 w-4 text-muted-foreground" />
               Fotografía o Evidencia
+              <span className="text-xs font-normal text-muted-foreground">(Opcional)</span>
             </Label>
             <div
               onDragOver={handleDragOver}
