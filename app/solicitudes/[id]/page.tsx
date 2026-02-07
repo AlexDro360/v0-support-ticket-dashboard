@@ -95,8 +95,8 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
 
         {/* Ticket Info and Badges Card */}
-        <Card className="w-full border mb-6">
-          <CardContent className="p-6">
+        <Card className="w-full border mb-6 rounded-lg md:rounded-xl shadow-sm">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h2 className="text-lg font-bold text-foreground">{ticket.folio}</h2>
@@ -116,155 +116,169 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
           </CardContent>
         </Card>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* Left Column - Sidebar */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-4">
-              <CardHeader>
-                <CardTitle className="text-base">Información Rápida</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <p className="text-xs font-semibold text-muted-foreground uppercase">Técnico Asignado</p>
-                  <p className="text-sm font-medium text-foreground mt-1">{ticket.asignadoA}</p>
-                </div>
-                <Separator />
-                <div>
-                  <p className="text-xs font-semibold text-muted-foreground uppercase">Tiempo Transcurrido</p>
-                  <p className="text-sm font-medium text-foreground mt-1">{ticket.tiempoTranscurrido}</p>
-                </div>
-              </CardContent>
-            </Card>
+        {/* Main Content Card - Following Nueva Solicitud pattern */}
+        <div className="rounded-lg border bg-card shadow-sm md:rounded-xl">
+          <div className="border-b px-4 py-4 sm:px-6 sm:py-5">
+            <h2 className="text-base font-semibold text-foreground sm:text-lg">
+              Detalles de tu Solicitud
+            </h2>
+            <p className="text-xs text-muted-foreground sm:text-sm">
+              Visualiza toda la información y el historial de tu solicitud de soporte técnico
+            </p>
           </div>
 
-          {/* Right Column - Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Información del Solicitante */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Información del Solicitante</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Nombre</p>
-                    <p className="text-sm font-medium text-foreground mt-1">{ticket.nombreAfectado}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Departamento</p>
-                    <p className="text-sm font-medium text-foreground mt-1">{ticket.departamento}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Correo</p>
-                    <p className="text-sm font-medium text-blue-600 mt-1">{ticket.correoContacto}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="space-y-6 p-4 sm:p-6">
+            <div className="grid gap-6 lg:grid-cols-3">
+              {/* Left Column - Sidebar */}
+              <div className="lg:col-span-1">
+                <Card className="sticky top-4 rounded-lg">
+                  <CardHeader>
+                    <CardTitle className="text-base">Información Rápida</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase">Técnico Asignado</p>
+                      <p className="text-sm font-medium text-foreground mt-1">{ticket.asignadoA}</p>
+                    </div>
+                    <Separator />
+                    <div>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase">Tiempo Transcurrido</p>
+                      <p className="text-sm font-medium text-foreground mt-1">{ticket.tiempoTranscurrido}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
 
-            {/* Detalles del Problema */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Detalles del Problema</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <p className="text-xs font-semibold text-muted-foreground uppercase">Tipo de Problema</p>
-                  <p className="text-sm font-medium text-foreground mt-1">{ticket.tipoProblema}</p>
-                </div>
-                <Separator />
-                <div>
-                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Descripción</p>
-                  <p className="text-sm text-foreground leading-relaxed">{ticket.descripcion}</p>
-                </div>
-                <Separator />
-                <div>
-                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-3">Fotografía o Evidencia</p>
-                  {ticket.fotografias && ticket.fotografias.length > 0 ? (
-                    <div className="grid gap-3 grid-cols-2 md:grid-cols-3">
-                      {ticket.fotografias.map((foto, idx) => (
-                        <div key={idx} className="rounded-lg border overflow-hidden bg-slate-50">
-                          <img 
-                            src={foto || "/placeholder.svg"} 
-                            alt={`Evidencia ${idx + 1}`}
-                            className="w-full h-32 object-cover"
-                          />
+              {/* Right Column - Main Content */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Información del Solicitante */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Información del Solicitante</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <p className="text-xs font-semibold text-muted-foreground uppercase">Nombre</p>
+                        <p className="text-sm font-medium text-foreground mt-1">{ticket.nombreAfectado}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-muted-foreground uppercase">Departamento</p>
+                        <p className="text-sm font-medium text-foreground mt-1">{ticket.departamento}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-muted-foreground uppercase">Correo</p>
+                        <p className="text-sm font-medium text-blue-600 mt-1">{ticket.correoContacto}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Detalles del Problema */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Detalles del Problema</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase">Tipo de Problema</p>
+                      <p className="text-sm font-medium text-foreground mt-1">{ticket.tipoProblema}</p>
+                    </div>
+                    <Separator />
+                    <div>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Descripción</p>
+                      <p className="text-sm text-foreground leading-relaxed">{ticket.descripcion}</p>
+                    </div>
+                    <Separator />
+                    <div>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase mb-3">Fotografía o Evidencia</p>
+                      {ticket.fotografias && ticket.fotografias.length > 0 ? (
+                        <div className="grid gap-3 grid-cols-2 md:grid-cols-3">
+                          {ticket.fotografias.map((foto, idx) => (
+                            <div key={idx} className="rounded-lg border overflow-hidden bg-slate-50">
+                              <img 
+                                src={foto || "/placeholder.svg"} 
+                                alt={`Evidencia ${idx + 1}`}
+                                className="w-full h-32 object-cover"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
+                          <p className="text-sm text-muted-foreground">No hay fotografías adjuntas</p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Información Técnica */}
+                {ticket.estado !== 'Pendiente' && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Información Técnica</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <p className="text-xs font-semibold text-muted-foreground uppercase">Asignado a</p>
+                        <p className="text-sm font-medium text-foreground mt-1">{ticket.asignadoA}</p>
+                      </div>
+                      {ticket.diagnostico && (
+                        <>
+                          <Separator />
+                          <div>
+                            <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Diagnóstico</p>
+                            <p className="text-sm text-foreground leading-relaxed">{ticket.diagnostico}</p>
+                          </div>
+                        </>
+                      )}
+                      {ticket.materialesUsados.length > 0 && (
+                        <>
+                          <Separator />
+                          <div>
+                            <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Materiales Utilizados</p>
+                            <ul className="space-y-1">
+                              {ticket.materialesUsados.map((material, idx) => (
+                                <li key={idx} className="text-sm text-foreground">
+                                  • {material.nombre} (x{material.cantidad})
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </>
+                      )}
+                      <Separator />
+                      <div>
+                        <p className="text-xs font-semibold text-muted-foreground uppercase">Tiempo Transcurrido</p>
+                        <p className="text-sm font-medium text-foreground mt-1">{ticket.tiempoTranscurrido}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Timeline de Actualizaciones */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Histórico de Cambios</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {ticket.actualizacionesRecientes.map((item, idx) => (
+                        <div key={idx} className="flex gap-3 pb-3 last:pb-0">
+                          <div className="h-2 w-2 rounded-full bg-blue-600 mt-2 flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-semibold text-slate-600">{item.fecha}</p>
+                            <p className="text-sm text-foreground mt-0.5">{item.evento}</p>
+                            <p className="text-xs text-muted-foreground">{item.usuario}</p>
+                          </div>
                         </div>
                       ))}
                     </div>
-                  ) : (
-                    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
-                      <p className="text-sm text-muted-foreground">No hay fotografías adjuntas</p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Información Técnica */}
-            {ticket.estado !== 'Pendiente' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Información Técnica</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Asignado a</p>
-                    <p className="text-sm font-medium text-foreground mt-1">{ticket.asignadoA}</p>
-                  </div>
-                  {ticket.diagnostico && (
-                    <>
-                      <Separator />
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Diagnóstico</p>
-                        <p className="text-sm text-foreground leading-relaxed">{ticket.diagnostico}</p>
-                      </div>
-                    </>
-                  )}
-                  {ticket.materialesUsados.length > 0 && (
-                    <>
-                      <Separator />
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Materiales Utilizados</p>
-                        <ul className="space-y-1">
-                          {ticket.materialesUsados.map((material, idx) => (
-                            <li key={idx} className="text-sm text-foreground">
-                              • {material.nombre} (x{material.cantidad})
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </>
-                  )}
-                  <Separator />
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Tiempo Transcurrido</p>
-                    <p className="text-sm font-medium text-foreground mt-1">{ticket.tiempoTranscurrido}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Timeline de Actualizaciones */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Histórico de Cambios</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {ticket.actualizacionesRecientes.map((item, idx) => (
-                    <div key={idx} className="flex gap-3 pb-3 last:pb-0">
-                      <div className="h-2 w-2 rounded-full bg-blue-600 mt-2 flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-slate-600">{item.fecha}</p>
-                        <p className="text-sm text-foreground mt-0.5">{item.evento}</p>
-                        <p className="text-xs text-muted-foreground">{item.usuario}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </div>
         </div>
       </div>
