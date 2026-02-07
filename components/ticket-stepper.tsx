@@ -44,7 +44,7 @@ export function TicketStepper({ currentState, className }: TicketStepperProps) {
   const currentStepNumber = getStepNumber(currentState)
 
   return (
-    <div className={cn('w-full', className)}>
+    <div className={cn('w-full bg-card rounded-lg border p-6', className)}>
       {/* Exceptional State Alert */}
       {isExceptionalState && (
         <div className={cn(
@@ -105,22 +105,22 @@ export function TicketStepper({ currentState, className }: TicketStepperProps) {
         )}
 
         {/* Steps container */}
-        <div className="relative flex justify-between">
+        <div className="relative flex justify-between gap-2">
           {stepsOrder.map((step, index) => {
             const isCompleted = currentStepNumber > index
             const isCurrent = currentStepNumber === index
             const isFuture = currentStepNumber < index
 
             return (
-              <div key={step} className="flex flex-col items-center gap-2">
+              <div key={step} className="flex flex-col items-center gap-2 flex-1">
                 {/* Step circle */}
                 <button
                   disabled
                   className={cn(
-                    'h-10 w-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 relative z-10',
-                    isCompleted && 'bg-gradient-to-br from-green-400 to-green-500 text-white shadow-lg',
-                    isCurrent && 'bg-gradient-to-br from-blue-400 to-blue-500 text-white shadow-lg ring-4 ring-blue-200 animate-pulse',
-                    isFuture && 'bg-slate-200 text-slate-600'
+                    'h-10 w-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 relative z-10 flex-shrink-0',
+                    isCompleted && 'bg-green-100 text-green-700 shadow-sm border border-green-200',
+                    isCurrent && 'bg-blue-100 text-blue-700 shadow-sm border border-blue-200 ring-2 ring-blue-300',
+                    isFuture && 'bg-slate-100 text-slate-500 border border-slate-200'
                   )}
                 >
                   {isCompleted ? (
@@ -133,9 +133,9 @@ export function TicketStepper({ currentState, className }: TicketStepperProps) {
                 {/* Step label */}
                 <span
                   className={cn(
-                    'text-xs font-medium text-center whitespace-nowrap',
-                    isCompleted && 'text-green-600',
-                    isCurrent && 'text-blue-600',
+                    'text-xs font-medium text-center',
+                    isCompleted && 'text-green-700',
+                    isCurrent && 'text-blue-700',
                     isFuture && 'text-slate-500'
                   )}
                 >
