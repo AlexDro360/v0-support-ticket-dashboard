@@ -234,13 +234,15 @@ export function AppSidebar() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-30 flex w-64 flex-col bg-[hsl(var(--sidebar-background))] border-r border-[hsl(var(--sidebar-border))] transition-transform duration-300 ease-in-out",
-          "lg:relative lg:translate-x-0",
-          open ? "translate-x-0" : "-translate-x-full lg:w-64 lg:translate-x-0"
+          "h-screen w-64 flex flex-col bg-[hsl(var(--sidebar-background))] border-r border-[hsl(var(--sidebar-border))] transition-all duration-300 ease-in-out",
+          // Mobile: fixed positioning
+          "fixed inset-y-0 left-0 z-30",
+          "lg:sticky lg:top-0 lg:relative lg:z-10",
+          open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
         {/* Header con logo y botón cerrar */}
-        <div className="flex h-16 items-center justify-between border-b border-[hsl(var(--sidebar-border))] px-5">
+        <div className="flex-none flex h-16 items-center justify-between border-b border-[hsl(var(--sidebar-border))] px-5">
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[hsl(var(--sidebar-accent))]">
               <Headset className="h-4 w-4 text-[hsl(var(--sidebar-foreground))]" />
@@ -268,7 +270,7 @@ export function AppSidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4">
+        <nav className="flex-1 overflow-y-auto px-3 py-4 scrollbar-thin scrollbar-thumb-[hsl(var(--sidebar-accent))] scrollbar-track-transparent hover:scrollbar-thumb-[hsl(var(--sidebar-accent)/0.8)]">
           <div className="space-y-6">
             {navigation.map((section) => (
               <div key={section.label}>
@@ -310,7 +312,7 @@ export function AppSidebar() {
         </nav>
 
         {/* User Profile at Bottom */}
-        <div className="border-t border-[hsl(var(--sidebar-border))] p-3">
+        <div className="flex-none border-t border-[hsl(var(--sidebar-border))] p-3">
           <div className="flex items-center gap-3 rounded-lg px-3 py-2">
             <Avatar className="h-9 w-9 border border-[hsl(var(--sidebar-border))]">
               <AvatarFallback className="bg-[hsl(var(--sidebar-accent))] text-sm font-semibold text-[hsl(var(--sidebar-foreground))]">
