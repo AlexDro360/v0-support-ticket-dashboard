@@ -493,10 +493,12 @@ function ActionBar({
   estado,
   canalizado,
   tecnicosAsignados,
+  enReanudacion,
   onCanalizar,
   onRechazar,
   onAsignar,
   onIniciarAtencion,
+  onContinuarAtencion,
   onPausar,
   onFinalizar,
   onCerrar,
@@ -505,10 +507,12 @@ function ActionBar({
   estado: TicketState
   canalizado: boolean
   tecnicosAsignados: Tecnico[]
+  enReanudacion: boolean
   onCanalizar: () => void
   onRechazar: () => void
   onAsignar: () => void
   onIniciarAtencion: () => void
+  onContinuarAtencion: () => void
   onPausar: () => void
   onFinalizar: () => void
   onCerrar: () => void
@@ -555,10 +559,10 @@ function ActionBar({
           <Button
             size="sm"
             className="bg-green-600 hover:bg-green-700 text-white"
-            onClick={onIniciarAtencion}
+            onClick={enReanudacion ? onContinuarAtencion : onIniciarAtencion}
           >
             <Play className="h-4 w-4 mr-1.5" />
-            Iniciar Atencion
+            {enReanudacion ? 'Continuar Atencion' : 'Iniciar Atencion'}
           </Button>
         </>
       )}
@@ -633,6 +637,7 @@ const TicketDetailPage = () => {
   const [canalizacionSeleccionada, setCanalizacionSeleccionada] = useState<string | null>(null)
   const [tecnicosAsignados, setTecnicosAsignados] = useState<Tecnico[]>([])
   const [expediente, setExpediente] = useState<ExpedienteEntry[]>(initialExpediente)
+  const [enReanudacion, setEnReanudacion] = useState(false)
 
   // Modal states
   const [showCanalizar, setShowCanalizar] = useState(false)
@@ -684,20 +689,22 @@ const TicketDetailPage = () => {
 
   const handleAsignar = (tecnicos: Tecnico[]) => {
     setTecnicosAsignados(tecnicos)
-    setEstado('Asignado')
+    if (!enReanudacion) {
+      setEstado('Asignado')
+    }
     const tecnicosStr = tecnicos.map((t) => t.nombre).join(', ')
     addExpedienteEntry({
       fecha: getNow(),
       quien: 'Coordinador TI',
       rol: 'Administrador',
-      accion: `Asigno ${tecnicos.length} tecnico(s): ${tecnicosStr}`,
-      estado: 'Asignado',
+      accion: `${enReanudacion ? 'Reasigno' : 'Asigno'} ${tecnicos.length} tecnico(s): ${tecnicosStr}`,
+      estado: enReanudacion ? 'Asignado' : 'Asignado',
       icono: 'usuario',
-      detalles: `Tecnicos asignados: ${tecnicos.map((t) => `${t.nombre} (${t.especialidad})`).join(', ')}`,
+      detalles: `Tecnicos ${enReanudacion ? 'reasignados' : 'asignados'}: ${tecnicos.map((t) => `${t.nombre} (${t.especialidad})`).join(', ')}`,
     })
     setShowAsignar(false)
-    toast.success('Tecnicos asignados', {
-      description: `${tecnicosStr} ha(n) sido asignado(s) a esta solicitud.`,
+    toast.success(enReanudacion ? 'Tecnicos reasignados' : 'Tecnicos asignados', {
+      description: `${tecnicosStr} ha(n) sido ${enReanudacion ? 'reasignado(s)' : 'asignado(s)'} a esta solicitud.`,
     })
   }
 
@@ -770,18 +777,39 @@ const TicketDetailPage = () => {
   }
 
   const handleReanudar = () => {
-    setEstado('En Proceso')
+    setEstado('Asignado')
+    setTecnicosAsignados([])
+    setEnReanudacion(true)
+    setShowAsignar(true)
     addExpedienteEntry({
       fecha: getNow(),
       quien: 'Coordinador TI',
       rol: 'Administrador',
-      accion: 'Reanudo la solicitud',
-      estado: 'En Proceso',
+      accion: 'Reanudo la solicitud - Esperando nueva asignacion de tecnicos',
+      estado: 'Asignado',
       icono: 'reloj',
-      detalles: 'La solicitud fue reanudada y continua en proceso',
+      detalles: 'La solicitud fue reanudada. Requiere nueva asignacion de tecnicos.',
     })
     toast.info('Solicitud reanudada', {
-      description: 'La solicitud ha vuelto a estado En Proceso.',
+      description: 'Selecciona nuevos tecnicos para continuar con la atencion.',
+    })
+  }
+
+  const handleContinuarAtencion = () => {
+    setEstado('En Proceso')
+    setEnReanudacion(false)
+    const tecnicosStr = tecnicosAsignados.map((t) => t.nombre).join(', ')
+    addExpedienteEntry({
+      fecha: getNow(),
+      quien: 'Coordinador TI',
+      rol: 'Administrador',
+      accion: `Continuo la atencion con los tecnicos: ${tecnicosStr}`,
+      estado: 'En Proceso',
+      icono: 'reloj',
+      detalles: 'La solicitud continua en proceso con nuevos tecnicos asignados',
+    })
+    toast.success('Atencion continuada', {
+      description: 'El ticket continua En Proceso.',
     })
   }
 
@@ -857,10 +885,12 @@ const TicketDetailPage = () => {
                     estado={estado}
                     canalizado={canalizado}
                     tecnicosAsignados={tecnicosAsignados}
+                    enReanudacion={enReanudacion}
                     onCanalizar={() => setShowCanalizar(true)}
                     onRechazar={() => setShowRechazar(true)}
                     onAsignar={() => setShowAsignar(true)}
                     onIniciarAtencion={handleIniciarAtencion}
+                    onContinuarAtencion={handleContinuarAtencion}
                     onPausar={() => setShowPausar(true)}
                     onFinalizar={() => setShowFinalizar(true)}
                     onCerrar={handleCerrar}
