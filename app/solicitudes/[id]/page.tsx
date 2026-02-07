@@ -104,28 +104,6 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
               </p>
             </div>
           </div>
-
-          {/* Ticket Info and Badges */}
-          <Card className="w-full border">
-            <CardContent className="p-6">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h2 className="text-lg font-bold text-foreground">{ticket.folio}</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">{ticket.departamento}</p>
-                </div>
-                
-                {/* Status and Priority Badges */}
-                <div className="flex flex-wrap gap-2">
-                  <Badge className={stateColors[ticket.estado as keyof typeof stateColors]}>
-                    {ticket.estado}
-                  </Badge>
-                  <Badge className={priorityColors[ticket.prioridad as keyof typeof priorityColors]}>
-                    Prioridad {ticket.prioridad}
-                  </Badge>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
 
@@ -135,6 +113,28 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
         <div className="mb-6 hidden md:block">
           <TicketStepper currentState={ticket.estado as any} />
         </div>
+
+        {/* Ticket Info and Badges Card */}
+        <Card className="w-full border mb-6">
+          <CardContent className="p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-lg font-bold text-foreground">{ticket.folio}</h2>
+                <p className="mt-1 text-sm text-muted-foreground">{ticket.departamento}</p>
+              </div>
+              
+              {/* Status and Priority Badges */}
+              <div className="flex flex-wrap gap-2">
+                <Badge className={stateColors[ticket.estado as keyof typeof stateColors]}>
+                  {ticket.estado}
+                </Badge>
+                <Badge className={priorityColors[ticket.prioridad as keyof typeof priorityColors]}>
+                  Prioridad {ticket.prioridad}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Left Column - Sidebar */}
