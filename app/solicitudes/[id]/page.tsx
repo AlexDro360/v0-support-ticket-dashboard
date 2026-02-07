@@ -149,10 +149,10 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
 
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Left Column - Sidebar */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 order-2 lg:order-1">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Histórico de Cambios</CardTitle>
+                <CardTitle className="text-base sm:text-lg">Histórico de Cambios</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-0">
@@ -162,11 +162,11 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                     // Get icon based on type
                     const getIcon = () => {
                       if (evento.icono === 'documento') {
-                        return <FileText className="h-4 w-4 text-blue-600" />
+                        return <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600" />
                       } else if (evento.icono === 'usuario') {
-                        return <User className="h-4 w-4 text-blue-600" />
+                        return <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600" />
                       } else if (evento.icono === 'reloj') {
-                        return <Clock className="h-4 w-4 text-amber-600" />
+                        return <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-amber-600" />
                       }
                     }
 
@@ -193,40 +193,40 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                     }
 
                     return (
-                      <div key={idx} className={`flex gap-4 pb-6 ${!isLastItem ? 'relative' : ''}`}>
+                      <div key={idx} className={`flex gap-3 sm:gap-4 pb-4 sm:pb-6 ${!isLastItem ? 'relative' : ''}`}>
                         {/* Timeline line */}
                         {!isLastItem && (
-                          <div className="absolute left-5 top-10 h-16 w-px bg-slate-200" />
+                          <div className="absolute left-4.5 sm:left-5 top-10 sm:top-12 h-12 w-px bg-slate-200" />
                         )}
 
                         {/* Icon circle */}
-                        <div className={`flex-shrink-0 h-10 w-10 rounded-full ${getIconBgColor()} flex items-center justify-center`}>
+                        <div className={`flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full ${getIconBgColor()} flex items-center justify-center`}>
                           {getIcon()}
                         </div>
 
                         {/* Content */}
-                        <div className="flex-1 pt-1">
-                          <div className="flex items-start justify-between gap-4 mb-1">
-                            <h3 className="text-xs font-semibold text-foreground uppercase leading-tight">
+                        <div className="flex-1 pt-0.5 sm:pt-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1.5 sm:gap-4 mb-1">
+                            <h3 className="text-xs font-semibold text-foreground uppercase leading-tight break-words">
                               {evento.accion}
                             </h3>
-                            <Badge className={getStateBadgeColor()}>
+                            <Badge className={`${getStateBadgeColor()} flex-shrink-0 text-xs sm:text-sm whitespace-nowrap`}>
                               {evento.estado}
                             </Badge>
                           </div>
 
-                          <p className="text-sm text-muted-foreground mb-3">
+                          <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3 break-words">
                             <span className="font-medium text-foreground">{evento.quien}</span>
                             <span className="mx-1">•</span>
                             <span>{evento.rol}</span>
                           </p>
 
-                          <p className="text-sm text-muted-foreground mb-2">
+                          <p className="text-xs sm:text-sm text-muted-foreground mb-2 break-words">
                             {evento.fecha}
                           </p>
 
-                          <div className="bg-slate-50 rounded-md p-3 border border-slate-200 mt-3">
-                            <p className="text-sm text-muted-foreground">
+                          <div className="bg-slate-50 rounded-md p-2 sm:p-3 border border-slate-200 mt-2 sm:mt-3">
+                            <p className="text-xs sm:text-sm text-muted-foreground break-words">
                               {evento.detalles}
                             </p>
                           </div>
@@ -240,7 +240,7 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
 
           {/* Right Column - Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6 order-1 lg:order-2">
             {/* Información del Solicitante */}
             <Card>
               <CardHeader>
