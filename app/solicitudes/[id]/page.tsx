@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ChevronRight, ArrowLeft } from 'lucide-react'
+import { ChevronRight, ArrowLeft, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -39,6 +39,29 @@ const mockTicket = {
     { fecha: '03/02 14:45', evento: 'Estado cambiado a En Proceso', usuario: 'Carlos López' },
     { fecha: '03/02 14:30', evento: 'Técnico asignado', usuario: 'Coordinador TI' },
     { fecha: '03/02 10:30', evento: 'Solicitud creada', usuario: 'María González' },
+  ],
+  expediente: [
+    {
+      fecha: '05/02/2026 14:45',
+      quien: 'Carlos López',
+      estadoAnterior: 'Asignada',
+      estadoNuevo: 'En Proceso',
+      justificacion: null,
+    },
+    {
+      fecha: '04/02/2026 10:20',
+      quien: 'Coordinador TI',
+      estadoAnterior: 'Pendiente',
+      estadoNuevo: 'Asignada',
+      justificacion: null,
+    },
+    {
+      fecha: '03/02/2026 10:30',
+      quien: 'María González',
+      estadoAnterior: null,
+      estadoNuevo: 'Pendiente',
+      justificacion: null,
+    },
   ],
 }
 
@@ -124,17 +147,74 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
             <div className="lg:col-span-1">
               <Card className="sticky top-4">
                 <CardHeader>
-                  <CardTitle className="text-base">Información Rápida</CardTitle>
+                  <CardTitle className="text-base">Histórico de Cambios</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Técnico Asignado</p>
-                    <p className="text-sm font-medium text-foreground mt-1">{ticket.asignadoA}</p>
-                  </div>
-                  <Separator />
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Tiempo Transcurrido</p>
-                    <p className="text-sm font-medium text-foreground mt-1">{ticket.tiempoTranscurrido}</p>
+                <CardContent>
+                  <div className="space-y-4">
+                    {ticket.expediente.map((evento, idx) => {
+                      const isExceptional = evento.estadoNuevo === 'Pausa' || evento.estadoNuevo === 'Rechazada'
+                      const isLastItem = idx === ticket.expediente.length - 1
+
+                      return (
+                        <div key={idx} className="relative">
+                          {/* Timeline connector line */}
+                          {!isLastItem && (
+                            <div className="absolute left-4 top-10 h-6 w-0.5 bg-slate-200" />
+                          )}
+
+                          {/* Timeline item */}
+                          <div className="flex gap-3">
+                            {/* Timeline dot */}
+                            <div className={`flex-shrink-0 mt-1 h-2 w-2 rounded-full ${
+                              isExceptional
+                                ? 'bg-red-500'
+                                : 'bg-blue-500'
+                            }`} />
+
+                            {/* Content */}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-semibold text-slate-600">{evento.fecha}</p>
+                              
+                              <div className="mt-1 space-y-1">
+                                <p className="text-sm font-medium text-foreground">
+                                  {evento.estadoAnterior && `${evento.estadoAnterior} → `}
+                                  <Badge variant="secondary" className={`inline-block ml-1 ${
+                                    evento.estadoNuevo === 'Pausa' && 'bg-orange-100 text-orange-800'
+                                  } ${
+                                    evento.estadoNuevo === 'Rechazada' && 'bg-red-100 text-red-800'
+                                  }`}>
+                                    {evento.estadoNuevo}
+                                  </Badge>
+                                </p>
+                                <p className="text-xs text-muted-foreground">Por: {evento.quien}</p>
+                              </div>
+
+                              {/* Justification block for Pausa or Rechazada */}
+                              {isExceptional && evento.justificacion && (
+                                <div className={`mt-3 p-3 rounded-lg border-l-4 flex gap-2 ${
+                                  evento.estadoNuevo === 'Pausa'
+                                    ? 'bg-orange-50 border-orange-400'
+                                    : 'bg-red-50 border-red-400'
+                                }`}>
+                                  <AlertCircle className={`h-4 w-4 flex-shrink-0 mt-0.5 ${
+                                    evento.estadoNuevo === 'Pausa'
+                                      ? 'text-orange-600'
+                                      : 'text-red-600'
+                                  }`} />
+                                  <p className={`text-xs ${
+                                    evento.estadoNuevo === 'Pausa'
+                                      ? 'text-orange-900'
+                                      : 'text-red-900'
+                                  }`}>
+                                    {evento.justificacion}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
                   </div>
                 </CardContent>
               </Card>
