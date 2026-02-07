@@ -155,7 +155,7 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                 <CardTitle className="text-base sm:text-lg">Histórico de Cambios</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid gap-0 grid-cols-[auto_1fr] sm:gap-6">
+                <div className="grid gap-2 grid-cols-[auto_1fr] sm:gap-6">
                   {/* Timeline and Icons Column */}
                   <div className="flex flex-col items-center">
                     {ticket.expediente.map((evento, idx) => {
