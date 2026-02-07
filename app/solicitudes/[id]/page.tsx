@@ -206,14 +206,9 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
 
                         {/* Content */}
                         <div className="flex-1 pt-0.5 sm:pt-1 min-w-0">
-                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1.5 sm:gap-4 mb-1">
-                            <h3 className="text-xs font-semibold text-foreground uppercase leading-tight break-words">
-                              {evento.accion}
-                            </h3>
-                            <Badge className={`${getStateBadgeColor()} flex-shrink-0 text-xs sm:text-sm whitespace-nowrap`}>
-                              {evento.estado}
-                            </Badge>
-                          </div>
+                          <h3 className="text-xs font-semibold text-foreground uppercase leading-tight break-words mb-2">
+                            {evento.estado}
+                          </h3>
 
                           <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3 break-words">
                             <span className="font-medium text-foreground">{evento.quien}</span>
@@ -221,15 +216,9 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                             <span>{evento.rol}</span>
                           </p>
 
-                          <p className="text-xs sm:text-sm text-muted-foreground mb-2 break-words">
+                          <p className="text-xs sm:text-sm text-muted-foreground break-words">
                             {evento.fecha}
                           </p>
-
-                          <div className="bg-slate-50 rounded-md p-2 sm:p-3 border border-slate-200 mt-2 sm:mt-3">
-                            <p className="text-xs sm:text-sm text-muted-foreground break-words">
-                              {evento.detalles}
-                            </p>
-                          </div>
                         </div>
                       </div>
                     )
