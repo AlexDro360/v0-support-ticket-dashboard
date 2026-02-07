@@ -15,6 +15,7 @@ import {
   Ban,
   ClipboardCheck,
   Lock,
+  Route,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -24,6 +25,7 @@ import { TicketStepper } from '@/components/ticket-stepper'
 import { Separator } from '@/components/ui/separator'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogContent,
@@ -43,7 +45,7 @@ interface ExpedienteEntry {
   rol: string
   accion: string
   estado: string
-  icono: 'documento' | 'usuario' | 'reloj' | 'check' | 'pause' | 'rejected' | 'lock'
+  icono: 'documento' | 'usuario' | 'reloj' | 'check' | 'pause' | 'rejected' | 'lock' | 'route'
   detalles: string
 }
 
@@ -63,6 +65,12 @@ const mockTecnicos: Tecnico[] = [
   { id: '3', nombre: 'Roberto Sanchez', especialidad: 'Redes', disponible: false, cargaActual: 5 },
   { id: '4', nombre: 'Laura Torres', especialidad: 'Hardware', disponible: true, cargaActual: 3 },
   { id: '5', nombre: 'Miguel Herrera', especialidad: 'Software', disponible: false, cargaActual: 4 },
+]
+
+const coordinaciones = [
+  { id: 'redes', nombre: 'Coordinacion de Redes', icono: '🌐' },
+  { id: 'mantenimiento', nombre: 'Coordinacion de Mantenimiento', icono: '🔧' },
+  { id: 'software', nombre: 'Coordinacion de Software', icono: '💻' },
 ]
 
 const initialExpediente: ExpedienteEntry[] = [
@@ -99,6 +107,71 @@ function getNow() {
 }
 
 // --- Sub-components ---
+
+function CanalizarModal({
+  open,
+  onClose,
+  onConfirm,
+}: {
+  open: boolean
+  onClose: () => void
+  onConfirm: (coordinacion: string) => void
+}) {
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  const handleConfirm = () => {
+    const coord = coordinaciones.find((c) => c.id === selectedId)
+    if (coord) {
+      onConfirm(coord.nombre)
+      setSelectedId(null)
+    }
+  }
+
+  const handleClose = () => {
+    setSelectedId(null)
+    onClose()
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Canalizar Solicitud</DialogTitle>
+          <DialogDescription>
+            Selecciona la coordinacion responsable de atender esta solicitud.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-2">
+          {coordinaciones.map((coord) => (
+            <button
+              key={coord.id}
+              type="button"
+              onClick={() => setSelectedId(coord.id)}
+              className={`w-full flex items-center gap-3 rounded-lg border p-4 text-left transition-colors ${
+                selectedId === coord.id
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-border hover:bg-muted/50 cursor-pointer'
+              }`}
+            >
+              <span className="text-lg">{coord.icono}</span>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-foreground">{coord.nombre}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={handleClose}>
+            Cancelar
+          </Button>
+          <Button onClick={handleConfirm} disabled={!selectedId}>
+            Canalizar
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 function RechazarModal({
   open,
@@ -176,20 +249,40 @@ function AsignarModal({
 }: {
   open: boolean
   onClose: () => void
-  onConfirm: (tecnico: Tecnico) => void
+  onConfirm: (tecnicos: Tecnico[]) => void
 }) {
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+
+  const handleToggle = (id: string) => {
+    const newSet = new Set(selectedIds)
+    if (newSet.has(id)) {
+      newSet.delete(id)
+    } else {
+      if (newSet.size < 3) {
+        newSet.add(id)
+      } else {
+        toast.error('Limite alcanzado', {
+          description: 'Solo puedes seleccionar un maximo de 3 tecnicos.',
+        })
+        return
+      }
+    }
+    setSelectedIds(newSet)
+  }
 
   const handleConfirm = () => {
-    const tecnico = mockTecnicos.find((t) => t.id === selectedId)
-    if (tecnico) {
-      onConfirm(tecnico)
-      setSelectedId(null)
+    const tecnicos = Array.from(selectedIds)
+      .map((id) => mockTecnicos.find((t) => t.id === id))
+      .filter((t) => t !== undefined) as Tecnico[]
+
+    if (tecnicos.length > 0) {
+      onConfirm(tecnicos)
+      setSelectedIds(new Set())
     }
   }
 
   const handleClose = () => {
-    setSelectedId(null)
+    setSelectedIds(new Set())
     onClose()
   }
 
@@ -197,9 +290,9 @@ function AsignarModal({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Asignar Tecnico</DialogTitle>
+          <DialogTitle>Asignar Tecnicos</DialogTitle>
           <DialogDescription>
-            Selecciona un tecnico disponible para atender esta solicitud.
+            Selecciona de 1 a 3 tecnicos disponibles para atender esta solicitud.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -207,16 +300,29 @@ function AsignarModal({
             <button
               key={tecnico.id}
               type="button"
-              disabled={!tecnico.disponible}
-              onClick={() => setSelectedId(tecnico.id)}
+              disabled={!tecnico.disponible && !selectedIds.has(tecnico.id)}
+              onClick={() => {
+                if (tecnico.disponible || selectedIds.has(tecnico.id)) {
+                  handleToggle(tecnico.id)
+                }
+              }}
               className={`w-full flex items-center gap-3 rounded-lg border p-3 text-left transition-colors ${
-                selectedId === tecnico.id
+                selectedIds.has(tecnico.id)
                   ? 'border-blue-500 bg-blue-50'
                   : tecnico.disponible
                     ? 'border-border hover:bg-muted/50 cursor-pointer'
                     : 'border-border bg-muted/30 opacity-60 cursor-not-allowed'
               }`}
             >
+              <Checkbox
+                checked={selectedIds.has(tecnico.id)}
+                disabled={!tecnico.disponible && !selectedIds.has(tecnico.id)}
+                onCheckedChange={() => {
+                  if (tecnico.disponible || selectedIds.has(tecnico.id)) {
+                    handleToggle(tecnico.id)
+                  }
+                }}
+              />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-foreground truncate">
                   {tecnico.nombre}
@@ -236,12 +342,15 @@ function AsignarModal({
             </button>
           ))}
         </div>
+        <div className="text-xs text-muted-foreground">
+          Seleccionados: {selectedIds.size}/3
+        </div>
         <DialogFooter>
           <Button variant="outline" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button onClick={handleConfirm} disabled={!selectedId}>
-            Asignar
+          <Button onClick={handleConfirm} disabled={selectedIds.size === 0}>
+            Asignar {selectedIds.size > 0 ? `(${selectedIds.size})` : ''}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -383,16 +492,24 @@ function FinalizarModal({
 
 function ActionBar({
   estado,
+  canalizado,
+  tecnicosAsignados,
+  onCanalizar,
   onRechazar,
   onAsignar,
+  onIniciarAtencion,
   onPausar,
   onFinalizar,
   onCerrar,
   onReanudar,
 }: {
   estado: TicketState
+  canalizado: boolean
+  tecnicosAsignados: boolean
+  onCanalizar: () => void
   onRechazar: () => void
   onAsignar: () => void
+  onIniciarAtencion: () => void
   onPausar: () => void
   onFinalizar: () => void
   onCerrar: () => void
@@ -406,10 +523,32 @@ function ActionBar({
             <Ban className="h-4 w-4 mr-1.5" />
             Rechazar
           </Button>
-          <Button size="sm" onClick={onAsignar}>
-            <UserPlus className="h-4 w-4 mr-1.5" />
-            Asignar
+          <Button
+            size="sm"
+            variant={canalizado ? 'outline' : 'default'}
+            onClick={onCanalizar}
+          >
+            <Route className="h-4 w-4 mr-1.5" />
+            Canalizar
           </Button>
+          {canalizado && (
+            <>
+              <Button
+                size="sm"
+                variant={tecnicosAsignados ? 'outline' : 'default'}
+                onClick={onAsignar}
+              >
+                <UserPlus className="h-4 w-4 mr-1.5" />
+                Asignar
+              </Button>
+              {tecnicosAsignados && (
+                <Button size="sm" onClick={onIniciarAtencion} className="bg-green-600 hover:bg-green-700 text-white">
+                  <Play className="h-4 w-4 mr-1.5" />
+                  Iniciar Atencion
+                </Button>
+              )}
+            </>
+          )}
         </>
       )}
       {estado === 'En Proceso' && (
@@ -463,6 +602,7 @@ function TimelineIcon({ icono }: { icono: ExpedienteEntry['icono'] }) {
     pause: { icon: <Pause className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-orange-600" />, bg: 'bg-orange-100' },
     rejected: { icon: <XCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-red-600" />, bg: 'bg-red-100' },
     lock: { icon: <Lock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-600" />, bg: 'bg-slate-100' },
+    route: { icon: <Route className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-purple-600" />, bg: 'bg-purple-100' },
   }
   const config = iconMap[icono] ?? iconMap.documento
   return (
@@ -478,10 +618,13 @@ const TicketDetailPage = () => {
   const router = useRouter()
 
   const [estado, setEstado] = useState<TicketState>('Pendiente')
-  const [asignadoA, setAsignadoA] = useState<string | null>(null)
+  const [canalizado, setCanalizado] = useState(false)
+  const [canalizacionSeleccionada, setCanalizacionSeleccionada] = useState<string | null>(null)
+  const [tecnicosAsignados, setTecnicosAsignados] = useState<Tecnico[]>([])
   const [expediente, setExpediente] = useState<ExpedienteEntry[]>(initialExpediente)
 
   // Modal states
+  const [showCanalizar, setShowCanalizar] = useState(false)
   const [showRechazar, setShowRechazar] = useState(false)
   const [showAsignar, setShowAsignar] = useState(false)
   const [showPausar, setShowPausar] = useState(false)
@@ -492,6 +635,24 @@ const TicketDetailPage = () => {
   }
 
   // --- Handlers ---
+
+  const handleCanalizar = (coordinacion: string) => {
+    setCanalizado(true)
+    setCanalizacionSeleccionada(coordinacion)
+    addExpedienteEntry({
+      fecha: getNow(),
+      quien: 'Coordinador TI',
+      rol: 'Administrador',
+      accion: `Canalizo la solicitud a ${coordinacion}`,
+      estado: 'Pendiente',
+      icono: 'route',
+      detalles: `Coordinacion asignada: ${coordinacion}`,
+    })
+    setShowCanalizar(false)
+    toast.success('Solicitud canalizada', {
+      description: `Se ha canalizado a ${coordinacion}.`,
+    })
+  }
 
   const handleRechazar = (justificacion: string) => {
     setEstado('Rechazada')
@@ -510,39 +671,39 @@ const TicketDetailPage = () => {
     })
   }
 
-  const handleAsignar = (tecnico: Tecnico) => {
-    setEstado('Asignada')
-    setAsignadoA(`${tecnico.nombre} (${tecnico.especialidad})`)
+  const handleAsignar = (tecnicos: Tecnico[]) => {
+    setTecnicosAsignados(tecnicos)
+    const tecnicosStr = tecnicos.map((t) => t.nombre).join(', ')
     addExpedienteEntry({
       fecha: getNow(),
       quien: 'Coordinador TI',
       rol: 'Administrador',
-      accion: `Asigno la solicitud a ${tecnico.nombre}`,
-      estado: 'Asignada',
+      accion: `Asigno ${tecnicos.length} tecnico(s): ${tecnicosStr}`,
+      estado: 'Pendiente',
       icono: 'usuario',
-      detalles: `Tecnico: ${tecnico.nombre}, Especialidad: ${tecnico.especialidad}`,
+      detalles: `Tecnicos asignados: ${tecnicos.map((t) => `${t.nombre} (${t.especialidad})`).join(', ')}`,
     })
     setShowAsignar(false)
-    toast.success('Tecnico asignado', {
-      description: `${tecnico.nombre} ha sido asignado a esta solicitud.`,
+    toast.success('Tecnicos asignados', {
+      description: `${tecnicosStr} ha(n) sido asignado(s) a esta solicitud.`,
     })
+  }
 
-    // Auto-transition to En Proceso after a short delay (simulated)
-    setTimeout(() => {
-      setEstado('En Proceso')
-      setExpediente((prev) => [
-        ...prev,
-        {
-          fecha: getNow(),
-          quien: tecnico.nombre,
-          rol: 'Tecnico',
-          accion: 'Inicio el procesamiento de la solicitud',
-          estado: 'En Proceso',
-          icono: 'reloj' as const,
-          detalles: 'Diagnostico inicial en curso',
-        },
-      ])
-    }, 1500)
+  const handleIniciarAtencion = () => {
+    setEstado('En Proceso')
+    const tecnicosStr = tecnicosAsignados.map((t) => t.nombre).join(', ')
+    addExpedienteEntry({
+      fecha: getNow(),
+      quien: 'Coordinador TI',
+      rol: 'Administrador',
+      accion: `Inicio la atencion con los tecnicos: ${tecnicosStr}`,
+      estado: 'En Proceso',
+      icono: 'reloj',
+      detalles: 'Diagnostico inicial en curso',
+    })
+    toast.success('Atencion iniciada', {
+      description: 'El ticket ahora esta En Proceso.',
+    })
   }
 
   const handlePausar = (justificacion: string) => {
@@ -566,7 +727,7 @@ const TicketDetailPage = () => {
     setEstado('Resuelta')
     addExpedienteEntry({
       fecha: getNow(),
-      quien: asignadoA?.split(' (')[0] ?? 'Tecnico',
+      quien: tecnicosAsignados[0]?.nombre ?? 'Tecnico',
       rol: 'Tecnico',
       accion: 'Finalizo y genero reporte de resolucion',
       estado: 'Resuelta',
@@ -661,9 +822,14 @@ const TicketDetailPage = () => {
               <div className="flex-1">
                 <h2 className="text-lg font-bold text-foreground">{ticket.folio}</h2>
                 <p className="mt-1 text-sm text-muted-foreground">{ticket.departamento}</p>
-                {asignadoA && (
+                {canalizacionSeleccionada && (
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Asignado a: <span className="font-medium text-foreground">{asignadoA}</span>
+                    Canalizado a: <span className="font-medium text-foreground">{canalizacionSeleccionada}</span>
+                  </p>
+                )}
+                {tecnicosAsignados.length > 0 && (
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Asignado a: <span className="font-medium text-foreground">{tecnicosAsignados.map((t) => t.nombre).join(', ')}</span>
                   </p>
                 )}
               </div>
@@ -677,8 +843,12 @@ const TicketDetailPage = () => {
                 <div className="mt-1">
                   <ActionBar
                     estado={estado}
+                    canalizado={canalizado}
+                    tecnicosAsignados={tecnicosAsignados.length > 0}
+                    onCanalizar={() => setShowCanalizar(true)}
                     onRechazar={() => setShowRechazar(true)}
                     onAsignar={() => setShowAsignar(true)}
+                    onIniciarAtencion={handleIniciarAtencion}
                     onPausar={() => setShowPausar(true)}
                     onFinalizar={() => setShowFinalizar(true)}
                     onCerrar={handleCerrar}
@@ -821,6 +991,11 @@ const TicketDetailPage = () => {
       </div>
 
       {/* Modals */}
+      <CanalizarModal
+        open={showCanalizar}
+        onClose={() => setShowCanalizar(false)}
+        onConfirm={handleCanalizar}
+      />
       <RechazarModal
         open={showRechazar}
         onClose={() => setShowRechazar(false)}
