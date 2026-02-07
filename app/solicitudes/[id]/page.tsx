@@ -511,7 +511,7 @@ function ActionBar({
 }: {
   estado: TicketState
   canalizado: boolean
-  tecnicosAsignados: boolean
+  tecnicosAsignados: Tecnico[]
   onCanalizar: () => void
   onRechazar: () => void
   onAsignar: () => void
@@ -843,7 +843,7 @@ const TicketDetailPage = () => {
                   <ActionBar
                     estado={estado}
                     canalizado={canalizado}
-                    tecnicosAsignados={tecnicosAsignados.length > 0}
+                    tecnicosAsignados={tecnicosAsignados}
                     onCanalizar={() => setShowCanalizar(true)}
                     onRechazar={() => setShowRechazar(true)}
                     onAsignar={() => setShowAsignar(true)}
