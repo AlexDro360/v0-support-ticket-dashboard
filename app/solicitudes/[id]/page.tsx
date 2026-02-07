@@ -163,22 +163,22 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                       // Get icon based on type
                       const getIcon = () => {
                         if (evento.icono === 'documento') {
-                          return <FileText className="h-6 w-6 text-white" />
+                          return <FileText className="h-4 w-4 text-white" />
                         } else if (evento.icono === 'usuario') {
-                          return <User className="h-6 w-6 text-white" />
+                          return <User className="h-4 w-4 text-white" />
                         } else if (evento.icono === 'reloj') {
-                          return <Clock className="h-6 w-6 text-white" />
+                          return <Clock className="h-4 w-4 text-white" />
                         }
                       }
 
                       // Get icon background color
                       const getIconBgColor = () => {
                         if (evento.icono === 'documento') {
-                          return 'bg-blue-400'
+                          return 'bg-blue-300'
                         } else if (evento.icono === 'usuario') {
-                          return 'bg-blue-400'
+                          return 'bg-blue-300'
                         } else if (evento.icono === 'reloj') {
-                          return 'bg-amber-400'
+                          return 'bg-amber-300'
                         }
                       }
 
@@ -201,14 +201,14 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                           )}
 
                           {/* Icon circle */}
-                          <div className={`flex-shrink-0 h-12 w-12 rounded-full ${getIconBgColor()} flex items-center justify-center`}>
+                          <div className={`flex-shrink-0 h-10 w-10 rounded-full ${getIconBgColor()} flex items-center justify-center`}>
                             {getIcon()}
                           </div>
 
                           {/* Content */}
                           <div className="flex-1 pt-1">
                             <div className="flex items-start justify-between gap-4 mb-1">
-                              <h3 className="text-base font-semibold text-foreground leading-tight">
+                              <h3 className="text-xs font-semibold text-foreground uppercase leading-tight">
                                 {evento.accion}
                               </h3>
                               <Badge className={getStateBadgeColor()}>
