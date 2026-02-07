@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal, Eye, UserPlus, CheckCircle } from "lucide-react"
+import Link from "next/link"
 
 export interface Ticket {
   id: string
@@ -100,10 +101,12 @@ export function TicketsTable({ tickets }: TicketsTableProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-48">
-                        <DropdownMenuItem className="cursor-pointer">
-                          <Eye className="mr-2 h-4 w-4" />
-                          Ver Detalles
-                        </DropdownMenuItem>
+                        <Link href={`/solicitudes/${ticket.id}`}>
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Eye className="mr-2 h-4 w-4" />
+                            Ver Detalles
+                          </DropdownMenuItem>
+                        </Link>
                         <DropdownMenuItem className="cursor-pointer">
                           <UserPlus className="mr-2 h-4 w-4" />
                           Asignar Técnico
