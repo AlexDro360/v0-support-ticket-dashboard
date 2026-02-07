@@ -104,25 +104,48 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
               </p>
             </div>
           </div>
-
-          {/* Ticket Info and Badges */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <h2 className="text-lg font-bold text-foreground">{ticket.folio}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{ticket.departamento}</p>
-            </div>
-            
-            {/* Status and Priority Badges */}
-            <div className="flex flex-wrap gap-2">
-              <Badge className={stateColors[ticket.estado as keyof typeof stateColors]}>
-                {ticket.estado}
-              </Badge>
-              <Badge className={priorityColors[ticket.prioridad as keyof typeof priorityColors]}>
-                Prioridad {ticket.prioridad}
-              </Badge>
-            </div>
-          </div>
         </div>
+      </div>
+
+      {/* Ticket Info Card */}
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <Card className="bg-card border">
+          <CardContent className="p-6">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {/* Folio */}
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase">Folio</p>
+                <p className="mt-2 text-lg font-bold text-foreground">{ticket.folio}</p>
+              </div>
+
+              {/* Departamento */}
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase">Departamento</p>
+                <p className="mt-2 text-sm font-medium text-foreground">{ticket.departamento}</p>
+              </div>
+
+              {/* Estado */}
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase">Estado</p>
+                <div className="mt-2">
+                  <Badge className={stateColors[ticket.estado as keyof typeof stateColors]}>
+                    {ticket.estado}
+                  </Badge>
+                </div>
+              </div>
+
+              {/* Prioridad */}
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase">Prioridad</p>
+                <div className="mt-2">
+                  <Badge className={priorityColors[ticket.prioridad as keyof typeof priorityColors]}>
+                    Prioridad {ticket.prioridad}
+                  </Badge>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Main Content */}
