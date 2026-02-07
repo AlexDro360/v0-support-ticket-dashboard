@@ -770,18 +770,20 @@ const TicketDetailPage = () => {
   }
 
   const handleReanudar = () => {
-    setEstado('En Proceso')
+    setEstado('Asignado')
+    setTecnicosAsignados([])
+    setShowAsignar(true)
     addExpedienteEntry({
       fecha: getNow(),
       quien: 'Coordinador TI',
       rol: 'Administrador',
-      accion: 'Reanudo la solicitud',
-      estado: 'En Proceso',
+      accion: 'Reanudo la solicitud - Esperando nueva asignacion de tecnicos',
+      estado: 'Asignado',
       icono: 'reloj',
-      detalles: 'La solicitud fue reanudada y continua en proceso',
+      detalles: 'La solicitud fue reanudada. Requiere nueva asignacion de tecnicos.',
     })
     toast.info('Solicitud reanudada', {
-      description: 'La solicitud ha vuelto a estado En Proceso.',
+      description: 'Selecciona nuevos tecnicos para continuar con la atencion.',
     })
   }
 
