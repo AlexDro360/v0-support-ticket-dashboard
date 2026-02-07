@@ -33,6 +33,9 @@ export default function NuevaSolicitud() {
             <h2 className="text-base font-semibold text-foreground sm:text-lg">
               Formulario de Solicitud
             </h2>
+            <p className="text-xs text-muted-foreground sm:text-sm">
+              Por favor completa todos los campos requeridos para procesar tu solicitud
+            </p>
           </div>
 
           <div className="space-y-6 p-4 sm:p-6">
