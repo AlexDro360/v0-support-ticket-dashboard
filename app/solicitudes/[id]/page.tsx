@@ -81,7 +81,7 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-foreground">{ticket.folio}</h1>
-              <p className="mt-1 text-sm text-muted-foreground">{ticket.titulo}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{ticket.departamento}</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 <Badge className={stateColors[ticket.estado as keyof typeof stateColors]}>
                   {ticket.estado}
@@ -93,16 +93,6 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                   Creado: {ticket.fecha}
                 </span>
               </div>
-            </div>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                Descargar Reporte
-              </Button>
-              <Button variant="outline" size="sm">
-                <MessageSquare className="h-4 w-4 mr-2" />
-                Comentarios
-              </Button>
             </div>
           </div>
         </div>
@@ -167,15 +157,9 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                 <CardTitle>Detalles del Problema</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Tipo de Problema</p>
-                    <p className="text-sm font-medium text-foreground mt-1">{ticket.tipoProblema}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase">Equipo (Inventario)</p>
-                    <p className="text-sm font-medium text-foreground mt-1">{ticket.equipo}</p>
-                  </div>
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase">Tipo de Problema</p>
+                  <p className="text-sm font-medium text-foreground mt-1">{ticket.tipoProblema}</p>
                 </div>
                 <Separator />
                 <div>
