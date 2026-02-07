@@ -57,7 +57,7 @@ export function TicketsTable({ tickets }: TicketsTableProps) {
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/50 hover:bg-muted/50">
-              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Folio</TableHead>
+              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Folio2</TableHead>
               <TableHead className="hidden text-xs font-semibold text-foreground sm:table-cell sm:text-sm">Fecha</TableHead>
               <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Nombre Afectado</TableHead>
               <TableHead className="hidden text-xs font-semibold text-foreground md:table-cell md:text-sm">Departamento</TableHead>

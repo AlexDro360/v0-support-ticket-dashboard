@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal, Eye, UserPlus, CheckCircle } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export interface Ticket {
   id: string
@@ -46,7 +47,9 @@ const estadoStyles: Record<string, string> = {
   Resuelto: "bg-green-100 text-green-700 hover:bg-green-100",
 }
 
-function ActionMenu() {
+function ActionMenu({ ticketId }: { ticketId: string }) {
+  const router = useRouter()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -56,7 +59,10 @@ function ActionMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem 
+          className="cursor-pointer"
+          onClick={() => router.push(`/solicitudes/${ticketId}`)}
+        >
           <Eye className="mr-2 h-4 w-4" />
           Ver Detalles
         </DropdownMenuItem>
@@ -75,6 +81,8 @@ function ActionMenu() {
 }
 
 export function TicketsResponsiveView({ tickets }: TicketsResponsiveViewProps) {
+  const router = useRouter()
+
   return (
     <>
       {/* Desktop View - Table */}
@@ -103,7 +111,8 @@ export function TicketsResponsiveView({ tickets }: TicketsResponsiveViewProps) {
                 tickets.map((ticket) => (
                   <TableRow
                     key={ticket.id}
-                    className="transition-colors hover:bg-muted/50"
+                    className="transition-colors hover:bg-muted/50 cursor-pointer"
+                    onClick={() => router.push(`/solicitudes/${ticket.id}`)}
                   >
                     <TableCell className="text-xs font-medium text-primary sm:text-sm">{ticket.folio}</TableCell>
                     <TableCell className="text-xs text-muted-foreground sm:text-sm">{ticket.fecha}</TableCell>
@@ -120,7 +129,7 @@ export function TicketsResponsiveView({ tickets }: TicketsResponsiveViewProps) {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <ActionMenu />
+                      <ActionMenu ticketId={ticket.id} />
                     </TableCell>
                   </TableRow>
                 ))
@@ -140,7 +149,8 @@ export function TicketsResponsiveView({ tickets }: TicketsResponsiveViewProps) {
           tickets.map((ticket) => (
             <div
               key={ticket.id}
-              className="rounded-lg border bg-card p-4 transition-colors hover:bg-muted/50"
+              className="rounded-lg border bg-card p-4 transition-colors hover:bg-muted/50 cursor-pointer"
+              onClick={() => router.push(`/solicitudes/${ticket.id}`)}
             >
               {/* Top Row: Name + Date */}
               <div className="flex items-start justify-between gap-2 mb-3">
@@ -169,7 +179,7 @@ export function TicketsResponsiveView({ tickets }: TicketsResponsiveViewProps) {
                     {ticket.estado}
                   </Badge>
                 </div>
-                <ActionMenu />
+                <ActionMenu ticketId={ticket.id} />
               </div>
             </div>
           ))
