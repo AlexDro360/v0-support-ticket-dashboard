@@ -40,7 +40,7 @@ import {
 
 // --- Types ---
 
-type TicketState = 'Pendiente' | 'Asignada' | 'En Proceso' | 'Resuelta' | 'Cerrada' | 'Pausa' | 'Rechazada'
+type TicketState = 'Pendiente' | 'Asignado' | 'En Proceso' | 'Resuelta' | 'Cerrada' | 'Pausa' | 'Rechazada'
 
 interface ExpedienteEntry {
   fecha: string
@@ -96,7 +96,7 @@ const priorityColors = {
 
 const stateColors: Record<TicketState, string> = {
   Pendiente: 'bg-slate-100 text-slate-800',
-  Asignada: 'bg-blue-100 text-blue-800',
+  Asignado: 'bg-blue-100 text-blue-800',
   'En Proceso': 'bg-amber-100 text-amber-800',
   Resuelta: 'bg-green-100 text-green-800',
   Cerrada: 'bg-slate-600 text-white',
@@ -538,21 +538,15 @@ function ActionBar({
             Canalizar
           </Button>
           {canalizado && (
-            <>
-              <Button
-                size="sm"
-                variant={tecnicosAsignados ? 'outline' : 'default'}
-                onClick={onAsignar}
-              >
-                <UserPlus className="h-4 w-4 mr-1.5" />
-                Asignar
-              </Button>
-              {tecnicosAsignados && (
-                <Button size="sm" onClick={onIniciarAtencion} className="bg-green-600 hover:bg-green-700 text-white">
-                  <Play className="h-4 w-4 mr-1.5" />
-                  Iniciar Atencion
-                </Button>
-              )}
+            <Button
+              size="sm"
+              variant={tecnicosAsignados.length > 0 ? 'outline' : 'default'}
+              onClick={onAsignar}
+            >
+              <UserPlus className="h-4 w-4 mr-1.5" />
+              Asignar
+            </Button>
+          )}
             </>
           )}
         </>
@@ -679,13 +673,14 @@ const TicketDetailPage = () => {
 
   const handleAsignar = (tecnicos: Tecnico[]) => {
     setTecnicosAsignados(tecnicos)
+    setEstado('Asignado')
     const tecnicosStr = tecnicos.map((t) => t.nombre).join(', ')
     addExpedienteEntry({
       fecha: getNow(),
       quien: 'Coordinador TI',
       rol: 'Administrador',
       accion: `Asigno ${tecnicos.length} tecnico(s): ${tecnicosStr}`,
-      estado: 'Pendiente',
+      estado: 'Asignado',
       icono: 'usuario',
       detalles: `Tecnicos asignados: ${tecnicos.map((t) => `${t.nombre} (${t.especialidad})`).join(', ')}`,
     })
