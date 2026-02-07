@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ChevronRight, ArrowLeft, AlertCircle, FileText, User, Clock } from 'lucide-react'
+import { ChevronRight, ArrowLeft, AlertCircle, FileText, User, Clock, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -42,25 +42,31 @@ const mockTicket = {
   ],
   expediente: [
     {
-      fecha: '05/02/2026 14:45',
-      quien: 'Carlos López',
-      estadoAnterior: 'Asignada',
-      estadoNuevo: 'En Proceso',
-      justificacion: null,
+      fecha: '2026-02-06 10:30',
+      quien: 'Juan Pérez',
+      rol: 'Solicitante',
+      accion: 'Creó la solicitud de soporte',
+      estado: 'Pendiente',
+      icono: 'documento',
+      detalles: 'Tipo: Hardware, Prioridad: Alta',
     },
     {
-      fecha: '04/02/2026 10:20',
+      fecha: '2026-02-06 10:45',
       quien: 'Coordinador TI',
-      estadoAnterior: 'Pendiente',
-      estadoNuevo: 'Asignada',
-      justificacion: null,
+      rol: 'Administrador',
+      accion: 'Revisó y canalizó la solicitud',
+      estado: 'Asignada',
+      icono: 'usuario',
+      detalles: 'La solicitud fue validada y aprobada para procesamiento',
     },
     {
-      fecha: '03/02/2026 10:30',
-      quien: 'María González',
-      estadoAnterior: null,
-      estadoNuevo: 'Pendiente',
-      justificacion: null,
+      fecha: '2026-02-06 11:00',
+      quien: 'Carlos López',
+      rol: 'Técnico',
+      accion: 'Inició el procesamiento',
+      estado: 'En Proceso',
+      icono: 'reloj',
+      detalles: 'Equipo asignado: INV-ITO-001, Diagnóstico inicial realizado',
     },
   ],
 }
@@ -145,75 +151,85 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
           <div className="grid gap-6 lg:grid-cols-3">
             {/* Left Column - Sidebar */}
             <div className="lg:col-span-1">
-              <Card className="sticky top-4">
+              <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Histórico de Cambios</CardTitle>
+                  <CardTitle className="text-lg">Histórico de Cambios</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
+                  <div className="space-y-0">
                     {ticket.expediente.map((evento, idx) => {
-                      const isExceptional = evento.estadoNuevo === 'Pausa' || evento.estadoNuevo === 'Rechazada'
                       const isLastItem = idx === ticket.expediente.length - 1
+                      
+                      // Get icon based on type
+                      const getIcon = () => {
+                        if (evento.icono === 'documento') {
+                          return <FileText className="h-6 w-6 text-white" />
+                        } else if (evento.icono === 'usuario') {
+                          return <User className="h-6 w-6 text-white" />
+                        } else if (evento.icono === 'reloj') {
+                          return <Clock className="h-6 w-6 text-white" />
+                        }
+                      }
+
+                      // Get icon background color
+                      const getIconBgColor = () => {
+                        if (evento.icono === 'documento') {
+                          return 'bg-blue-400'
+                        } else if (evento.icono === 'usuario') {
+                          return 'bg-blue-400'
+                        } else if (evento.icono === 'reloj') {
+                          return 'bg-amber-400'
+                        }
+                      }
+
+                      // Get state badge color
+                      const getStateBadgeColor = () => {
+                        const colorMap: { [key: string]: string } = {
+                          'Pendiente': 'bg-blue-100 text-blue-800',
+                          'Asignada': 'bg-blue-100 text-blue-800',
+                          'En Proceso': 'bg-amber-100 text-amber-800',
+                          'Resuelto': 'bg-green-100 text-green-800',
+                        }
+                        return colorMap[evento.estado] || 'bg-slate-100 text-slate-800'
+                      }
 
                       return (
-                        <div key={idx} className="relative">
-                          {/* Timeline connector line */}
+                        <div key={idx} className={`flex gap-4 pb-6 ${!isLastItem ? 'relative' : ''}`}>
+                          {/* Timeline line */}
                           {!isLastItem && (
-                            <div className="absolute left-4 top-10 h-6 w-0.5 bg-slate-200" />
+                            <div className="absolute left-5 top-16 h-8 w-px bg-slate-200" />
                           )}
 
-                          {/* Timeline item */}
-                          <div className="flex gap-3">
-                            {/* Timeline dot */}
-                            <div className={`flex-shrink-0 mt-1 h-2 w-2 rounded-full ${
-                              isExceptional
-                                ? 'bg-red-500'
-                                : 'bg-blue-500'
-                            }`} />
+                          {/* Icon circle */}
+                          <div className={`flex-shrink-0 h-12 w-12 rounded-full ${getIconBgColor()} flex items-center justify-center`}>
+                            {getIcon()}
+                          </div>
 
-                            {/* Content */}
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-semibold text-slate-600">{evento.fecha}</p>
-                              
-                              <div className="mt-1 space-y-1">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  {evento.estadoAnterior && (
-                                    <span className="text-sm font-medium text-foreground">
-                                      {evento.estadoAnterior} →
-                                    </span>
-                                  )}
-                                  <Badge variant="secondary" className={`${
-                                    evento.estadoNuevo === 'Pausa' && 'bg-orange-100 text-orange-800'
-                                  } ${
-                                    evento.estadoNuevo === 'Rechazada' && 'bg-red-100 text-red-800'
-                                  }`}>
-                                    {evento.estadoNuevo}
-                                  </Badge>
-                                </div>
-                                <p className="text-xs text-muted-foreground">Por: {evento.quien}</p>
-                              </div>
+                          {/* Content */}
+                          <div className="flex-1 pt-1">
+                            <div className="flex items-start justify-between gap-4 mb-1">
+                              <h3 className="text-base font-semibold text-foreground leading-tight">
+                                {evento.accion}
+                              </h3>
+                              <Badge className={getStateBadgeColor()}>
+                                {evento.estado}
+                              </Badge>
+                            </div>
+                            
+                            <p className="text-sm text-muted-foreground mb-3">
+                              <span className="font-medium text-foreground">{evento.quien}</span>
+                              <span className="mx-1">•</span>
+                              <span>{evento.rol}</span>
+                            </p>
 
-                              {/* Justification block for Pausa or Rechazada */}
-                              {isExceptional && evento.justificacion && (
-                                <div className={`mt-3 p-3 rounded-lg border-l-4 flex gap-2 ${
-                                  evento.estadoNuevo === 'Pausa'
-                                    ? 'bg-orange-50 border-orange-400'
-                                    : 'bg-red-50 border-red-400'
-                                }`}>
-                                  <AlertCircle className={`h-4 w-4 flex-shrink-0 mt-0.5 ${
-                                    evento.estadoNuevo === 'Pausa'
-                                      ? 'text-orange-600'
-                                      : 'text-red-600'
-                                  }`} />
-                                  <p className={`text-xs ${
-                                    evento.estadoNuevo === 'Pausa'
-                                      ? 'text-orange-900'
-                                      : 'text-red-900'
-                                  }`}>
-                                    {evento.justificacion}
-                                  </p>
-                                </div>
-                              )}
+                            <p className="text-sm text-muted-foreground mb-2">
+                              {evento.fecha}
+                            </p>
+
+                            <div className="bg-slate-50 rounded-md p-3 border border-slate-200 mt-3">
+                              <p className="text-sm text-muted-foreground">
+                                {evento.detalles}
+                              </p>
                             </div>
                           </div>
                         </div>
