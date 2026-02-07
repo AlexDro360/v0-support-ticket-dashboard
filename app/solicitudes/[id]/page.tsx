@@ -81,29 +81,39 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      {/* Header */}
-      <div className="border-b bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            {/* Left Side - ID, Department, Back Button */}
+      {/* Header with Title */}
+      <div className="bg-white">
+        <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
+          {/* Back Button and Title Section */}
+          <div className="mb-6 flex items-start gap-3">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleGoBack}
+              className="shrink-0 mt-1"
+            >
+              <ArrowLeft className="h-5 w-5" />
+              <span className="sr-only">Volver al listado</span>
+            </Button>
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-3">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={handleGoBack}
-                  className="gap-2"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Volver
-                </Button>
-              </div>
-              <h1 className="text-2xl font-bold text-foreground">{ticket.folio}</h1>
+              <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
+                Detalles de la Solicitud
+              </h1>
+              <p className="text-xs text-muted-foreground sm:text-sm">
+                Visualiza y gestiona los detalles de tu solicitud de soporte técnico
+              </p>
+            </div>
+          </div>
+
+          {/* Ticket Info and Badges */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-foreground">{ticket.folio}</h2>
               <p className="mt-1 text-sm text-muted-foreground">{ticket.departamento}</p>
             </div>
-
-            {/* Right Side - Status and Priority Badges */}
-            <div className="flex flex-wrap gap-2 items-start sm:justify-end">
+            
+            {/* Status and Priority Badges */}
+            <div className="flex flex-wrap gap-2">
               <Badge className={stateColors[ticket.estado as keyof typeof stateColors]}>
                 {ticket.estado}
               </Badge>
