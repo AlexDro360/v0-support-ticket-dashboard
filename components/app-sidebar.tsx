@@ -87,7 +87,7 @@ const navigation: NavSection[] = [
           },
           {
             label: "Solicitudes",
-            href: "/",
+            href: "/solicitudes",
             icon: <Headset className="h-4 w-4" />,
           },
           {
