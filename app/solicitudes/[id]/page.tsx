@@ -303,20 +303,13 @@ function AsignarModal({
         </DialogHeader>
         <div className="space-y-2 max-h-64 overflow-y-auto">
           {mockTecnicos.map((tecnico) => (
-            <button
+            <label
               key={tecnico.id}
-              type="button"
-              disabled={!tecnico.disponible && !selectedIds.has(tecnico.id)}
-              onClick={() => {
-                if (tecnico.disponible || selectedIds.has(tecnico.id)) {
-                  handleToggle(tecnico.id)
-                }
-              }}
-              className={`w-full flex items-center gap-3 rounded-lg border p-3 text-left transition-colors ${
+              className={`w-full flex items-center gap-3 rounded-lg border p-3 text-left transition-colors cursor-pointer ${
                 selectedIds.has(tecnico.id)
                   ? 'border-blue-500 bg-blue-50'
                   : tecnico.disponible
-                    ? 'border-border hover:bg-muted/50 cursor-pointer'
+                    ? 'border-border hover:bg-muted/50'
                     : 'border-border bg-muted/30 opacity-60 cursor-not-allowed'
               }`}
             >
@@ -345,7 +338,7 @@ function AsignarModal({
                   }`}
                 />
               </div>
-            </button>
+            </label>
           ))}
         </div>
         <div className="text-xs text-muted-foreground">
