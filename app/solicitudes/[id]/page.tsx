@@ -196,7 +196,7 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                       <div key={idx} className={`flex gap-3 sm:gap-4 pb-4 sm:pb-6 ${!isLastItem ? 'relative' : ''}`}>
                         {/* Timeline line */}
                         {!isLastItem && (
-                          <div className="absolute left-4.5 sm:left-5 top-10 sm:top-12 h-12 w-px bg-slate-200" />
+                          <div className="absolute left-1/2 -translate-x-1/2 sm:left-5 sm:translate-x-0 top-10 sm:top-12 h-12 w-px bg-slate-200" />
                         )}
 
                         {/* Icon circle */}
