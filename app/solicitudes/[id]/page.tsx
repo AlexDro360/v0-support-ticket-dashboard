@@ -245,6 +245,14 @@ const TicketDetailPage = ({ params }: { params: { id: string } }) => {
                     <p className="text-xs font-semibold text-muted-foreground uppercase">Correo</p>
                     <p className="text-sm font-medium text-blue-600 mt-1">{ticket.correoContacto}</p>
                   </div>
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase">Area Solicitante</p>
+                    <p className="text-sm font-medium text-foreground mt-1">{ticket.areaSolicitante}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase">Horario Disponible</p>
+                    <p className="text-sm font-medium text-foreground mt-1">{ticket.horarioDisponible}</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
