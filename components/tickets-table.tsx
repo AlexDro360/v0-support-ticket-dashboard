@@ -58,7 +58,6 @@ export function TicketsTable({ tickets }: TicketsTableProps) {
               <TableHead className="hidden text-xs font-semibold text-foreground sm:table-cell sm:text-sm">Fecha</TableHead>
               <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Nombre Afectado</TableHead>
               <TableHead className="hidden text-xs font-semibold text-foreground md:table-cell md:text-sm">Departamento</TableHead>
-
               <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Prioridad</TableHead>
               <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Estado</TableHead>
               <TableHead className="text-xs font-semibold text-foreground text-right sm:text-sm">Acciones</TableHead>
@@ -75,13 +74,15 @@ export function TicketsTable({ tickets }: TicketsTableProps) {
               tickets.map((ticket) => (
                 <TableRow
                   key={ticket.id}
-                  className="transition-colors hover:bg-muted/50"
+                  className="transition-colors hover:bg-muted/50 cursor-pointer"
+                  onClick={() => {
+                    window.location.href = `/solicitudes/${ticket.id}`
+                  }}
                 >
                   <TableCell className="text-xs font-medium text-primary sm:text-sm">{ticket.folio}</TableCell>
                   <TableCell className="hidden text-xs text-muted-foreground sm:table-cell sm:text-sm">{ticket.fecha}</TableCell>
                   <TableCell className="text-xs sm:text-sm">{ticket.nombreAfectado}</TableCell>
                   <TableCell className="hidden text-xs text-muted-foreground md:table-cell md:text-sm">{ticket.departamento}</TableCell>
-
                   <TableCell>
                     <Badge variant="secondary" className={`${prioridadStyles[ticket.prioridad]} text-xs sm:text-sm`}>
                       {ticket.prioridad}
@@ -94,7 +95,7 @@ export function TicketsTable({ tickets }: TicketsTableProps) {
                   </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
+                      <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
                         <Button variant="ghost" size="icon" className="h-8 w-8">
                           <MoreHorizontal className="h-4 w-4" />
                           <span className="sr-only">Abrir menú</span>
