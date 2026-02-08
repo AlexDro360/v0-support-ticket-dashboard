@@ -65,23 +65,21 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
       {/* Desktop Table View */}
       <div className="hidden md:block overflow-x-auto rounded-lg border">
         <Table>
-          <TableHeader className="bg-muted">
+          <TableHeader className="bg-muted/50 hover:bg-muted/50">
             <TableRow>
-              <TableHead className="font-semibold">No. Inventario</TableHead>
-              <TableHead className="font-semibold">Tipo de Equipo</TableHead>
-              <TableHead className="font-semibold">Detalle del Equipo</TableHead>
-              <TableHead className="font-semibold">Responsable</TableHead>
-              <TableHead className="font-semibold">Estado</TableHead>
-              <TableHead className="w-10 text-right font-semibold">Acciones</TableHead>
+              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">No. Inventario</TableHead>
+              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Tipo de Equipo</TableHead>
+              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Detalle del Equipo</TableHead>
+              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Responsable</TableHead>
+              <TableHead className="text-xs font-semibold text-foreground sm:text-sm">Estado</TableHead>
+              <TableHead className="text-xs font-semibold text-foreground text-right sm:text-sm">Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {equipos.map((equipo) => (
               <TableRow key={equipo.id} className="hover:bg-muted/50">
-                <TableCell>
-                  <Badge variant="secondary" className="font-mono text-xs">
-                    {equipo.numeroInventario}
-                  </Badge>
+                <TableCell className="text-xs font-medium text-primary sm:text-sm">
+                  {equipo.numeroInventario}
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
