@@ -490,6 +490,7 @@ function ActionBar({
   canalizado,
   tecnicosAsignados,
   enReanudacion,
+  reporteHecho,
   onCanalizar,
   onRechazar,
   onAsignar,
@@ -504,6 +505,7 @@ function ActionBar({
   canalizado: boolean
   tecnicosAsignados: Tecnico[]
   enReanudacion: boolean
+  reporteHecho: boolean
   onCanalizar: () => void
   onRechazar: () => void
   onAsignar: () => void
@@ -911,6 +913,7 @@ const TicketDetailPage = () => {
                     canalizado={canalizado}
                     tecnicosAsignados={tecnicosAsignados}
                     enReanudacion={enReanudacion}
+                    reporteHecho={reporteHecho}
                     onCanalizar={() => setShowCanalizar(true)}
                     onRechazar={() => setShowRechazar(true)}
                     onAsignar={() => setShowAsignar(true)}
