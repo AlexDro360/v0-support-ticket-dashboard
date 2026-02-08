@@ -4,7 +4,7 @@ import { AlertCircle, Loader2, User, Mail, Briefcase, Clock, FileText, Upload, X
 import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -184,12 +184,6 @@ export function SupportTicketForm() {
 
   return (
     <Card className="border-0 shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-xl">Formulario de Solicitud</CardTitle>
-        <CardDescription>
-          Completa todos los campos para enviar tu solicitud de soporte
-        </CardDescription>
-      </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Sección: Información del Solicitante */}
