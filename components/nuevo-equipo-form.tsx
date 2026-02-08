@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertCircle, Package, Cpu, Printer, Wifi, HardDrive, Zap, FileText, User, Tag, Database, Memory, Keyboard, Monitor, Droplet, Network } from 'lucide-react'
+import { AlertCircle, Package, Cpu, Printer, Wifi, HardDrive, Zap, FileText, User, Tag, Database, Server, Keyboard, Monitor, Droplet, Network } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -399,7 +399,7 @@ export function NuevoEquipoForm({ onSubmit, isLoading }: NuevoEquipoFormProps) {
               <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="ramGB" className="flex items-center gap-2 text-sm font-medium">
-                    <Memory className="h-4 w-4 text-muted-foreground" />
+                    <Server className="h-4 w-4 text-muted-foreground" />
                     RAM (GB)
                     {errors.ramGB && <span className="text-red-500">*</span>}
                   </Label>
