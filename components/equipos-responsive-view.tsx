@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { Monitor, Printer, Wifi, MoreVertical, Eye, Edit2, Trash2, Power } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -20,6 +21,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
+import { ConfirmarBajaEquipoDialog } from '@/components/confirmar-baja-equipo-dialog'
 
 export interface Equipo {
   id: string
@@ -53,6 +55,30 @@ function getEquipoIcon(tipoEquipo: string) {
 }
 
 export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [equipoSeleccionado, setEquipoSeleccionado] = useState<Equipo | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleBajaClick = (equipo: Equipo) => {
+    setEquipoSeleccionado(equipo)
+    setDialogOpen(true)
+  }
+
+  const handleConfirmarBaja = async () => {
+    setIsLoading(true)
+    try {
+      console.log('[v0] Confirming baja for equipment:', equipoSeleccionado?.id)
+      // Simular envío de la baja
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      console.log('[v0] Baja completada exitosamente')
+      setDialogOpen(false)
+      // Aquí irá la lógica para actualizar la tabla
+    } catch (error) {
+      console.error('[v0] Error al dar de baja:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
   if (equipos.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-muted-foreground/25 bg-muted/30 p-8 text-center">
@@ -63,6 +89,14 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
 
   return (
     <>
+      <ConfirmarBajaEquipoDialog
+        open={dialogOpen}
+        equipo={equipoSeleccionado}
+        isLoading={isLoading}
+        onConfirm={handleConfirmarBaja}
+        onOpenChange={setDialogOpen}
+      />
+
       {/* Desktop Table View */}
       <div className="hidden md:block overflow-x-auto rounded-lg border">
         <Table>
@@ -128,7 +162,7 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleBajaClick(equipo)}>
                         <Power className="h-4 w-4 mr-2" />
                         Baja
                       </DropdownMenuItem>
@@ -174,7 +208,7 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleBajaClick(equipo)}>
                         <Power className="h-4 w-4 mr-2" />
                         Baja
                       </DropdownMenuItem>
