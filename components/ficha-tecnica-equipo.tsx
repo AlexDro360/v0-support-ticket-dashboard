@@ -242,15 +242,12 @@ export function FichaTecnicaEquipo({ equipo }: FichaTecnicaEquipoProps) {
                 valor={equipo.modelo}
               />
               <div className="space-y-1">
-                <div className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Database className="h-4 w-4 text-muted-foreground" />
+                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Badge className="h-4 w-4 text-muted-foreground" />
                   Estado
-                </div>
-                <div>
-                  <EstadoBadge estado={equipo.estado} />
-                </div>
+                </p>
+                <EstadoBadge estado={equipo.estado} />
               </div>
-            </div>
             </div>
 
             {/* Tercera fila */}
