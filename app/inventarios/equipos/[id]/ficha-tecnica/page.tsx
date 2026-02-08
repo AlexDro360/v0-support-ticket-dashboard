@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowLeft, Download, Print } from 'lucide-react'
+import { ArrowLeft, Download, Printer } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FichaTecnicaEquipo } from '@/components/ficha-tecnica-equipo'
 
@@ -64,7 +64,7 @@ export default function FichaTecnicaPage({ params }: { params: { id: string } })
             onClick={handleImprimir}
             className="gap-2"
           >
-            <Print className="h-4 w-4" />
+            <Printer className="h-4 w-4" />
             Imprimir
           </Button>
           <Button
