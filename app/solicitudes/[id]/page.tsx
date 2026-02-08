@@ -598,6 +598,14 @@ function ActionBar({
           Cerrar Ticket
         </Button>
       )}
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={() => {}}
+      >
+        <FileText className="h-4 w-4 mr-1.5" />
+        Crear Reporte
+      </Button>
     </div>
   )
 }
