@@ -183,20 +183,19 @@ export function SupportTicketForm() {
   }
 
   return (
-    <Card className="border-0 shadow-sm">
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Sección: Información del Solicitante */}
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold text-foreground">
-                Información del Solicitante
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Proporciona tus datos de contacto para la gestión de la solicitud
-              </p>
-            </div>
-
+    <div className="space-y-6">
+      {/* Card 1: Información del Solicitante */}
+      <Card className="border-0 shadow-sm">
+        <div className="border-b px-4 py-4 sm:px-6 sm:py-5">
+          <h2 className="text-base font-semibold text-foreground sm:text-lg">
+            Información del Solicitante
+          </h2>
+          <p className="text-xs text-muted-foreground sm:text-sm">
+            Proporciona tus datos de contacto para la gestión de la solicitud
+          </p>
+        </div>
+        <CardContent className="space-y-6 p-4 sm:p-6">
+          <form onSubmit={handleSubmit} id="form-info-solicitante">
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
               {/* Nombre Solicitante */}
               <div className="space-y-2">
@@ -283,172 +282,170 @@ export function SupportTicketForm() {
                 <ErrorMessage message={errors.horarioDisponible} />
               </div>
             </div>
-          </div>
+          </form>
+        </CardContent>
+      </Card>
 
-          {/* Divisor visual */}
-          <div className="border-t pt-8" />
-
-          {/* Sección: Detalle del Problema */}
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold text-foreground">
-                Detalle del Problema
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Describe el tipo de problema y proporciona evidencia visual
-              </p>
+      {/* Card 2: Detalle del Problema */}
+      <Card className="border-0 shadow-sm">
+        <div className="border-b px-4 py-4 sm:px-6 sm:py-5">
+          <h2 className="text-base font-semibold text-foreground sm:text-lg">
+            Detalle del Problema
+          </h2>
+          <p className="text-xs text-muted-foreground sm:text-sm">
+            Describe el tipo de problema y proporciona evidencia visual
+          </p>
+        </div>
+        <CardContent className="space-y-6 p-4 sm:p-6">
+          <form onSubmit={handleSubmit} id="form-detalle-problema">
+            {/* Tipo de Problema */}
+            <div className="space-y-2 mb-6">
+              <Label
+                htmlFor="tipoProblema"
+                className="flex items-center gap-2 text-sm font-medium"
+              >
+                <FileText className="h-4 w-4 text-muted-foreground" />
+                Tipo de Problema
+                {errors.tipoProblema && <span className="text-red-500">*</span>}
+              </Label>
+              <Select
+                value={formData.tipoProblema}
+                onValueChange={(value) =>
+                  handleSelectChange('tipoProblema', value)
+                }
+              >
+                <SelectTrigger
+                  id="tipoProblema"
+                  className={`${getInputClassName('tipoProblema')} transition-colors`}
+                >
+                  <SelectValue placeholder="Selecciona el tipo de problema" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TIPOS_PROBLEMA.map(tipo => (
+                    <SelectItem key={tipo} value={tipo}>
+                      {tipo}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <ErrorMessage message={errors.tipoProblema} />
             </div>
 
-            <div className="space-y-6">
-              {/* Tipo de Problema */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="tipoProblema"
-                  className="flex items-center gap-2 text-sm font-medium"
-                >
-                  <FileText className="h-4 w-4 text-muted-foreground" />
-                  Tipo de Problema
-                  {errors.tipoProblema && <span className="text-red-500">*</span>}
-                </Label>
-                <Select
-                  value={formData.tipoProblema}
-                  onValueChange={(value) =>
-                    handleSelectChange('tipoProblema', value)
-                  }
-                >
-                  <SelectTrigger
-                    id="tipoProblema"
-                    className={`${getInputClassName('tipoProblema')} transition-colors`}
-                  >
-                    <SelectValue placeholder="Selecciona el tipo de problema" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TIPOS_PROBLEMA.map(tipo => (
-                      <SelectItem key={tipo} value={tipo}>
-                        {tipo}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <ErrorMessage message={errors.tipoProblema} />
-              </div>
+            {/* Descripción */}
+            <div className="space-y-2 mb-6">
+              <Label
+                htmlFor="descripcion"
+                className="flex items-center gap-2 text-sm font-medium"
+              >
+                <FileText className="h-4 w-4 text-muted-foreground" />
+                Descripción del Problema
+                {errors.descripcion && <span className="text-red-500">*</span>}
+              </Label>
+              <Textarea
+                id="descripcion"
+                name="descripcion"
+                placeholder="Describe en detalle qué está sucediendo, cuándo comenzó el problema, y qué has intentado..."
+                value={formData.descripcion}
+                onChange={handleInputChange}
+                rows={5}
+                className={`${getInputClassName('descripcion')} resize-none transition-colors`}
+              />
+              <ErrorMessage message={errors.descripcion} />
+            </div>
 
-              {/* Descripción */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="descripcion"
-                  className="flex items-center gap-2 text-sm font-medium"
-                >
-                  <FileText className="h-4 w-4 text-muted-foreground" />
-                  Descripción del Problema
-                  {errors.descripcion && <span className="text-red-500">*</span>}
-                </Label>
-                <Textarea
-                  id="descripcion"
-                  name="descripcion"
-                  placeholder="Describe en detalle qué está sucediendo, cuándo comenzó el problema, y qué has intentado..."
-                  value={formData.descripcion}
-                  onChange={handleInputChange}
-                  rows={5}
-                  className={`${getInputClassName('descripcion')} resize-none transition-colors`}
+            {/* Upload Fotografía */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2 text-sm font-medium">
+                <Upload className="h-4 w-4 text-muted-foreground" />
+                Fotografía o Evidencia
+                <span className="text-xs font-normal text-muted-foreground">
+                  (Opcional)
+                </span>
+              </Label>
+              <div
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                className="rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/30 p-8 text-center transition-all hover:border-muted-foreground/50 hover:bg-muted/50 cursor-pointer"
+              >
+                <input
+                  type="file"
+                  id="fotografia"
+                  multiple
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
                 />
-                <ErrorMessage message={errors.descripcion} />
-              </div>
-
-              {/* Upload Fotografía */}
-              <div className="space-y-2">
-                <Label className="flex items-center gap-2 text-sm font-medium">
-                  <Upload className="h-4 w-4 text-muted-foreground" />
-                  Fotografía o Evidencia
-                  <span className="text-xs font-normal text-muted-foreground">
-                    (Opcional)
-                  </span>
-                </Label>
-                <div
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                  className="rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/30 p-8 text-center transition-all hover:border-muted-foreground/50 hover:bg-muted/50 cursor-pointer"
-                >
-                  <input
-                    type="file"
-                    id="fotografia"
-                    multiple
-                    accept="image/*"
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
-                  <label htmlFor="fotografia" className="cursor-pointer block">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="rounded-full bg-muted p-3">
-                        <Upload className="h-5 w-5 text-muted-foreground" />
-                      </div>
-                      <p className="text-sm font-medium text-foreground">
-                        Arrastra archivos aquí o haz clic para seleccionar
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        PNG, JPG, GIF hasta 10MB
-                      </p>
+                <label htmlFor="fotografia" className="cursor-pointer block">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="rounded-full bg-muted p-3">
+                      <Upload className="h-5 w-5 text-muted-foreground" />
                     </div>
-                  </label>
-                </div>
-
-                {/* Archivos subidos */}
-                {uploadedFiles.length > 0 && (
-                  <div className="mt-4 space-y-2">
                     <p className="text-sm font-medium text-foreground">
-                      {uploadedFiles.length} archivo
-                      {uploadedFiles.length > 1 ? 's' : ''} seleccionado
-                      {uploadedFiles.length > 1 ? 's' : ''}:
+                      Arrastra archivos aquí o haz clic para seleccionar
                     </p>
-                    <div className="space-y-2">
-                      {uploadedFiles.map((file, index) => (
-                        <div
-                          key={`${file.name}-${index}`}
-                          className="flex items-center justify-between rounded-lg border bg-card p-3 hover:bg-muted/50 transition-colors"
-                        >
-                          <div className="flex items-center gap-2 min-w-0">
-                            <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                            <span className="text-sm text-foreground truncate">
-                              {file.name}
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeFile(index)}
-                            className="text-muted-foreground hover:text-red-500 transition-colors flex-shrink-0"
-                            aria-label={`Eliminar archivo ${file.name}`}
-                          >
-                            <X className="h-4 w-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      PNG, JPG, GIF hasta 10MB
+                    </p>
                   </div>
-                )}
+                </label>
               </div>
-            </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col-reverse gap-3 md:flex-row md:justify-end pt-4 border-t">
-            <Link href="/">
-              <Button variant="outline" className="w-full md:w-auto bg-transparent">
-                Cancelar
-              </Button>
-            </Link>
-            <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Enviando...
-                </>
-              ) : (
-                'Enviar Solicitud'
+              {/* Archivos subidos */}
+              {uploadedFiles.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  <p className="text-sm font-medium text-foreground">
+                    {uploadedFiles.length} archivo
+                    {uploadedFiles.length > 1 ? 's' : ''} seleccionado
+                    {uploadedFiles.length > 1 ? 's' : ''}:
+                  </p>
+                  <div className="space-y-2">
+                    {uploadedFiles.map((file, index) => (
+                      <div
+                        key={`${file.name}-${index}`}
+                        className="flex items-center justify-between rounded-lg border bg-card p-3 hover:bg-muted/50 transition-colors"
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                          <span className="text-sm text-foreground truncate">
+                            {file.name}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFile(index)}
+                          className="text-muted-foreground hover:text-red-500 transition-colors flex-shrink-0"
+                          aria-label={`Eliminar archivo ${file.name}`}
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
-            </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col-reverse gap-3 md:flex-row md:justify-end pt-6 border-t mt-6">
+              <Link href="/">
+                <Button variant="outline" className="w-full md:w-auto bg-transparent">
+                  Cancelar
+                </Button>
+              </Link>
+              <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  'Enviar Solicitud'
+                )}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   )
 }
