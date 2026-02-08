@@ -4,14 +4,14 @@ import React from 'react'
 import { CheckCircle2, AlertCircle, Pause, XCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-export type TicketState = 'Pendiente' | 'Asignada' | 'En Proceso' | 'Resuelta' | 'Cerrada' | 'Pausa' | 'Rechazada'
+export type TicketState = 'Pendiente' | 'Asignado' | 'En Proceso' | 'Resuelta' | 'Cerrada' | 'Pausa' | 'Rechazada'
 
 interface TicketStepperProps {
   currentState: TicketState
   className?: string
 }
 
-const stepsOrder: TicketState[] = ['Pendiente', 'Asignada', 'En Proceso', 'Resuelta', 'Cerrada']
+const stepsOrder: TicketState[] = ['Pendiente', 'Asignado', 'En Proceso', 'Resuelta', 'Cerrada']
 
 const getStepNumber = (state: TicketState): number => {
   const index = stepsOrder.indexOf(state as any)
@@ -22,8 +22,8 @@ const getStepConfig = (state: TicketState) => {
   switch (state) {
     case 'Pendiente':
       return { label: 'Pendiente', icon: 'pending', color: 'from-slate-400 to-slate-500' }
-    case 'Asignada':
-      return { label: 'Asignada', icon: 'assigned', color: 'from-blue-400 to-blue-500' }
+    case 'Asignado':
+      return { label: 'Asignado', icon: 'assigned', color: 'from-blue-400 to-blue-500' }
     case 'En Proceso':
       return { label: 'En Proceso', icon: 'process', color: 'from-amber-400 to-amber-500' }
     case 'Resuelta':
