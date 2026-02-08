@@ -43,8 +43,8 @@ export function EquiposToolbar({
 }: EquiposToolbarProps) {
   return (
     <div className="flex flex-col gap-4">
-      {/* Search bar and New Equipment Button */}
-      <div className="flex gap-2 items-center">
+      {/* Top row: Search + Nuevo Equipo */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-3">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -54,11 +54,11 @@ export function EquiposToolbar({
             className="pl-10"
           />
         </div>
-        <Link href="/inventarios/equipos/nuevo">
-          <Button size="sm" className="gap-2 shrink-0">
-            <Plus className="h-4 w-4" />
-            <span className="hidden sm:inline">Nuevo Equipo</span>
-            <span className="sm:hidden">Nuevo</span>
+
+        <Link href="/inventarios/equipos/nuevo" className="w-full sm:w-auto">
+          <Button className="w-full">
+            <Plus className="mr-2 h-4 w-4" />
+            Nuevo Equipo
           </Button>
         </Link>
       </div>
