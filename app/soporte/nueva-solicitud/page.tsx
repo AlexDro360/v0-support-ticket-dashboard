@@ -7,7 +7,7 @@ import { SupportTicketForm } from '@/components/support-ticket-form'
 
 export default function NuevaSolicitudPage() {
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-muted/50">
       <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
         {/* Back Button */}
         <div className="mb-6 flex items-center gap-3">

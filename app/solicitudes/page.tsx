@@ -185,7 +185,7 @@ export default function SoporteDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-muted/50">
       <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
         {/* Main Content Card */}
         <div className="rounded-lg border bg-card shadow-sm md:rounded-xl">
