@@ -1034,6 +1034,40 @@ const TicketDetailPage = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Documentos */}
+            {(estado === 'Pausa' || estado === 'Resuelta' || estado === 'Cerrada') && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    Documentos
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {estado === 'Pausa' && (
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => {}}
+                    >
+                      <FileText className="h-4 w-4 mr-2" />
+                      Descargar PDF de Pausa
+                    </Button>
+                  )}
+                  {(estado === 'Resuelta' || estado === 'Cerrada') && (
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => {}}
+                    >
+                      <FileText className="h-4 w-4 mr-2" />
+                      Descargar PDF de Finalización
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </div>
