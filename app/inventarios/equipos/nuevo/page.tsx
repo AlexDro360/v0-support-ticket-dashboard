@@ -1,26 +1,32 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { NuevoEquipoForm } from '@/components/nuevo-equipo-form'
+import type { FormData } from '@/components/nuevo-equipo-form'
 
 export default function NuevoEquipoPage() {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+  const handleFormSubmit = async (formData: FormData) => {
     setIsLoading(true)
     
     try {
-      // Simular envío del formulario
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      console.log('[v0] Submitting equipment data:', formData)
       
-      alert('Equipo registrado correctamente')
+      // Simular envío del formulario
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      
+      console.log('[v0] Equipment registered successfully')
+      
+      // Redirect al listado de equipos
+      router.push('/inventarios/equipos')
     } catch (error) {
-      console.error('Error al registrar equipo:', error)
+      console.error('[v0] Error al registrar equipo:', error)
       alert('Error al registrar el equipo. Intenta nuevamente.')
     } finally {
       setIsLoading(false)
@@ -49,29 +55,38 @@ export default function NuevoEquipoPage() {
         </div>
 
         {/* Main Content */}
-        <NuevoEquipoForm />
+        <div className="space-y-6">
+          <NuevoEquipoForm onSubmit={handleFormSubmit} isLoading={isLoading} />
 
-        {/* Action Buttons */}
-        <div className="flex flex-col-reverse gap-3 md:flex-row md:justify-end mt-6">
-          <Link href="/inventarios/equipos">
-            <Button variant="outline" className="w-full md:w-auto bg-transparent">
-              Cancelar
+          {/* Action Buttons - Inside a wrapper div for proper spacing */}
+          <div className="flex flex-col-reverse gap-3 md:flex-row md:justify-end">
+            <Link href="/inventarios/equipos">
+              <Button 
+                variant="outline" 
+                className="w-full md:w-auto bg-transparent"
+                disabled={isLoading}
+              >
+                Cancelar
+              </Button>
+            </Link>
+            <Button 
+              disabled={isLoading}
+              className="w-full md:w-auto"
+              onClick={() => {
+                // Aquí el formulario manejará la validación y envío
+                // Este botón ya no es necesario ya que el form tiene submit
+              }}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Guardando...
+                </>
+              ) : (
+                'Guardar Equipo'
+              )}
             </Button>
-          </Link>
-          <Button 
-            disabled={isLoading}
-            className="w-full md:w-auto"
-            onClick={() => handleSubmit({} as React.FormEvent)}
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Guardando...
-              </>
-            ) : (
-              'Guardar Equipo'
-            )}
-          </Button>
+          </div>
         </div>
       </div>
     </div>

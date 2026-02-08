@@ -12,7 +12,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 type TipoEquipo = 'computo' | 'impresora' | 'redes'
 
-interface FormData {
+export interface FormData {
   numeroInventario: string
   tipoEquipo: TipoEquipo
   marca: string
@@ -71,7 +71,52 @@ const TIPOS_ALMACENAMIENTO = ['HDD', 'SSD', 'NVMe SSD']
 const TIPOS_IMPRESION = ['Láser', 'Inyección', 'Térmica']
 const TIPOS_RED = ['Ethernet', 'Fibra', 'Wireless']
 
-export function NuevoEquipoForm() {
+interface NuevoEquipoFormProps {
+  onSubmit: (formData: FormData) => void
+  isLoading?: boolean
+}
+
+// Componente para mostrar errores
+function ErrorMessage({ message }: { message?: string }) {
+  if (!message) return null
+  return (
+    <p className="text-xs text-red-500 flex items-center gap-1">
+      <AlertCircle className="h-3 w-3" />
+      {message}
+    </p>
+  )
+}
+
+// Componente para el selector de tipo de equipo
+interface EquipoTypeOptionProps {
+  value: TipoEquipo
+  icon: React.ReactNode
+  label: string
+  selected: boolean
+  onSelect: (value: TipoEquipo) => void
+}
+
+function EquipoTypeOption({ value, icon, label, selected, onSelect }: EquipoTypeOptionProps) {
+  return (
+    <div 
+      className={`flex items-center space-x-2 p-4 border rounded-lg cursor-pointer transition-all ${
+        selected ? 'border-primary bg-primary/5' : 'hover:bg-muted/50'
+      }`}
+      onClick={() => onSelect(value)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && onSelect(value)}
+    >
+      <RadioGroupItem value={value} id={value} />
+      <Label htmlFor={value} className="cursor-pointer flex-1 flex items-center gap-2">
+        {icon}
+        <span>{label}</span>
+      </Label>
+    </div>
+  )
+}
+
+export function NuevoEquipoForm({ onSubmit, isLoading }: NuevoEquipoFormProps) {
   const [formData, setFormData] = useState<FormData>({
     numeroInventario: '',
     tipoEquipo: 'computo',
@@ -93,79 +138,54 @@ export function NuevoEquipoForm() {
   })
 
   const [errors, setErrors] = useState<FormErrors>({})
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
 
+    // Validaciones generales
     if (!formData.numeroInventario.trim()) {
       newErrors.numeroInventario = 'El número de inventario es requerido'
     }
-
     if (!formData.marca.trim()) {
       newErrors.marca = 'La marca es requerida'
     }
-
     if (!formData.modelo.trim()) {
       newErrors.modelo = 'El modelo es requerido'
     }
-
     if (!formData.responsable.trim()) {
       newErrors.responsable = 'El responsable es requerido'
     }
-
     if (!formData.descripcion.trim()) {
       newErrors.descripcion = 'La descripción es requerida'
     }
 
     // Validaciones específicas por tipo
     if (formData.tipoEquipo === 'computo') {
-      if (!formData.ramGB?.trim()) {
-        newErrors.ramGB = 'La RAM es requerida'
-      }
-      if (!formData.procesador?.trim()) {
-        newErrors.procesador = 'El procesador es requerido'
-      }
-      if (!formData.sistemaOperativo?.trim()) {
-        newErrors.sistemaOperativo = 'El SO es requerido'
-      }
-      if (!formData.capacidadAlmacenamiento?.trim()) {
-        newErrors.capacidadAlmacenamiento = 'La capacidad es requerida'
-      }
-      if (!formData.tipoAlmacenamiento?.trim()) {
-        newErrors.tipoAlmacenamiento = 'El tipo es requerido'
-      }
-    }
-
-    if (formData.tipoEquipo === 'impresora') {
-      if (!formData.tipoImpresion?.trim()) {
-        newErrors.tipoImpresion = 'El tipo es requerido'
-      }
-      if (!formData.modeloToner?.trim()) {
-        newErrors.modeloToner = 'El modelo de tóner es requerido'
-      }
-    }
-
-    if (formData.tipoEquipo === 'redes') {
-      if (!formData.numeroPuertos?.trim()) {
-        newErrors.numeroPuertos = 'El número de puertos es requerido'
-      }
-      if (!formData.tipoRed?.trim()) {
-        newErrors.tipoRed = 'El tipo de red es requerido'
-      }
+      if (!formData.ramGB?.trim()) newErrors.ramGB = 'La RAM es requerida'
+      if (!formData.procesador?.trim()) newErrors.procesador = 'El procesador es requerido'
+      if (!formData.sistemaOperativo?.trim()) newErrors.sistemaOperativo = 'El SO es requerido'
+      if (!formData.capacidadAlmacenamiento?.trim()) newErrors.capacidadAlmacenamiento = 'La capacidad es requerida'
+      if (!formData.tipoAlmacenamiento?.trim()) newErrors.tipoAlmacenamiento = 'El tipo es requerido'
+    } else if (formData.tipoEquipo === 'impresora') {
+      if (!formData.tipoImpresion?.trim()) newErrors.tipoImpresion = 'El tipo es requerido'
+      if (!formData.modeloToner?.trim()) newErrors.modeloToner = 'El modelo de tóner es requerido'
+    } else if (formData.tipoEquipo === 'redes') {
+      if (!formData.numeroPuertos?.trim()) newErrors.numeroPuertos = 'El número de puertos es requerido'
+      if (!formData.tipoRed?.trim()) newErrors.tipoRed = 'El tipo de red es requerido'
     }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: undefined }))
     }
+    setTouched(prev => ({ ...prev, [name]: true }))
   }
 
   const handleSelectChange = (name: string, value: string) => {
@@ -173,35 +193,37 @@ export function NuevoEquipoForm() {
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: undefined }))
     }
+    setTouched(prev => ({ ...prev, [name]: true }))
+  }
+
+  const handleTypeChange = (value: TipoEquipo) => {
+    setFormData(prev => ({ ...prev, tipoEquipo: value }))
+    setErrors({})
+    setTouched({})
+  }
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (validateForm()) {
+      onSubmit(formData)
+    }
   }
 
   const getInputClassName = (fieldName: string): string => {
     return errors[fieldName] ? 'border-red-500 focus:ring-red-500' : ''
   }
 
-  const ErrorMessage = ({ message }: { message?: string }) => {
-    if (!message) return null
-    return (
-      <p className="text-xs text-red-500 flex items-center gap-1">
-        <AlertCircle className="h-3 w-3" />
-        {message}
-      </p>
-    )
-  }
-
   const getTipoIcon = () => {
-    switch (formData.tipoEquipo) {
-      case 'computo':
-        return <Cpu className="h-5 w-5" />
-      case 'impresora':
-        return <Printer className="h-5 w-5" />
-      case 'redes':
-        return <Wifi className="h-5 w-5" />
+    const icons = {
+      computo: <Cpu className="h-5 w-5" />,
+      impresora: <Printer className="h-5 w-5" />,
+      redes: <Wifi className="h-5 w-5" />
     }
+    return icons[formData.tipoEquipo]
   }
 
   return (
-    <div className="space-y-6">
+    <form onSubmit={handleFormSubmit} className="space-y-6">
       {/* Card 1: Clasificación de Equipo */}
       <Card className="border-0 shadow-sm">
         <div className="border-b px-4 py-4 sm:px-6 sm:py-5">
@@ -214,59 +236,31 @@ export function NuevoEquipoForm() {
           </p>
         </div>
         <CardContent className="p-4 sm:p-6">
-          <form>
-            <RadioGroup
-              value={formData.tipoEquipo}
-              onValueChange={(value) => {
-                setFormData(prev => ({ ...prev, tipoEquipo: value as TipoEquipo }))
-                setErrors(prev => ({ ...prev, tipoEquipo: undefined }))
-              }}
-            >
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {/* Cómputo */}
-                <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
-                  onClick={() => {
-                    setFormData(prev => ({ ...prev, tipoEquipo: 'computo' }))
-                    setErrors(prev => ({ ...prev, tipoEquipo: undefined }))
-                  }}
-                >
-                  <RadioGroupItem value="computo" id="computo" />
-                  <Label htmlFor="computo" className="cursor-pointer flex-1 flex items-center gap-2">
-                    <Cpu className="h-4 w-4" />
-                    <span>Cómputo</span>
-                  </Label>
-                </div>
-
-                {/* Impresora */}
-                <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
-                  onClick={() => {
-                    setFormData(prev => ({ ...prev, tipoEquipo: 'impresora' }))
-                    setErrors(prev => ({ ...prev, tipoEquipo: undefined }))
-                  }}
-                >
-                  <RadioGroupItem value="impresora" id="impresora" />
-                  <Label htmlFor="impresora" className="cursor-pointer flex-1 flex items-center gap-2">
-                    <Printer className="h-4 w-4" />
-                    <span>Impresora</span>
-                  </Label>
-                </div>
-
-                {/* Redes */}
-                <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
-                  onClick={() => {
-                    setFormData(prev => ({ ...prev, tipoEquipo: 'redes' }))
-                    setErrors(prev => ({ ...prev, tipoEquipo: undefined }))
-                  }}
-                >
-                  <RadioGroupItem value="redes" id="redes" />
-                  <Label htmlFor="redes" className="cursor-pointer flex-1 flex items-center gap-2">
-                    <Wifi className="h-4 w-4" />
-                    <span>Redes</span>
-                  </Label>
-                </div>
-              </div>
-            </RadioGroup>
-          </form>
+          <RadioGroup value={formData.tipoEquipo} onValueChange={handleTypeChange}>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <EquipoTypeOption
+                value="computo"
+                icon={<Cpu className="h-4 w-4" />}
+                label="Cómputo"
+                selected={formData.tipoEquipo === 'computo'}
+                onSelect={handleTypeChange}
+              />
+              <EquipoTypeOption
+                value="impresora"
+                icon={<Printer className="h-4 w-4" />}
+                label="Impresora"
+                selected={formData.tipoEquipo === 'impresora'}
+                onSelect={handleTypeChange}
+              />
+              <EquipoTypeOption
+                value="redes"
+                icon={<Wifi className="h-4 w-4" />}
+                label="Redes"
+                selected={formData.tipoEquipo === 'redes'}
+                onSelect={handleTypeChange}
+              />
+            </div>
+          </RadioGroup>
         </CardContent>
       </Card>
 
@@ -281,112 +275,110 @@ export function NuevoEquipoForm() {
           </p>
         </div>
         <CardContent className="space-y-6 p-4 sm:p-6">
-          <form id="form-datos-generales">
-            <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
-              {/* No. Inventario */}
-              <div className="space-y-2">
-                <Label htmlFor="numeroInventario" className="flex items-center gap-2 text-sm font-medium">
-                  <Tag className="h-4 w-4 text-muted-foreground" />
-                  No. Inventario
-                  {errors.numeroInventario && <span className="text-red-500">*</span>}
-                </Label>
-                <Input
-                  id="numeroInventario"
-                  name="numeroInventario"
-                  placeholder="Ej: ITO-2024-001"
-                  value={formData.numeroInventario}
-                  onChange={handleInputChange}
-                  className={`${getInputClassName('numeroInventario')} transition-colors`}
-                />
-                <ErrorMessage message={errors.numeroInventario} />
-              </div>
-
-              {/* Marca */}
-              <div className="space-y-2">
-                <Label htmlFor="marca" className="flex items-center gap-2 text-sm font-medium">
-                  <Package className="h-4 w-4 text-muted-foreground" />
-                  Marca
-                  {errors.marca && <span className="text-red-500">*</span>}
-                </Label>
-                <Select value={formData.marca} onValueChange={(value) => handleSelectChange('marca', value)}>
-                  <SelectTrigger id="marca" className={`${getInputClassName('marca')} transition-colors`}>
-                    <SelectValue placeholder="Selecciona una marca" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {MARCAS.map((marca) => (
-                      <SelectItem key={marca} value={marca}>
-                        {marca}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <ErrorMessage message={errors.marca} />
-              </div>
-
-              {/* Modelo */}
-              <div className="space-y-2">
-                <Label htmlFor="modelo" className="flex items-center gap-2 text-sm font-medium">
-                  <Monitor className="h-4 w-4 text-muted-foreground" />
-                  Modelo
-                  {errors.modelo && <span className="text-red-500">*</span>}
-                </Label>
-                <Select value={formData.modelo} onValueChange={(value) => handleSelectChange('modelo', value)}>
-                  <SelectTrigger id="modelo" className={`${getInputClassName('modelo')} transition-colors`}>
-                    <SelectValue placeholder="Selecciona un modelo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {formData.marca && MODELOS[formData.marca as keyof typeof MODELOS]?.map((modelo) => (
-                      <SelectItem key={modelo} value={modelo}>
-                        {modelo}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <ErrorMessage message={errors.modelo} />
-              </div>
-
-              {/* Responsable */}
-              <div className="space-y-2">
-                <Label htmlFor="responsable" className="flex items-center gap-2 text-sm font-medium">
-                  <User className="h-4 w-4 text-muted-foreground" />
-                  Responsable
-                  {errors.responsable && <span className="text-red-500">*</span>}
-                </Label>
-                <Select value={formData.responsable} onValueChange={(value) => handleSelectChange('responsable', value)}>
-                  <SelectTrigger id="responsable" className={`${getInputClassName('responsable')} transition-colors`}>
-                    <SelectValue placeholder="Selecciona un responsable" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {RESPONSABLES.map((resp) => (
-                      <SelectItem key={resp} value={resp}>
-                        {resp}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <ErrorMessage message={errors.responsable} />
-              </div>
-
-              {/* Descripción */}
-              <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="descripcion" className="flex items-center gap-2 text-sm font-medium">
-                  <FileText className="h-4 w-4 text-muted-foreground" />
-                  Descripción
-                  {errors.descripcion && <span className="text-red-500">*</span>}
-                </Label>
-                <Textarea
-                  id="descripcion"
-                  name="descripcion"
-                  placeholder="Describe el equipo y cualquier detalle adicional..."
-                  value={formData.descripcion}
-                  onChange={handleInputChange}
-                  rows={4}
-                  className={`${getInputClassName('descripcion')} resize-none transition-colors`}
-                />
-                <ErrorMessage message={errors.descripcion} />
-              </div>
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+            {/* No. Inventario */}
+            <div className="space-y-2">
+              <Label htmlFor="numeroInventario" className="flex items-center gap-2 text-sm font-medium">
+                <Tag className="h-4 w-4 text-muted-foreground" />
+                No. Inventario
+                {errors.numeroInventario && <span className="text-red-500">*</span>}
+              </Label>
+              <Input
+                id="numeroInventario"
+                name="numeroInventario"
+                placeholder="Ej: ITO-2024-001"
+                value={formData.numeroInventario}
+                onChange={handleInputChange}
+                className={`${getInputClassName('numeroInventario')} transition-colors`}
+              />
+              <ErrorMessage message={errors.numeroInventario} />
             </div>
-          </form>
+
+            {/* Marca */}
+            <div className="space-y-2">
+              <Label htmlFor="marca" className="flex items-center gap-2 text-sm font-medium">
+                <Package className="h-4 w-4 text-muted-foreground" />
+                Marca
+                {errors.marca && <span className="text-red-500">*</span>}
+              </Label>
+              <Select value={formData.marca} onValueChange={(value) => handleSelectChange('marca', value)}>
+                <SelectTrigger id="marca" className={`${getInputClassName('marca')} transition-colors`}>
+                  <SelectValue placeholder="Selecciona una marca" />
+                </SelectTrigger>
+                <SelectContent>
+                  {MARCAS.map((marca) => (
+                    <SelectItem key={marca} value={marca}>
+                      {marca}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <ErrorMessage message={errors.marca} />
+            </div>
+
+            {/* Modelo */}
+            <div className="space-y-2">
+              <Label htmlFor="modelo" className="flex items-center gap-2 text-sm font-medium">
+                <Monitor className="h-4 w-4 text-muted-foreground" />
+                Modelo
+                {errors.modelo && <span className="text-red-500">*</span>}
+              </Label>
+              <Select value={formData.modelo} onValueChange={(value) => handleSelectChange('modelo', value)}>
+                <SelectTrigger id="modelo" className={`${getInputClassName('modelo')} transition-colors`}>
+                  <SelectValue placeholder="Selecciona un modelo" />
+                </SelectTrigger>
+                <SelectContent>
+                  {formData.marca && MODELOS[formData.marca as keyof typeof MODELOS]?.map((modelo) => (
+                    <SelectItem key={modelo} value={modelo}>
+                      {modelo}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <ErrorMessage message={errors.modelo} />
+            </div>
+
+            {/* Responsable */}
+            <div className="space-y-2">
+              <Label htmlFor="responsable" className="flex items-center gap-2 text-sm font-medium">
+                <User className="h-4 w-4 text-muted-foreground" />
+                Responsable
+                {errors.responsable && <span className="text-red-500">*</span>}
+              </Label>
+              <Select value={formData.responsable} onValueChange={(value) => handleSelectChange('responsable', value)}>
+                <SelectTrigger id="responsable" className={`${getInputClassName('responsable')} transition-colors`}>
+                  <SelectValue placeholder="Selecciona un responsable" />
+                </SelectTrigger>
+                <SelectContent>
+                  {RESPONSABLES.map((resp) => (
+                    <SelectItem key={resp} value={resp}>
+                      {resp}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <ErrorMessage message={errors.responsable} />
+            </div>
+
+            {/* Descripción */}
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="descripcion" className="flex items-center gap-2 text-sm font-medium">
+                <FileText className="h-4 w-4 text-muted-foreground" />
+                Descripción
+                {errors.descripcion && <span className="text-red-500">*</span>}
+              </Label>
+              <Textarea
+                id="descripcion"
+                name="descripcion"
+                placeholder="Describe el equipo y cualquier detalle adicional..."
+                value={formData.descripcion}
+                onChange={handleInputChange}
+                rows={4}
+                className={`${getInputClassName('descripcion')} resize-none transition-colors`}
+              />
+              <ErrorMessage message={errors.descripcion} />
+            </div>
+          </div>
         </CardContent>
       </Card>
 
@@ -402,8 +394,7 @@ export function NuevoEquipoForm() {
           </p>
         </div>
         <CardContent className="space-y-6 p-4 sm:p-6">
-          <form id="form-especificaciones">
-            {/* Cómputo */}
+          <div>
             {formData.tipoEquipo === 'computo' && (
               <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
                 <div className="space-y-2">
@@ -622,9 +613,9 @@ export function NuevoEquipoForm() {
                 </div>
               </div>
             )}
-          </form>
+          </div>
         </CardContent>
       </Card>
-    </div>
+    </form>
   )
 }
