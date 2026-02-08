@@ -159,17 +159,24 @@ export function SupportTicketForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Card 1: Información del Solicitante */}
-      <Card className="border-0 shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg">Información del Solicitante</CardTitle>
-          <CardDescription>
-            Proporciona tus datos de contacto para la gestión de la solicitud
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+    <Card className="border-0 shadow-sm">
+      <CardHeader>
+        <CardTitle className="text-xl">Formulario de Solicitud</CardTitle>
+        <CardDescription>
+          Completa todos los campos para enviar tu solicitud de soporte
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form id="formulario-solicitud" onSubmit={handleSubmit} className="space-y-8">
+          {/* Sección: Información del Solicitante */}
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold text-foreground">Información del Solicitante</h3>
+              <p className="text-sm text-muted-foreground">
+                Proporciona tus datos de contacto para la gestión de la solicitud
+              </p>
+            </div>
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
             {/* Nombre Afectado */}
             <div className="space-y-2">
               <Label htmlFor="nombreAfectado" className="flex items-center gap-2 text-sm font-medium">
@@ -263,18 +270,19 @@ export function SupportTicketForm() {
               )}
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Card 2: Detalle del Problema */}
-      <Card className="border-0 shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg">Detalle del Problema</CardTitle>
-          <CardDescription>
-            Describe el tipo de problema y proporciona evidencia visual
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
+          {/* Divisor visual */}
+          <div className="border-t pt-8"></div>
+
+          {/* Sección: Detalle del Problema */}
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold text-foreground">Detalle del Problema</h3>
+              <p className="text-sm text-muted-foreground">
+                Describe el tipo de problema y proporciona evidencia visual
+              </p>
+            </div>
+            <div className="space-y-6">
           {/* Tipo de Problema */}
           <div className="space-y-2">
             <Label htmlFor="tipoProblema" className="flex items-center gap-2 text-sm font-medium">
@@ -388,11 +396,10 @@ export function SupportTicketForm() {
               </div>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </form>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col-reverse gap-3 md:flex-row md:justify-end pt-4">
+        {/* Action Buttons */}
+      <div className="flex flex-col-reverse gap-3 md:flex-row md:justify-end pt-4 border-t">
         <Link href="/">
           <Button variant="outline" className="w-full md:w-auto bg-transparent">
             Cancelar
@@ -402,6 +409,7 @@ export function SupportTicketForm() {
           type="submit" 
           disabled={isLoading}
           className="w-full md:w-auto"
+          form="formulario-solicitud"
         >
           {isLoading ? (
             <>
@@ -413,6 +421,6 @@ export function SupportTicketForm() {
           )}
         </Button>
       </div>
-    </form>
+    </Card>
   )
 }
