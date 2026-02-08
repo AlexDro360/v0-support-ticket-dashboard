@@ -213,32 +213,13 @@ export function FichaTecnicaEquipo({ equipo }: FichaTecnicaEquipoProps) {
         </div>
         <CardContent className="p-4 sm:p-6">
           <div className="grid gap-6">
-            {/* Primera fila - Identificación */}
-            <div className="grid gap-4 md:grid-cols-4">
+            {/* Primera fila - Número de inventario, Tipo y Estado */}
+            <div className="grid gap-4 md:grid-cols-3">
               <CampoDetalle
                 icono={<Database className="h-4 w-4 text-muted-foreground" />}
                 label="Número de Inventario"
                 valor={equipo.numeroInventario}
               />
-              <CampoDetalle
-                icono={<Package className="h-4 w-4 text-muted-foreground" />}
-                label="Marca"
-                valor={equipo.marca}
-              />
-              <CampoDetalle
-                icono={<Monitor className="h-4 w-4 text-muted-foreground" />}
-                label="Modelo"
-                valor={equipo.modelo}
-              />
-              <CampoDetalle
-                icono={<Database className="h-4 w-4 text-muted-foreground" />}
-                label="Número de Serie"
-                valor={equipo.numeroSerie}
-              />
-            </div>
-
-            {/* Segunda fila - Estado y clasificación */}
-            <div className="grid gap-4 md:grid-cols-3">
               <div className="space-y-1">
                 <div className="text-xs text-muted-foreground flex items-center gap-1">
                   <Package className="h-4 w-4 text-muted-foreground" />
@@ -253,14 +234,23 @@ export function FichaTecnicaEquipo({ equipo }: FichaTecnicaEquipoProps) {
                 </div>
                 <EstadoBadge estado={equipo.estado} />
               </div>
+            </div>
+
+            {/* Segunda fila - Marca y Modelo */}
+            <div className="grid gap-4 md:grid-cols-2">
               <CampoDetalle
-                icono={<Calendar className="h-4 w-4 text-muted-foreground" />}
-                label="Garantía Hasta"
-                valor={formatearFecha(equipo.garantiaHasta)}
+                icono={<Package className="h-4 w-4 text-muted-foreground" />}
+                label="Marca"
+                valor={equipo.marca}
+              />
+              <CampoDetalle
+                icono={<Monitor className="h-4 w-4 text-muted-foreground" />}
+                label="Modelo"
+                valor={equipo.modelo}
               />
             </div>
 
-            {/* Tercera fila - Responsable y ubicación */}
+            {/* Tercera fila - Responsable y Ubicación */}
             <div className="grid gap-4 md:grid-cols-2">
               <CampoDetalle
                 icono={<User className="h-4 w-4 text-muted-foreground" />}
