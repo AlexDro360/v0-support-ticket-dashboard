@@ -1,0 +1,222 @@
+'use client'
+
+import { Monitor, Printer, Wifi, MoreVertical, Eye, Edit2, Trash2, Power } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu'
+
+export interface Equipo {
+  id: string
+  numeroInventario: string
+  tipoEquipo: string
+  marca: string
+  modelo: string
+  ubicacion: string
+  responsable: string
+  departamento: string
+  estado: 'Activo' | 'Baja'
+}
+
+interface EquiposResponsiveViewProps {
+  equipos: Equipo[]
+}
+
+function getEquipoIcon(tipoEquipo: string) {
+  switch (tipoEquipo.toLowerCase()) {
+    case 'computadora':
+      return <Monitor className="h-4 w-4" />
+    case 'impresora':
+      return <Printer className="h-4 w-4" />
+    case 'switch':
+    case 'router':
+    case 'redes':
+      return <Wifi className="h-4 w-4" />
+    default:
+      return <Monitor className="h-4 w-4" />
+  }
+}
+
+export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
+  if (equipos.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed border-muted-foreground/25 bg-muted/30 p-8 text-center">
+        <p className="text-sm text-muted-foreground">No hay equipos que mostrar</p>
+      </div>
+    )
+  }
+
+  return (
+    <>
+      {/* Desktop Table View */}
+      <div className="hidden md:block overflow-x-auto rounded-lg border">
+        <Table>
+          <TableHeader className="bg-muted">
+            <TableRow>
+              <TableHead className="font-semibold">No. Inventario</TableHead>
+              <TableHead className="font-semibold">Tipo de Equipo</TableHead>
+              <TableHead className="font-semibold">Detalle del Equipo</TableHead>
+              <TableHead className="font-semibold">Responsable</TableHead>
+              <TableHead className="font-semibold">Estado</TableHead>
+              <TableHead className="w-10 text-right font-semibold">Acciones</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {equipos.map((equipo) => (
+              <TableRow key={equipo.id} className="hover:bg-muted/50">
+                <TableCell>
+                  <Badge variant="secondary" className="font-mono text-xs">
+                    {equipo.numeroInventario}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    {getEquipoIcon(equipo.tipoEquipo)}
+                    <span className="text-sm">{equipo.tipoEquipo}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="text-sm">
+                    <p className="font-medium">{equipo.marca} - {equipo.modelo}</p>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="text-sm">
+                    <p className="font-medium">{equipo.responsable}</p>
+                    <p className="text-xs text-muted-foreground">{equipo.departamento}</p>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`inline-block h-2 w-2 rounded-full ${
+                        equipo.estado === 'Activo' ? 'bg-green-500' : 'bg-red-500'
+                      }`}
+                    />
+                    <span className="text-sm">{equipo.estado}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem>
+                        <Eye className="h-4 w-4 mr-2" />
+                        Ver Ficha Técnica
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Edit2 className="h-4 w-4 mr-2" />
+                        Editar
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Power className="h-4 w-4 mr-2" />
+                        Baja
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-600">
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Eliminar
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-3">
+        {equipos.map((equipo) => (
+          <Card key={equipo.id} className="overflow-hidden">
+            <CardContent className="p-4">
+              <div className="space-y-3">
+                {/* Header */}
+                <div className="flex items-start justify-between gap-3">
+                  <Badge variant="secondary" className="font-mono text-xs">
+                    {equipo.numeroInventario}
+                  </Badge>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem>
+                        <Eye className="h-4 w-4 mr-2" />
+                        Ver Ficha Técnica
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Edit2 className="h-4 w-4 mr-2" />
+                        Editar
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Power className="h-4 w-4 mr-2" />
+                        Baja
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-600">
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Eliminar
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                {/* Tipo y Detalle */}
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    {getEquipoIcon(equipo.tipoEquipo)}
+                    <span className="text-sm font-medium">{equipo.tipoEquipo}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {equipo.marca} - {equipo.modelo}
+                  </p>
+                </div>
+
+                {/* Responsable */}
+                <div className="space-y-1 border-t pt-3">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase">
+                    Responsable
+                  </p>
+                  <p className="text-sm font-medium">{equipo.responsable}</p>
+                  <p className="text-xs text-muted-foreground">{equipo.departamento}</p>
+                </div>
+
+                {/* Estado */}
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`inline-block h-2 w-2 rounded-full ${
+                      equipo.estado === 'Activo' ? 'bg-green-500' : 'bg-red-500'
+                    }`}
+                  />
+                  <span className="text-sm">{equipo.estado}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </>
+  )
+}
