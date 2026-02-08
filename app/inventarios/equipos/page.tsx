@@ -1,7 +1,10 @@
 'use client'
 
+import Link from 'next/link'
 import React from 'react'
 import { useState, useMemo } from 'react'
+import { Plus } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { EquiposToolbar } from '@/components/equipos-toolbar'
 import { EquiposResponsiveView, type Equipo } from '@/components/equipos-responsive-view'
 import { EquiposPagination } from '@/components/equipos-pagination'
@@ -195,13 +198,22 @@ export default function EquiposPage() {
       <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
         {/* Main Content Card */}
         <div className="rounded-lg border bg-card shadow-sm md:rounded-xl">
-          <div className="border-b px-4 py-4 sm:px-6 sm:py-5">
-            <h2 className="text-base font-semibold text-foreground sm:text-lg">
-              Inventario de Equipos
-            </h2>
-            <p className="text-xs text-muted-foreground sm:text-sm">
-              Gestiona el inventario de equipos de TI
-            </p>
+          <div className="border-b px-4 py-4 sm:px-6 sm:py-5 flex items-center justify-between">
+            <div>
+              <h2 className="text-base font-semibold text-foreground sm:text-lg">
+                Inventario de Equipos
+              </h2>
+              <p className="text-xs text-muted-foreground sm:text-sm">
+                Gestiona el inventario de equipos de TI
+              </p>
+            </div>
+            <Link href="/inventarios/equipos/nuevo">
+              <Button size="sm" className="gap-2">
+                <Plus className="h-4 w-4" />
+                <span className="hidden sm:inline">Nuevo Equipo</span>
+                <span className="sm:hidden">Nuevo</span>
+              </Button>
+            </Link>
           </div>
 
           <div className="space-y-4 p-4 sm:space-y-6 sm:p-6">
