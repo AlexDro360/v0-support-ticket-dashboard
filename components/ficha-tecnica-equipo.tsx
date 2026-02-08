@@ -212,60 +212,62 @@ export function FichaTecnicaEquipo({ equipo }: FichaTecnicaEquipoProps) {
           </h2>
         </div>
         <CardContent className="p-4 sm:p-6">
-          <div className="grid gap-6">
-            {/* Primera fila - Número de inventario, Tipo y Estado */}
-            <div className="grid gap-4 md:grid-cols-3">
-              <CampoDetalle
-                icono={<Database className="h-4 w-4 text-muted-foreground" />}
-                label="Número de Inventario"
-                valor={equipo.numeroInventario}
-              />
-              <div className="space-y-1">
-                <div className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Package className="h-4 w-4 text-muted-foreground" />
-                  Tipo de Equipo
-                </div>
-                <TipoEquipoBadge tipo={equipo.tipoEquipo} />
+          <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+            {/* Número de Inventario */}
+            <CampoDetalle
+              icono={<Database className="h-4 w-4 text-muted-foreground" />}
+              label="Número de Inventario"
+              valor={equipo.numeroInventario}
+            />
+
+            {/* Tipo de Equipo */}
+            <div className="space-y-1">
+              <div className="text-xs text-muted-foreground flex items-center gap-1">
+                <Package className="h-4 w-4 text-muted-foreground" />
+                Tipo de Equipo
               </div>
-              <div className="space-y-1">
-                <div className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Badge className="h-4 w-4 text-muted-foreground" />
-                  Estado
-                </div>
-                <EstadoBadge estado={equipo.estado} />
+              <TipoEquipoBadge tipo={equipo.tipoEquipo} />
+            </div>
+
+            {/* Marca */}
+            <CampoDetalle
+              icono={<Package className="h-4 w-4 text-muted-foreground" />}
+              label="Marca"
+              valor={equipo.marca}
+            />
+
+            {/* Modelo */}
+            <CampoDetalle
+              icono={<Monitor className="h-4 w-4 text-muted-foreground" />}
+              label="Modelo"
+              valor={equipo.modelo}
+            />
+
+            {/* Estado */}
+            <div className="space-y-1">
+              <div className="text-xs text-muted-foreground flex items-center gap-1">
+                <Badge className="h-4 w-4 text-muted-foreground" />
+                Estado
               </div>
+              <EstadoBadge estado={equipo.estado} />
             </div>
 
-            {/* Segunda fila - Marca y Modelo */}
-            <div className="grid gap-4 md:grid-cols-2">
-              <CampoDetalle
-                icono={<Package className="h-4 w-4 text-muted-foreground" />}
-                label="Marca"
-                valor={equipo.marca}
-              />
-              <CampoDetalle
-                icono={<Monitor className="h-4 w-4 text-muted-foreground" />}
-                label="Modelo"
-                valor={equipo.modelo}
-              />
-            </div>
+            {/* Responsable */}
+            <CampoDetalle
+              icono={<User className="h-4 w-4 text-muted-foreground" />}
+              label="Responsable"
+              valor={equipo.responsable}
+            />
 
-            {/* Tercera fila - Responsable y Ubicación */}
-            <div className="grid gap-4 md:grid-cols-2">
-              <CampoDetalle
-                icono={<User className="h-4 w-4 text-muted-foreground" />}
-                label="Responsable"
-                valor={equipo.responsable}
-              />
-              <CampoDetalle
-                icono={<MapPin className="h-4 w-4 text-muted-foreground" />}
-                label="Ubicación"
-                valor={equipo.ubicacion}
-              />
-            </div>
+            {/* Ubicación */}
+            <CampoDetalle
+              icono={<MapPin className="h-4 w-4 text-muted-foreground" />}
+              label="Ubicación"
+              valor={equipo.ubicacion}
+            />
 
-            {/* Descripción */}
-            <div>
+            {/* Descripción - Full width */}
+            <div className="md:col-span-2">
               <p className="text-xs text-muted-foreground mb-2">Descripción</p>
               <p className="text-sm text-foreground leading-relaxed bg-muted/50 p-3 rounded-md">
                 {equipo.descripcion}
