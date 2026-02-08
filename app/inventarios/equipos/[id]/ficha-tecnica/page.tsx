@@ -6,11 +6,11 @@ import { Button } from '@/components/ui/button'
 import { FichaTecnicaEquipo } from '@/components/ficha-tecnica-equipo'
 
 export default function FichaTecnicaPage({ params }: { params: { id: string } }) {
-  // Datos de ejemplo - simulando que se cargan del servidor
+  // Datos de ejemplo - en producción estos vendrían de una API
   const equipoData = {
     id: params.id,
     numeroInventario: 'ITO-2024-HP01',
-    tipoEquipo: 'computo',
+    tipoEquipo: 'computo' as const,
     marca: 'HP',
     modelo: 'ProDesk 400',
     responsable: 'Juan Pérez',
@@ -32,14 +32,14 @@ export default function FichaTecnicaPage({ params }: { params: { id: string } })
   }
 
   const handleDescargar = () => {
-    console.log('[v0] Downloading ficha técnica for equipment:', params.id)
-    // Aquí iría la lógica para descargar el PDF
+    console.log('[v0] Iniciando descarga de ficha técnica para equipo:', params.id)
+    // TODO: Implementar lógica para generar y descargar PDF
   }
 
   return (
     <div className="min-h-screen bg-muted/50">
       <div className="mx-auto w-full max-w-7xl px-2 py-4 sm:px-4 md:px-6 lg:px-8 lg:py-8">
-        {/* Back Button and Title */}
+        {/* Encabezado con botón atrás y título */}
         <div className="mb-6 flex items-center gap-3">
           <Link href="/inventarios/equipos">
             <Button variant="ghost" size="icon" className="shrink-0">
@@ -57,7 +57,7 @@ export default function FichaTecnicaPage({ params }: { params: { id: string } })
           </div>
         </div>
 
-        {/* Action Buttons */}
+        {/* Botones de acción */}
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
           <Button
             variant="outline"
@@ -82,7 +82,7 @@ export default function FichaTecnicaPage({ params }: { params: { id: string } })
           </Link>
         </div>
 
-        {/* Main Content */}
+        {/* Contenido principal */}
         <FichaTecnicaEquipo equipo={equipoData} />
       </div>
     </div>
