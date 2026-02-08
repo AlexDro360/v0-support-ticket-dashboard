@@ -177,9 +177,11 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem>
-                        <Eye className="h-4 w-4 mr-2" />
-                        Ver Ficha Técnica
+                      <DropdownMenuItem asChild>
+                        <Link href={`/inventarios/equipos/${equipo.id}/ficha-tecnica`} className="cursor-pointer">
+                          <Eye className="h-4 w-4 mr-2" />
+                          Ver Ficha Técnica
+                        </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <Link href={`/inventarios/equipos/${equipo.id}`} className="cursor-pointer">
@@ -223,9 +225,11 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem>
-                        <Eye className="h-4 w-4 mr-2" />
-                        Ver Ficha Técnica
+                      <DropdownMenuItem asChild>
+                        <Link href={`/inventarios/equipos/${equipo.id}/ficha-tecnica`} className="cursor-pointer">
+                          <Eye className="h-4 w-4 mr-2" />
+                          Ver Ficha Técnica
+                        </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <Link href={`/inventarios/equipos/${equipo.id}`} className="cursor-pointer">
