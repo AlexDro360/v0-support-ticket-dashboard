@@ -41,8 +41,8 @@ export function EquiposToolbar({
   onDepartamentoChange,
 }: EquiposToolbarProps) {
   return (
-    <div className="space-y-4">
-      {/* Search Bar */}
+    <div className="flex flex-col gap-4">
+      {/* Search bar */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
@@ -53,62 +53,42 @@ export function EquiposToolbar({
         />
       </div>
 
-      {/* Filters */}
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        {/* Tipo de Equipo Filter */}
-        <div>
-          <label className="mb-2 block text-sm font-medium text-foreground">
-            Tipo de Equipo
-          </label>
-          <Select value={tipoEquipo} onValueChange={onTipoEquipoChange}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="todos">Todos</SelectItem>
-              {TIPOS_EQUIPO.map((tipo) => (
-                <SelectItem key={tipo} value={tipo}>
-                  {tipo}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      {/* Filter row - Full width */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-3">
+        {/* Filter label with icon */}
+        <div className="flex items-center gap-2 shrink-0">
+          <Sliders className="h-5 w-5 text-muted-foreground" />
+          <span className="text-sm font-medium text-muted-foreground">Filtros:</span>
         </div>
 
-        {/* Departamento Filter */}
-        <div>
-          <label className="mb-2 block text-sm font-medium text-foreground">
-            Departamento
-          </label>
-          <Select value={departamento} onValueChange={onDepartamentoChange}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="todos">Todos</SelectItem>
-              {DEPARTAMENTOS.map((dept) => (
-                <SelectItem key={dept} value={dept}>
-                  {dept}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Filter selects - Equal width and full width on mobile */}
+        <Select value={tipoEquipo} onValueChange={onTipoEquipoChange}>
+          <SelectTrigger className="w-full bg-card sm:flex-1">
+            <SelectValue placeholder="Todos" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="todos">Todos los tipos</SelectItem>
+            {TIPOS_EQUIPO.map((tipo) => (
+              <SelectItem key={tipo} value={tipo}>
+                {tipo}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-        {/* Status Filter */}
-        <div>
-          <label className="mb-2 block text-sm font-medium text-foreground">
-            Acciones
-          </label>
-          <Button
-            variant="outline"
-            className="w-full justify-start text-muted-foreground"
-            onClick={() => {}}
-          >
-            <Sliders className="h-4 w-4 mr-2" />
-            Más filtros
-          </Button>
-        </div>
+        <Select value={departamento} onValueChange={onDepartamentoChange}>
+          <SelectTrigger className="w-full bg-card sm:flex-1">
+            <SelectValue placeholder="Todos" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="todos">Todos los departamentos</SelectItem>
+            {DEPARTAMENTOS.map((dept) => (
+              <SelectItem key={dept} value={dept}>
+                {dept}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
     </div>
   )
