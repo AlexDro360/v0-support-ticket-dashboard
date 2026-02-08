@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertCircle, Package, Cpu, Printer, Wifi, HardDrive, Zap, FileText, User, Tag, Database, Server, Keyboard, Monitor, Droplet, Network } from 'lucide-react'
+import { AlertCircle, Package, Laptop, Printer, Wifi, HardDrive, Zap, FileText, User, Tag, Database, Server, Keyboard, Monitor, Droplet, Network, Chip } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -211,7 +211,7 @@ export function NuevoEquipoForm({ onSubmit, isLoading }: NuevoEquipoFormProps) {
 
   const getTipoIcon = () => {
     const icons = {
-      computo: <Cpu className="h-5 w-5" />,
+      computo: <Laptop className="h-5 w-5" />,
       impresora: <Printer className="h-5 w-5" />,
       redes: <Wifi className="h-5 w-5" />
     }
@@ -236,7 +236,7 @@ export function NuevoEquipoForm({ onSubmit, isLoading }: NuevoEquipoFormProps) {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <EquipoTypeOption
                 value="computo"
-                icon={<Cpu className="h-4 w-4" />}
+                icon={<Laptop className="h-4 w-4" />}
                 label="Cómputo"
                 selected={formData.tipoEquipo === 'computo'}
               />
@@ -409,7 +409,7 @@ export function NuevoEquipoForm({ onSubmit, isLoading }: NuevoEquipoFormProps) {
 
                 <div className="space-y-2">
                   <Label htmlFor="procesador" className="flex items-center gap-2 text-sm font-medium">
-                    <Zap className="h-4 w-4 text-muted-foreground" />
+                    <Chip className="h-4 w-4 text-muted-foreground" />
                     Procesador
                     {errors.procesador && <span className="text-red-500">*</span>}
                   </Label>
