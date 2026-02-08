@@ -94,12 +94,14 @@ function EspecificacionesComputo({ equipo }: { equipo: EquipoData }) {
   return (
     <Card className="border-0 shadow-sm">
       <div className="border-b px-4 py-4 sm:px-6 sm:py-5">
-        <h2 className="text-base font-semibold text-foreground sm:text-lg flex items-center gap-2">
-          <Cpu className="h-5 w-5" />
+        <h2 className="text-base font-semibold text-foreground sm:text-lg">
           Especificaciones Técnicas - Cómputo
         </h2>
+        <p className="text-xs text-muted-foreground sm:text-sm">
+          Especificaciones de hardware y software del equipo
+        </p>
       </div>
-      <CardContent className="p-4 sm:p-6">
+      <CardContent className="space-y-6 p-4 sm:p-6">
         <div className="grid gap-6 md:grid-cols-2">
           <CampoDetalle
             icono={<Cpu className="h-4 w-4 text-muted-foreground" />}
@@ -206,12 +208,14 @@ export function FichaTecnicaEquipo({ equipo }: FichaTecnicaEquipoProps) {
       {/* Card 1: Información General */}
       <Card className="border-0 shadow-sm">
         <div className="border-b px-4 py-4 sm:px-6 sm:py-5">
-          <h2 className="text-base font-semibold text-foreground sm:text-lg flex items-center gap-2">
-            <Package className="h-5 w-5" />
+          <h2 className="text-base font-semibold text-foreground sm:text-lg">
             Información General
           </h2>
+          <p className="text-xs text-muted-foreground sm:text-sm">
+            Datos básicos e identificación del equipo
+          </p>
         </div>
-        <CardContent className="p-4 sm:p-6">
+        <CardContent className="space-y-6 p-4 sm:p-6">
           <div className="grid gap-4 md:grid-cols-2 md:gap-6">
             {/* Número de Inventario */}
             <CampoDetalle
