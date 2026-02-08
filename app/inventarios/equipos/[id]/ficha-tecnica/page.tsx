@@ -2,9 +2,11 @@
 
 import React, { use } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Download, Printer } from 'lucide-react'
+import { ArrowLeft, Power, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FichaTecnicaEquipo } from '@/components/ficha-tecnica-equipo'
+import { ConfirmarBajaEquipoDialog } from '@/components/confirmar-baja-equipo-dialog'
+import { ConfirmarEliminarEquipoDialog } from '@/components/confirmar-eliminar-equipo-dialog'
 
 // Tipo para los datos del equipo
 interface EquipoFichaTecnica {
@@ -61,22 +63,62 @@ async function obtenerEquipo(id: string): Promise<EquipoFichaTecnica> {
 // Componente para encabezado y acciones
 function EncabezadoFicha({ 
   numeroInventario, 
-  id 
+  id,
+  equipo
 }: { 
   numeroInventario: string
-  id: string 
+  id: string
+  equipo: EquipoFichaTecnica
 }) {
-  const handleImprimir = () => {
-    window.print()
+  const [bajaDialogOpen, setBajaDialogOpen] = React.useState(false)
+  const [eliminarDialogOpen, setEliminarDialogOpen] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  const handleConfirmarBaja = async () => {
+    setIsLoading(true)
+    try {
+      console.log('[v0] Confirming baja for equipment:', id)
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      console.log('[v0] Baja completada exitosamente')
+      setBajaDialogOpen(false)
+    } catch (error) {
+      console.error('[v0] Error al dar de baja:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleDescargar = () => {
-    console.log('[v0] Iniciando descarga de ficha técnica para equipo:', id)
-    // TODO: Implementar lógica para generar y descargar PDF
+  const handleConfirmarEliminar = async () => {
+    setIsLoading(true)
+    try {
+      console.log('[v0] Deleting equipment:', id)
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      console.log('[v0] Equipo eliminado exitosamente')
+      setEliminarDialogOpen(false)
+    } catch (error) {
+      console.error('[v0] Error al eliminar:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <>
+      <ConfirmarBajaEquipoDialog
+        open={bajaDialogOpen}
+        equipo={equipo}
+        isLoading={isLoading}
+        onConfirm={handleConfirmarBaja}
+        onOpenChange={setBajaDialogOpen}
+      />
+      <ConfirmarEliminarEquipoDialog
+        open={eliminarDialogOpen}
+        equipo={equipo}
+        isLoading={isLoading}
+        onConfirm={handleConfirmarEliminar}
+        onOpenChange={setEliminarDialogOpen}
+      />
+
       {/* Encabezado con botón atrás y título */}
       <div className="mb-6 flex items-center gap-3">
         <Link href="/inventarios/equipos">
@@ -97,27 +139,27 @@ function EncabezadoFicha({
 
       {/* Botones de acción */}
       <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
-        <Button
-          variant="outline"
-          onClick={handleImprimir}
-          className="gap-2"
-        >
-          <Printer className="h-4 w-4" />
-          Imprimir
-        </Button>
-        <Button
-          variant="outline"
-          onClick={handleDescargar}
-          className="gap-2"
-        >
-          <Download className="h-4 w-4" />
-          Descargar PDF
-        </Button>
         <Link href={`/inventarios/equipos/${id}`}>
           <Button className="w-full sm:w-auto">
             Editar Equipo
           </Button>
         </Link>
+        <Button
+          variant="outline"
+          onClick={() => setBajaDialogOpen(true)}
+          className="gap-2"
+        >
+          <Power className="h-4 w-4" />
+          Dar de Baja
+        </Button>
+        <Button
+          variant="destructive"
+          onClick={() => setEliminarDialogOpen(true)}
+          className="gap-2"
+        >
+          <Trash2 className="h-4 w-4" />
+          Eliminar
+        </Button>
       </div>
     </>
   )
@@ -167,7 +209,7 @@ function ContenidoFicha({ id }: { id: string }) {
 
   return (
     <>
-      <EncabezadoFicha numeroInventario={equipo.numeroInventario} id={id} />
+      <EncabezadoFicha numeroInventario={equipo.numeroInventario} id={id} equipo={equipo} />
       <FichaTecnicaEquipo equipo={equipo} />
     </>
   )
