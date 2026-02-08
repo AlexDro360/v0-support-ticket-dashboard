@@ -1,7 +1,6 @@
 'use client'
 
 import { AlertCircle, Loader2, User, Mail, Briefcase, Clock, FileText, Upload, X } from 'lucide-react'
-import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -423,25 +422,6 @@ export function SupportTicketForm() {
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col-reverse gap-3 md:flex-row md:justify-end pt-6 border-t mt-6">
-              <Link href="/">
-                <Button variant="outline" className="w-full md:w-auto bg-transparent">
-                  Cancelar
-                </Button>
-              </Link>
-              <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Enviando...
-                  </>
-                ) : (
-                  'Enviar Solicitud'
-                )}
-              </Button>
             </div>
           </form>
         </CardContent>
