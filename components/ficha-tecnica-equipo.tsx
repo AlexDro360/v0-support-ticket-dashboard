@@ -80,10 +80,10 @@ function CampoDetalle({
 }) {
   return (
     <div className="space-y-1">
-      <p className="text-xs text-muted-foreground flex items-center gap-1">
+      <div className="text-xs text-muted-foreground flex items-center gap-1">
         {icono}
         {label}
-      </p>
+      </div>
       <p className="font-medium text-foreground text-sm">{valor || '-'}</p>
     </div>
   )
