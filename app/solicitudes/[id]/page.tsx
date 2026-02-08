@@ -326,12 +326,8 @@ function AsignarModal({
                 <p className="text-sm font-medium text-foreground truncate">
                   {tecnico.nombre}
                 </p>
-                <p className="text-xs text-muted-foreground">{tecnico.especialidad}</p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <span className="text-xs text-muted-foreground">
-                  {tecnico.cargaActual} ticket{tecnico.cargaActual !== 1 ? 's' : ''}
-                </span>
                 <span
                   className={`inline-block h-2.5 w-2.5 rounded-full ${
                     tecnico.disponible ? 'bg-green-500' : 'bg-red-400'
