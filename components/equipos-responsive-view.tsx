@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
 import { ConfirmarBajaEquipoDialog } from '@/components/confirmar-baja-equipo-dialog'
+import { ConfirmarEliminarEquipoDialog } from '@/components/confirmar-eliminar-equipo-dialog'
 
 export interface Equipo {
   id: string
@@ -55,26 +56,44 @@ function getEquipoIcon(tipoEquipo: string) {
 }
 
 export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
-  const [dialogOpen, setDialogOpen] = useState(false)
+  const [bajaDialogOpen, setBajaDialogOpen] = useState(false)
+  const [eliminarDialogOpen, setEliminarDialogOpen] = useState(false)
   const [equipoSeleccionado, setEquipoSeleccionado] = useState<Equipo | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleBajaClick = (equipo: Equipo) => {
     setEquipoSeleccionado(equipo)
-    setDialogOpen(true)
+    setBajaDialogOpen(true)
+  }
+
+  const handleEliminarClick = (equipo: Equipo) => {
+    setEquipoSeleccionado(equipo)
+    setEliminarDialogOpen(true)
   }
 
   const handleConfirmarBaja = async () => {
     setIsLoading(true)
     try {
       console.log('[v0] Confirming baja for equipment:', equipoSeleccionado?.id)
-      // Simular envío de la baja
       await new Promise(resolve => setTimeout(resolve, 1500))
       console.log('[v0] Baja completada exitosamente')
-      setDialogOpen(false)
-      // Aquí irá la lógica para actualizar la tabla
+      setBajaDialogOpen(false)
     } catch (error) {
       console.error('[v0] Error al dar de baja:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleConfirmarEliminar = async () => {
+    setIsLoading(true)
+    try {
+      console.log('[v0] Deleting equipment:', equipoSeleccionado?.id)
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      console.log('[v0] Equipo eliminado exitosamente')
+      setEliminarDialogOpen(false)
+    } catch (error) {
+      console.error('[v0] Error al eliminar:', error)
     } finally {
       setIsLoading(false)
     }
@@ -90,11 +109,18 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
   return (
     <>
       <ConfirmarBajaEquipoDialog
-        open={dialogOpen}
+        open={bajaDialogOpen}
         equipo={equipoSeleccionado}
         isLoading={isLoading}
         onConfirm={handleConfirmarBaja}
-        onOpenChange={setDialogOpen}
+        onOpenChange={setBajaDialogOpen}
+      />
+      <ConfirmarEliminarEquipoDialog
+        open={eliminarDialogOpen}
+        equipo={equipoSeleccionado}
+        isLoading={isLoading}
+        onConfirm={handleConfirmarEliminar}
+        onOpenChange={setEliminarDialogOpen}
       />
 
       {/* Desktop Table View */}
@@ -166,7 +192,7 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
                         <Power className="h-4 w-4 mr-2" />
                         Baja
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-600">
+                      <DropdownMenuItem className="text-red-600" onClick={() => handleEliminarClick(equipo)}>
                         <Trash2 className="h-4 w-4 mr-2" />
                         Eliminar
                       </DropdownMenuItem>
@@ -212,7 +238,7 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
                         <Power className="h-4 w-4 mr-2" />
                         Baja
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-600">
+                      <DropdownMenuItem className="text-red-600" onClick={() => handleEliminarClick(equipo)}>
                         <Trash2 className="h-4 w-4 mr-2" />
                         Eliminar
                       </DropdownMenuItem>
