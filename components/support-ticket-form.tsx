@@ -6,6 +6,7 @@ import React from "react"
 import { useState } from 'react'
 import { Loader2, User, Mail, Briefcase, Clock, FileText, Upload, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -159,15 +160,16 @@ export function SupportTicketForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Sección: Información del Solicitante */}
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-lg font-semibold text-foreground">Información del Solicitante</h3>
-          <p className="text-sm text-muted-foreground">
+      {/* Card 1: Información del Solicitante */}
+      <Card className="border-0 shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-lg">Información del Solicitante</CardTitle>
+          <CardDescription>
             Proporciona tus datos de contacto para la gestión de la solicitud
-          </p>
-        </div>
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
             {/* Nombre Afectado */}
             <div className="space-y-2">
               <Label htmlFor="nombreAfectado" className="flex items-center gap-2 text-sm font-medium">
@@ -261,21 +263,18 @@ export function SupportTicketForm() {
               )}
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      {/* Separador visual */}
-      <div className="border-t pt-6"></div>
-
-      {/* Sección: Detalle del Problema */}
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-lg font-semibold text-foreground">Detalle del Problema</h3>
-          <p className="text-sm text-muted-foreground">
+      {/* Card 2: Detalle del Problema */}
+      <Card className="border-0 shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-lg">Detalle del Problema</CardTitle>
+          <CardDescription>
             Describe el tipo de problema y proporciona evidencia visual
-          </p>
-        </div>
-        <div className="space-y-6">
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
           {/* Tipo de Problema */}
           <div className="space-y-2">
             <Label htmlFor="tipoProblema" className="flex items-center gap-2 text-sm font-medium">
@@ -389,8 +388,8 @@ export function SupportTicketForm() {
               </div>
             )}
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Action Buttons */}
       <div className="flex flex-col-reverse gap-3 md:flex-row md:justify-end pt-4">
