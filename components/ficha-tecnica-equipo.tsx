@@ -213,24 +213,13 @@ export function FichaTecnicaEquipo({ equipo }: FichaTecnicaEquipoProps) {
         </div>
         <CardContent className="p-4 sm:p-6">
           <div className="grid gap-6">
-            {/* Primera fila */}
-            <div className="grid gap-4 md:grid-cols-2">
+            {/* Primera fila - Identificación */}
+            <div className="grid gap-4 md:grid-cols-4">
               <CampoDetalle
                 icono={<Database className="h-4 w-4 text-muted-foreground" />}
                 label="Número de Inventario"
                 valor={equipo.numeroInventario}
               />
-              <div className="space-y-1">
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Package className="h-4 w-4 text-muted-foreground" />
-                  Tipo de Equipo
-                </p>
-                <TipoEquipoBadge tipo={equipo.tipoEquipo} />
-              </div>
-            </div>
-
-            {/* Segunda fila */}
-            <div className="grid gap-4 md:grid-cols-3">
               <CampoDetalle
                 icono={<Package className="h-4 w-4 text-muted-foreground" />}
                 label="Marca"
@@ -241,16 +230,37 @@ export function FichaTecnicaEquipo({ equipo }: FichaTecnicaEquipoProps) {
                 label="Modelo"
                 valor={equipo.modelo}
               />
+              <CampoDetalle
+                icono={<Database className="h-4 w-4 text-muted-foreground" />}
+                label="Número de Serie"
+                valor={equipo.numeroSerie}
+              />
+            </div>
+
+            {/* Segunda fila - Estado y clasificación */}
+            <div className="grid gap-4 md:grid-cols-3">
               <div className="space-y-1">
                 <div className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Database className="h-4 w-4 text-muted-foreground" />
+                  <Package className="h-4 w-4 text-muted-foreground" />
+                  Tipo de Equipo
+                </div>
+                <TipoEquipoBadge tipo={equipo.tipoEquipo} />
+              </div>
+              <div className="space-y-1">
+                <div className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Badge className="h-4 w-4 text-muted-foreground" />
                   Estado
                 </div>
                 <EstadoBadge estado={equipo.estado} />
               </div>
+              <CampoDetalle
+                icono={<Calendar className="h-4 w-4 text-muted-foreground" />}
+                label="Garantía Hasta"
+                valor={formatearFecha(equipo.garantiaHasta)}
+              />
             </div>
 
-            {/* Tercera fila */}
+            {/* Tercera fila - Responsable y ubicación */}
             <div className="grid gap-4 md:grid-cols-2">
               <CampoDetalle
                 icono={<User className="h-4 w-4 text-muted-foreground" />}
@@ -275,36 +285,7 @@ export function FichaTecnicaEquipo({ equipo }: FichaTecnicaEquipoProps) {
         </CardContent>
       </Card>
 
-      {/* Card 2: Información de Adquisición */}
-      <Card className="border-0 shadow-sm">
-        <div className="border-b px-4 py-4 sm:px-6 sm:py-5">
-          <h2 className="text-base font-semibold text-foreground sm:text-lg flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
-            Información de Adquisición
-          </h2>
-        </div>
-        <CardContent className="p-4 sm:p-6">
-          <div className="grid gap-6 md:grid-cols-3">
-            <CampoDetalle
-              icono={<Calendar className="h-4 w-4 text-muted-foreground" />}
-              label="Fecha de Adquisición"
-              valor={formatearFecha(equipo.fechaAdquisicion)}
-            />
-            <CampoDetalle
-              icono={<Calendar className="h-4 w-4 text-muted-foreground" />}
-              label="Garantía Hasta"
-              valor={formatearFecha(equipo.garantiaHasta)}
-            />
-            <CampoDetalle
-              icono={<Database className="h-4 w-4 text-muted-foreground" />}
-              label="Número de Serie"
-              valor={equipo.numeroSerie}
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Card 3: Especificaciones Técnicas (Dinámico según tipo) */}
+      {/* Card 2: Especificaciones Técnicas (Dinámico según tipo) */}
       {equipo.tipoEquipo === 'computo' && <EspecificacionesComputo equipo={equipo} />}
       {equipo.tipoEquipo === 'impresora' && <EspecificacionesImpresora equipo={equipo} />}
       {equipo.tipoEquipo === 'redes' && <EspecificacionesRedes equipo={equipo} />}
