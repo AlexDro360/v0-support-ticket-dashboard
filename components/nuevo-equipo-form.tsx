@@ -93,26 +93,22 @@ interface EquipoTypeOptionProps {
   icon: React.ReactNode
   label: string
   selected: boolean
-  onSelect: (value: TipoEquipo) => void
 }
 
-function EquipoTypeOption({ value, icon, label, selected, onSelect }: EquipoTypeOptionProps) {
+function EquipoTypeOption({ value, icon, label, selected }: EquipoTypeOptionProps) {
   return (
-    <div 
+    <label 
+      htmlFor={value}
       className={`flex items-center space-x-2 p-4 border rounded-lg cursor-pointer transition-all ${
         selected ? 'border-primary bg-primary/5' : 'hover:bg-muted/50'
       }`}
-      onClick={() => onSelect(value)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onSelect(value)}
     >
       <RadioGroupItem value={value} id={value} />
-      <Label htmlFor={value} className="cursor-pointer flex-1 flex items-center gap-2">
+      <div className="flex-1 flex items-center gap-2">
         {icon}
         <span>{label}</span>
-      </Label>
-    </div>
+      </div>
+    </label>
   )
 }
 
@@ -243,21 +239,18 @@ export function NuevoEquipoForm({ onSubmit, isLoading }: NuevoEquipoFormProps) {
                 icon={<Cpu className="h-4 w-4" />}
                 label="Cómputo"
                 selected={formData.tipoEquipo === 'computo'}
-                onSelect={handleTypeChange}
               />
               <EquipoTypeOption
                 value="impresora"
                 icon={<Printer className="h-4 w-4" />}
                 label="Impresora"
                 selected={formData.tipoEquipo === 'impresora'}
-                onSelect={handleTypeChange}
               />
               <EquipoTypeOption
                 value="redes"
                 icon={<Wifi className="h-4 w-4" />}
                 label="Redes"
                 selected={formData.tipoEquipo === 'redes'}
-                onSelect={handleTypeChange}
               />
             </div>
           </RadioGroup>
