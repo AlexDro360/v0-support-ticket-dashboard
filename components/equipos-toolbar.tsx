@@ -1,6 +1,7 @@
 'use client'
 
-import { Search, Sliders } from 'lucide-react'
+import Link from 'next/link'
+import { Search, Sliders, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -42,15 +43,24 @@ export function EquiposToolbar({
 }: EquiposToolbarProps) {
   return (
     <div className="flex flex-col gap-4">
-      {/* Search bar */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Buscar por No. Inventario o Responsable..."
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-10"
-        />
+      {/* Search bar and New Equipment Button */}
+      <div className="flex gap-2 items-center">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Buscar por No. Inventario o Responsable..."
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Link href="/inventarios/equipos/nuevo">
+          <Button size="sm" className="gap-2 shrink-0">
+            <Plus className="h-4 w-4" />
+            <span className="hidden sm:inline">Nuevo Equipo</span>
+            <span className="sm:hidden">Nuevo</span>
+          </Button>
+        </Link>
       </div>
 
       {/* Filter row - Full width */}
