@@ -30,77 +30,109 @@ export function EquiposPagination({
   const startItem = (currentPage - 1) * rowsPerPage + 1
   const endItem = Math.min(currentPage * rowsPerPage, totalItems)
 
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = []
+    const maxVisible = 5
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i)
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) pages.push(i)
+        pages.push('...')
+        pages.push(totalPages)
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1)
+        pages.push('...')
+        for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i)
+      } else {
+        pages.push(1)
+        pages.push('...')
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) pages.push(i)
+        pages.push('...')
+        pages.push(totalPages)
+      }
+    }
+
+    return pages
+  }
+
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      {/* Rows per page */}
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground">Filas por página:</span>
-        <Select value={rowsPerPage.toString()} onValueChange={(v) => onRowsPerPageChange(parseInt(v))}>
-          <SelectTrigger className="w-20">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="5">5</SelectItem>
-            <SelectItem value="10">10</SelectItem>
-            <SelectItem value="25">25</SelectItem>
-            <SelectItem value="50">50</SelectItem>
-          </SelectContent>
-        </Select>
+    <div className="flex flex-col gap-4">
+      {/* Info Row */}
+      <div className="flex justify-start">
+        <p className="text-xs text-muted-foreground sm:text-sm whitespace-nowrap">
+          Mostrando {startItem} a {endItem} de {totalItems} equipos
+        </p>
       </div>
 
-      {/* Page info */}
-      <div className="text-sm text-muted-foreground">
-        Mostrando {startItem} a {endItem} de {totalItems} equipos
-      </div>
-
-      {/* Pagination controls */}
-      <div className="flex items-center gap-2">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="h-8 w-8"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-
-        <div className="flex items-center gap-1">
-          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-            let page: number
-            if (totalPages <= 5) {
-              page = i + 1
-            } else if (currentPage <= 3) {
-              page = i + 1
-            } else if (currentPage >= totalPages - 2) {
-              page = totalPages - 4 + i
-            } else {
-              page = currentPage - 2 + i
-            }
-
-            return (
-              <Button
-                key={page}
-                variant={currentPage === page ? 'default' : 'outline'}
-                size="icon"
-                onClick={() => onPageChange(page)}
-                className="h-8 w-8"
-              >
-                {page}
-              </Button>
-            )
-          })}
+      {/* Controls Row - Centered */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
+        {/* Rows per page */}
+        <div className="flex items-center gap-2 justify-center">
+          <span className="text-xs text-muted-foreground sm:text-sm">Filas por página:</span>
+          <Select
+            value={rowsPerPage.toString()}
+            onValueChange={(value) => onRowsPerPageChange(parseInt(value))}
+          >
+            <SelectTrigger className="w-[70px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="20">20</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="h-8 w-8"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
+        {/* Page navigation */}
+        <div className="flex items-center gap-1 overflow-x-auto justify-center">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="h-8 w-8 sm:h-9 sm:w-auto sm:px-3"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            <span className="hidden sm:inline ml-1">Anterior</span>
+          </Button>
+
+          <div className="flex items-center gap-1 mx-1">
+            {getPageNumbers().map((page, index) =>
+              page === '...' ? (
+                <span key={`ellipsis-${index}`} className="px-1 text-xs text-muted-foreground sm:px-2">
+                  ...
+                </span>
+              ) : (
+                <Button
+                  key={page}
+                  variant={currentPage === page ? 'default' : 'outline'}
+                  size="sm"
+                  className="h-8 w-8 text-xs p-0"
+                  onClick={() => onPageChange(page as number)}
+                >
+                  {page}
+                </Button>
+              )
+            )}
+          </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="h-8 w-8 sm:h-9 sm:w-auto sm:px-3"
+          >
+            <span className="hidden sm:inline mr-1">Siguiente</span>
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   )
