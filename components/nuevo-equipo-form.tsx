@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertCircle, Package, Cpu, Printer, Wifi } from 'lucide-react'
+import { AlertCircle, Package, Cpu, Printer, Wifi, HardDrive, Zap, FileText, User, Tag, Database, Memory, Keyboard, Monitor, Droplet, Network } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -285,7 +285,8 @@ export function NuevoEquipoForm() {
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
               {/* No. Inventario */}
               <div className="space-y-2">
-                <Label htmlFor="numeroInventario" className="text-sm font-medium">
+                <Label htmlFor="numeroInventario" className="flex items-center gap-2 text-sm font-medium">
+                  <Tag className="h-4 w-4 text-muted-foreground" />
                   No. Inventario
                   {errors.numeroInventario && <span className="text-red-500">*</span>}
                 </Label>
@@ -302,7 +303,8 @@ export function NuevoEquipoForm() {
 
               {/* Marca */}
               <div className="space-y-2">
-                <Label htmlFor="marca" className="text-sm font-medium">
+                <Label htmlFor="marca" className="flex items-center gap-2 text-sm font-medium">
+                  <Package className="h-4 w-4 text-muted-foreground" />
                   Marca
                   {errors.marca && <span className="text-red-500">*</span>}
                 </Label>
@@ -323,7 +325,8 @@ export function NuevoEquipoForm() {
 
               {/* Modelo */}
               <div className="space-y-2">
-                <Label htmlFor="modelo" className="text-sm font-medium">
+                <Label htmlFor="modelo" className="flex items-center gap-2 text-sm font-medium">
+                  <Monitor className="h-4 w-4 text-muted-foreground" />
                   Modelo
                   {errors.modelo && <span className="text-red-500">*</span>}
                 </Label>
@@ -344,7 +347,8 @@ export function NuevoEquipoForm() {
 
               {/* Responsable */}
               <div className="space-y-2">
-                <Label htmlFor="responsable" className="text-sm font-medium">
+                <Label htmlFor="responsable" className="flex items-center gap-2 text-sm font-medium">
+                  <User className="h-4 w-4 text-muted-foreground" />
                   Responsable
                   {errors.responsable && <span className="text-red-500">*</span>}
                 </Label>
@@ -365,7 +369,8 @@ export function NuevoEquipoForm() {
 
               {/* Descripción */}
               <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="descripcion" className="text-sm font-medium">
+                <Label htmlFor="descripcion" className="flex items-center gap-2 text-sm font-medium">
+                  <FileText className="h-4 w-4 text-muted-foreground" />
                   Descripción
                   {errors.descripcion && <span className="text-red-500">*</span>}
                 </Label>
@@ -402,7 +407,8 @@ export function NuevoEquipoForm() {
             {formData.tipoEquipo === 'computo' && (
               <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="ramGB" className="text-sm font-medium">
+                  <Label htmlFor="ramGB" className="flex items-center gap-2 text-sm font-medium">
+                    <Memory className="h-4 w-4 text-muted-foreground" />
                     RAM (GB)
                     {errors.ramGB && <span className="text-red-500">*</span>}
                   </Label>
@@ -418,7 +424,8 @@ export function NuevoEquipoForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="procesador" className="text-sm font-medium">
+                  <Label htmlFor="procesador" className="flex items-center gap-2 text-sm font-medium">
+                    <Zap className="h-4 w-4 text-muted-foreground" />
                     Procesador
                     {errors.procesador && <span className="text-red-500">*</span>}
                   </Label>
@@ -438,7 +445,8 @@ export function NuevoEquipoForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="sistemaOperativo" className="text-sm font-medium">
+                  <Label htmlFor="sistemaOperativo" className="flex items-center gap-2 text-sm font-medium">
+                    <Keyboard className="h-4 w-4 text-muted-foreground" />
                     Sistema Operativo
                     {errors.sistemaOperativo && <span className="text-red-500">*</span>}
                   </Label>
@@ -458,7 +466,8 @@ export function NuevoEquipoForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="capacidadAlmacenamiento" className="text-sm font-medium">
+                  <Label htmlFor="capacidadAlmacenamiento" className="flex items-center gap-2 text-sm font-medium">
+                    <Database className="h-4 w-4 text-muted-foreground" />
                     Capacidad Almacenamiento (GB)
                     {errors.capacidadAlmacenamiento && <span className="text-red-500">*</span>}
                   </Label>
@@ -474,7 +483,8 @@ export function NuevoEquipoForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="tipoAlmacenamiento" className="text-sm font-medium">
+                  <Label htmlFor="tipoAlmacenamiento" className="flex items-center gap-2 text-sm font-medium">
+                    <HardDrive className="h-4 w-4 text-muted-foreground" />
                     Tipo Almacenamiento
                     {errors.tipoAlmacenamiento && <span className="text-red-500">*</span>}
                   </Label>
@@ -499,7 +509,8 @@ export function NuevoEquipoForm() {
             {formData.tipoEquipo === 'impresora' && (
               <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="tipoImpresion" className="text-sm font-medium">
+                  <Label htmlFor="tipoImpresion" className="flex items-center gap-2 text-sm font-medium">
+                    <Printer className="h-4 w-4 text-muted-foreground" />
                     Tipo de Impresión
                     {errors.tipoImpresion && <span className="text-red-500">*</span>}
                   </Label>
@@ -519,7 +530,8 @@ export function NuevoEquipoForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="modeloToner" className="text-sm font-medium">
+                  <Label htmlFor="modeloToner" className="flex items-center gap-2 text-sm font-medium">
+                    <Tag className="h-4 w-4 text-muted-foreground" />
                     Modelo de Tóner
                     {errors.modeloToner && <span className="text-red-500">*</span>}
                   </Label>
@@ -543,7 +555,8 @@ export function NuevoEquipoForm() {
                       onChange={(e) => setFormData(prev => ({ ...prev, esAColor: e.target.checked }))}
                       className="rounded cursor-pointer"
                     />
-                    <Label htmlFor="esAColor" className="cursor-pointer">
+                    <Label htmlFor="esAColor" className="cursor-pointer flex items-center gap-2">
+                      <Droplet className="h-4 w-4 text-muted-foreground" />
                       ¿Es a Color?
                     </Label>
                   </div>
@@ -555,7 +568,8 @@ export function NuevoEquipoForm() {
             {formData.tipoEquipo === 'redes' && (
               <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="numeroPuertos" className="text-sm font-medium">
+                  <Label htmlFor="numeroPuertos" className="flex items-center gap-2 text-sm font-medium">
+                    <Network className="h-4 w-4 text-muted-foreground" />
                     Número de Puertos
                     {errors.numeroPuertos && <span className="text-red-500">*</span>}
                   </Label>
@@ -571,7 +585,8 @@ export function NuevoEquipoForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="tipoRed" className="text-sm font-medium">
+                  <Label htmlFor="tipoRed" className="flex items-center gap-2 text-sm font-medium">
+                    <Wifi className="h-4 w-4 text-muted-foreground" />
                     Tipo de Red
                     {errors.tipoRed && <span className="text-red-500">*</span>}
                   </Label>
@@ -599,7 +614,8 @@ export function NuevoEquipoForm() {
                       onChange={(e) => setFormData(prev => ({ ...prev, esPoE: e.target.checked }))}
                       className="rounded cursor-pointer"
                     />
-                    <Label htmlFor="esPoE" className="cursor-pointer">
+                    <Label htmlFor="esPoE" className="cursor-pointer flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-muted-foreground" />
                       ¿Tiene PoE (Power over Ethernet)?
                     </Label>
                   </div>
