@@ -566,20 +566,48 @@ function ActionBar({
         <>
           <Button
             size="sm"
-            className="bg-orange-500 hover:bg-orange-600 text-white"
+            className="bg-orange-500 hover:bg-orange-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={onPausar}
+            disabled={!reporteHecho}
+            title={!reporteHecho ? 'Debe crear el reporte antes de pausar' : ''}
           >
             <Pause className="h-4 w-4 mr-1.5" />
             Pausar
           </Button>
           <Button
             size="sm"
-            className="bg-green-600 hover:bg-green-700 text-white"
+            className="bg-green-600 hover:bg-green-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={onFinalizar}
+            disabled={!reporteHecho}
+            title={!reporteHecho ? 'Debe crear el reporte antes de finalizar' : ''}
           >
             <ClipboardCheck className="h-4 w-4 mr-1.5" />
             Finalizar
           </Button>
+          {!reporteHecho && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                setReporteHecho(true)
+                addExpedienteEntry({
+                  fecha: getNow(),
+                  quien: 'Tecnico',
+                  rol: 'Tecnico',
+                  accion: 'Creo el reporte de atencion',
+                  estado: 'En Proceso',
+                  icono: 'documento',
+                  detalles: 'Reporte de atencion generado',
+                })
+                toast.success('Reporte creado', {
+                  description: 'El reporte ha sido creado exitosamente.',
+                })
+              }}
+            >
+              <FileText className="h-4 w-4 mr-1.5" />
+              Crear Reporte
+            </Button>
+          )}
         </>
       )}
       {estado === 'Pausa' && (
@@ -596,16 +624,6 @@ function ActionBar({
         >
           <Lock className="h-4 w-4 mr-1.5" />
           Cerrar Ticket
-        </Button>
-      )}
-      {(estado === 'Pausa' || estado === 'Resuelta') && (
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => {}}
-        >
-          <FileText className="h-4 w-4 mr-1.5" />
-          Crear Reporte
         </Button>
       )}
     </div>
@@ -644,6 +662,7 @@ const TicketDetailPage = () => {
   const [tecnicosAsignados, setTecnicosAsignados] = useState<Tecnico[]>([])
   const [expediente, setExpediente] = useState<ExpedienteEntry[]>(initialExpediente)
   const [enReanudacion, setEnReanudacion] = useState(false)
+  const [reporteHecho, setReporteHecho] = useState(false)
 
   // Modal states
   const [showCanalizar, setShowCanalizar] = useState(false)
