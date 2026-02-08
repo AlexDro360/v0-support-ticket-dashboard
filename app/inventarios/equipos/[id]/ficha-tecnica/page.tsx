@@ -1,14 +1,17 @@
 'use client'
 
+import { use } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Download, Printer } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FichaTecnicaEquipo } from '@/components/ficha-tecnica-equipo'
 
-export default function FichaTecnicaPage({ params }: { params: { id: string } }) {
+export default function FichaTecnicaPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
+
   // Datos de ejemplo - en producción estos vendrían de una API
   const equipoData = {
-    id: params.id,
+    id: id,
     numeroInventario: 'ITO-2024-HP01',
     tipoEquipo: 'computo' as const,
     marca: 'HP',
@@ -32,7 +35,7 @@ export default function FichaTecnicaPage({ params }: { params: { id: string } })
   }
 
   const handleDescargar = () => {
-    console.log('[v0] Iniciando descarga de ficha técnica para equipo:', params.id)
+    console.log('[v0] Iniciando descarga de ficha técnica para equipo:', id)
     // TODO: Implementar lógica para generar y descargar PDF
   }
 
@@ -75,7 +78,7 @@ export default function FichaTecnicaPage({ params }: { params: { id: string } })
             <Download className="h-4 w-4" />
             Descargar PDF
           </Button>
-          <Link href={`/inventarios/equipos/${params.id}`}>
+          <Link href={`/inventarios/equipos/${id}`}>
             <Button className="w-full sm:w-auto">
               Editar Equipo
             </Button>
