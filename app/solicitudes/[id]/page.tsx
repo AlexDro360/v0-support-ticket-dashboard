@@ -568,20 +568,16 @@ function ActionBar({
         <>
           <Button
             size="sm"
-            className="bg-orange-500 hover:bg-orange-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-orange-500 hover:bg-orange-600 text-white"
             onClick={onPausar}
-            disabled={!reporteHecho}
-            title={!reporteHecho ? 'Debe crear el reporte antes de pausar' : ''}
           >
             <Pause className="h-4 w-4 mr-1.5" />
             Pausar
           </Button>
           <Button
             size="sm"
-            className="bg-green-600 hover:bg-green-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-green-600 hover:bg-green-700 text-white"
             onClick={onFinalizar}
-            disabled={!reporteHecho}
-            title={!reporteHecho ? 'Debe crear el reporte antes de finalizar' : ''}
           >
             <ClipboardCheck className="h-4 w-4 mr-1.5" />
             Finalizar
