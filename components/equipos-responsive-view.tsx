@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Monitor, Printer, Wifi, MoreVertical, Eye, Edit2, Trash2, Power } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -120,9 +121,11 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
                         <Eye className="h-4 w-4 mr-2" />
                         Ver Ficha Técnica
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Edit2 className="h-4 w-4 mr-2" />
-                        Editar
+                      <DropdownMenuItem asChild>
+                        <Link href={`/inventarios/equipos/${equipo.id}`} className="cursor-pointer">
+                          <Edit2 className="h-4 w-4 mr-2" />
+                          Editar
+                        </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>
@@ -164,9 +167,11 @@ export function EquiposResponsiveView({ equipos }: EquiposResponsiveViewProps) {
                         <Eye className="h-4 w-4 mr-2" />
                         Ver Ficha Técnica
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Edit2 className="h-4 w-4 mr-2" />
-                        Editar
+                      <DropdownMenuItem asChild>
+                        <Link href={`/inventarios/equipos/${equipo.id}`} className="cursor-pointer">
+                          <Edit2 className="h-4 w-4 mr-2" />
+                          Editar
+                        </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>
